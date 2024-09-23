@@ -12,7 +12,7 @@ import { TbListDetails, TbSettingsCheck } from "react-icons/tb";
 import { HiOutlineCircleStack } from "react-icons/hi2";
 import { SlBookOpen } from "react-icons/sl";
 import logoImage from "@/assets//image/logo.png";
-import {  useState } from "react";
+import { useEffect, useState } from "react";
 import MenuItem from "antd/es/menu/MenuItem";
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -47,7 +47,7 @@ const adminNavLink: MenuItem[] = [
     icon: <GoChecklist size={24} />,
     label: <Link href="/order-details">Order Details</Link>,
   },
-  
+
   {
     key: "settings",
     icon: <TbSettingsCheck size={24} />,
@@ -77,14 +77,19 @@ const adminNavLink: MenuItem[] = [
   },
 ];
 
-
 const Sidebar = ({ collapsed, setCollapsed }: TSidebarType) => {
   const [current, setCurrent] = useState("dashboard");
 
   const onClick: MenuProps["onClick"] = (e) => {
     console.log("click ", e);
     setCurrent(e.key);
+    localStorage.setItem("activeNav", e.key);
   };
+
+  useEffect(()=>{
+    const activeKey = localStorage.getItem("activeNav");
+    setCurrent(activeKey as string)
+  },[current, setCurrent])
 
   return (
     <Sider
