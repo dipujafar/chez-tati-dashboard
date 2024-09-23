@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  color: var(--foreground);
+  background: "#F8FAFC";
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.flex-item-center {
+  @apply flex items-center justify-center;
+}
+
+.sidebar-menu > .ant-menu-item {
+  background-color: #3d3d3d;
+  padding: 0.3rem 1rem;
+  display: flex;
+  align-items: center;
+  color: rgb(248, 250, 252);
+}
+
+.ant-menu-item {
+  background-color: #232323 !important;
+}
+.ant-menu-item:hover {
+  background-color: #a19696 !important;
+  color: #f8fafc !important;
+}
+.ant-menu-submenu {
+  background-color: #232323 !important;
+  margin-left: 4px;
+  margin-right: 4px;
+  color: #f8fafc !important;
+}
+.ant-menu-item-selected {
+  background-color: #eb2926 !important;
+  color: #f8fafc !important;
+}
+
+.ant-menu-submenu-title {
+  color: #f8fafc !important;
+}
+.ant-menu-submenu-title:hover {
+  color: #5c4949 !important;
+}
+
+.recharts-cartesian-axis-tick > text {
+  fill: #fff;
+}
+
+
+
+/* pagination related styles */
+.ant-pagination-item {
+  background-color: #000 !important;
+}
+
+.ant-pagination-item > a{
+  color: #fff !important;
+}
+.ant-pagination-item-active {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+.ant-pagination-item-active > a {
+  color: #000 !important;
+}
+
+.ant-pagination-item-link > span > svg {
+  fill: #fff !important;
+  font-weight: 800;
+}
+
+
+.anticon-delete > svg{
+  fill: #fff;
+}
+
+
+
+
+.ant-segmented-item {
+  background-color: #fff;
+  margin: 0 0.5rem;
+}
+
+.ant-dropdown-trigger .anticon svg {
+  fill: #fff !important;
+}
+
+.ql-toolbar {
+  margin-bottom: 12px !important;
+  display: flex;
+  justify-content: end;
+  border: none !important;
+}
+
+.ql-formats {
+  background-color: white;
+  border-radius: 3px;
+}
+
+.ql-container {
+  background-color: #F8FAFC;
+  color: #232323;
+  height: 600px !important;
+  border: none !important;
+  border-radius: 10px;
+  overflow: auto !important;
+}
+
+.ant-menu-sub > .ant-menu-item {
+  padding-left: 25px !important;
+}
