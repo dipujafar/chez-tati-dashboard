@@ -1,6 +1,6 @@
 "use client";
 import type { FormProps } from "antd";
-import { Button, Checkbox, Form, Input, Flex, ConfigProvider } from "antd";
+import {  Checkbox, Form, Input, Flex, ConfigProvider } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "./styles.module.css";

@@ -1,4 +1,4 @@
-import { Button, Form, FormProps, Input, Modal } from "antd";
+import { Button, ConfigProvider, Form, FormProps, Input, Modal } from "antd";
 
 type TPropsType = {
   open: boolean;
@@ -15,30 +15,47 @@ const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
 
 const AddCetagoryModal = ({ open, setOpen }: TPropsType) => {
   return (
-    <Modal
-      open={open}
-      footer={null}
-      centered={true}
-      onCancel={() => setOpen(false)}
-      style={{
-        minWidth: "max-content",
-        position: "relative",
+    <ConfigProvider
+      theme={{
+        components: {
+          Form: {
+            labelColor: "rgba(0,0,0,0.88)",
+          },
+        },
       }}
     >
-      <div className="pb-2">
-        <h4 className="text-center text-2xl font-medium">Add new category </h4>
-        <div className="mt-10">
-          <Form layout="vertical" onFinish={onFinish}>
-            <Form.Item label="Category name" name="category">
-              <Input size="large" placeholder="Enter category name"></Input>
-            </Form.Item>
-            <Button htmlType="submit" block size="large" className="bg-primaryBlack text-primaryWhite">
-              Add Category
-            </Button>
-          </Form>
+      <Modal
+        open={open}
+        footer={null}
+        centered={true}
+        onCancel={() => setOpen(false)}
+        style={{
+          minWidth: "max-content",
+          position: "relative",
+        }}
+      >
+        <div className="pb-2">
+          <h4 className="text-center text-2xl font-medium">
+            Add new category{" "}
+          </h4>
+          <div className="mt-10">
+            <Form layout="vertical" onFinish={onFinish}>
+              <Form.Item label="Category name" name="category">
+                <Input size="large" placeholder="Enter category name"></Input>
+              </Form.Item>
+              <Button
+                htmlType="submit"
+                block
+                size="large"
+                className="bg-primaryBlack text-primaryWhite"
+              >
+                Add Category
+              </Button>
+            </Form>
+          </div>
         </div>
-      </div>
-    </Modal>
+      </Modal>
+    </ConfigProvider>
   );
 };
 

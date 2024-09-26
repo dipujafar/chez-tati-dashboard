@@ -8,12 +8,14 @@ import { CiBadgeDollar, CiLogout } from "react-icons/ci";
 import { GoChecklist } from "react-icons/go";
 import { LuClipboardList } from "react-icons/lu";
 import { PiUsersThreeThin } from "react-icons/pi";
-import { TbListDetails, TbSettingsCheck } from "react-icons/tb";
+import { TbSettingsCheck } from "react-icons/tb";
 import { HiOutlineCircleStack } from "react-icons/hi2";
 import { SlBookOpen } from "react-icons/sl";
 import logoImage from "@/assets//image/logo.png";
 import { useEffect, useState } from "react";
 import MenuItem from "antd/es/menu/MenuItem";
+import { MdOutlineAddchart } from "react-icons/md";
+import { MdOutlinePolicy } from "react-icons/md";
 type MenuItem = Required<MenuProps>["items"][number];
 
 type TSidebarType = {
@@ -54,13 +56,18 @@ const adminNavLink: MenuItem[] = [
     label: "Settings",
     children: [
       {
+        key: "add-banner",
+        icon: <MdOutlineAddchart size={24} />,
+        label: <Link href="/add-banner">Add Banner</Link>,
+      },
+      {
         key: "aboutUs",
         icon: <HiOutlineCircleStack size={24} />,
         label: <Link href="/aboutUs">About Us</Link>,
       },
       {
         key: "privacyPolicy",
-        icon: <HiOutlineCircleStack size={24} />,
+        icon: <MdOutlinePolicy size={24} />,
         label: <Link href="/privacy-policy">Privacy Policy</Link>,
       },
       {
@@ -86,10 +93,10 @@ const Sidebar = ({ collapsed, setCollapsed }: TSidebarType) => {
     localStorage.setItem("activeNav", e.key);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const activeKey = localStorage.getItem("activeNav");
-    setCurrent(activeKey as string)
-  },[current, setCurrent])
+    setCurrent(activeKey as string);
+  }, [current, setCurrent]);
 
   return (
     <Sider
