@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,49 +16,49 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { countries } from "@/utils/countries";
 import Image from "next/image";
-
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const ChekcoutContainer = () => {
+  const router = useRouter();
+
   return (
     <div>
-      <h1 className="text-primary-black lg:text-4xl text-3xl font-bold">
+      <h1 className="text-3xl font-bold text-primary-black lg:text-4xl">
         Billing Information
       </h1>
-      <div className="mt-10 grid grid-cols-1 xl:grid-cols-3 gap-7 items-center justify-center">
+      <div className="mt-10 grid grid-cols-1 items-center justify-center gap-7 xl:grid-cols-3">
         {/* form */}
-        <div className="col-span-2 py-5 ">
+        <div className="col-span-2 py-5">
           <form>
             <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col lg:flex-row gap-4 justify-between">
-                <div className=" flex-1 flex flex-col space-y-1.5">
+              <div className="flex flex-col justify-between gap-4 lg:flex-row">
+                <div className="flex flex-1 flex-col space-y-1.5">
                   <Label>First name</Label>
                   <Input id="firstName" placeholder="Your first name" />
                 </div>
-                <div className=" flex-1 flex flex-col space-y-1.5">
+                <div className="flex flex-1 flex-col space-y-1.5">
                   <Label>Last name</Label>
                   <Input id="lastName" placeholder="Your last name" />
                 </div>
-                <div className=" flex-1 flex flex-col space-y-1.5">
+                <div className="flex flex-1 flex-col space-y-1.5">
                   <Label>Company Name (optional)</Label>
                   <Input id="companyName" placeholder="Company name" />
                 </div>
               </div>
               {/*input email */}
-              <div className="  flex flex-col space-y-1.5">
+              <div className="flex flex-col space-y-1.5">
                 <Label>Street Address</Label>
                 <Input id="email" placeholder="Email" />
               </div>
               {/* address */}
-              <div className="flex flex-col lg:flex-row gap-4">
+              <div className="flex flex-col gap-4 lg:flex-row">
                 {/* countries   */}
-                <div className="  flex flex-col space-y-1.5">
+                <div className="flex flex-col space-y-1.5">
                   <Label>Country / Region</Label>
                   <Select>
                     <SelectTrigger className="min-w-[220px]">
@@ -78,7 +80,7 @@ const ChekcoutContainer = () => {
                   </Select>
                 </div>
                 {/* States */}
-                <div className="  flex flex-col space-y-1.5">
+                <div className="flex flex-col space-y-1.5">
                   <Label>States</Label>
                   <Select>
                     <SelectTrigger className="min-w-[150px]">
@@ -98,12 +100,12 @@ const ChekcoutContainer = () => {
               </div>
 
               {/* input email and phone */}
-              <div className="flex flex-col lg:flex-row gap-4 justify-between">
-                <div className=" flex-1 flex flex-col space-y-1.5">
+              <div className="flex flex-col justify-between gap-4 lg:flex-row">
+                <div className="flex flex-1 flex-col space-y-1.5">
                   <Label>Email</Label>
                   <Input id="email" placeholder="Email Address" />
                 </div>
-                <div className=" flex-1 flex flex-col space-y-1.5">
+                <div className="flex flex-1 flex-col space-y-1.5">
                   <Label>Phone</Label>
                   <Input id="lastName" placeholder="Phone number" />
                 </div>
@@ -115,14 +117,14 @@ const ChekcoutContainer = () => {
         {/* cart statistics */}
         <Card>
           <CardHeader>
-            <CardTitle className="font-semibold text-xl">
+            <CardTitle className="text-xl font-semibold">
               Order Summery
             </CardTitle>
           </CardHeader>
           <CardContent>
             {/* products information */}
             <div>
-              <div className="flex justify-between items-center pb-5 ">
+              <div className="flex items-center justify-between pb-5">
                 <div className="flex items-center gap-2">
                   <Image
                     src={"/freezerImage.png"}
@@ -162,7 +164,10 @@ const ChekcoutContainer = () => {
             </RadioGroup>
           </CardContent>
           <CardFooter>
-            <Button className="bg-primary-color w-full rounded-full">
+            <Button
+              className="w-full rounded-full bg-primary-color"
+              onClick={() => router.push("/sign-in")}
+            >
               Place Order
             </Button>
           </CardFooter>
