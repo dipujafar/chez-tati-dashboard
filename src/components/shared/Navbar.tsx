@@ -55,10 +55,9 @@ const Navbar = () => {
   const router = useRouter(); // Use useRouter hook
 
   // Function to handle category selection
-  const handleCategoryChange = (value: string) => {
+  const handleCategoryChange = () => {
     // Programmatically navigate to the category route
     router.push(`/products`);
-    console.log(value);
   };
 
   return (
@@ -70,9 +69,9 @@ const Navbar = () => {
             <Image
               src={logo}
               alt="logo"
-              width={750}
-              height={600}
-              className="w-36 h-20"
+              width={1200}
+              height={1200}
+              className="w-auto"
             />
           </Link>
         </div>
@@ -135,7 +134,7 @@ const Navbar = () => {
           <Link href={"/shopping-cart"}>
             <ShoppingCart />
           </Link>
-          <Link href={"/profile"}>
+          <Link href={"/user/profile"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="30"
