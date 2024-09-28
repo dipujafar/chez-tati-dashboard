@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,8 +21,11 @@ import {
 } from "@/components/ui/select";
 import { countries } from "@/utils/countries";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const ChekcoutContainer = () => {
+  const router = useRouter();
+
   return (
     <div>
       <h1 className="text-3xl font-bold text-primary-black lg:text-4xl">
@@ -159,7 +164,10 @@ const ChekcoutContainer = () => {
             </RadioGroup>
           </CardContent>
           <CardFooter>
-            <Button className="w-full rounded-full bg-primary-color">
+            <Button
+              className="w-full rounded-full bg-primary-color"
+              onClick={() => router.push("/sign-in")}
+            >
               Place Order
             </Button>
           </CardFooter>

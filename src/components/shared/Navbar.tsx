@@ -62,7 +62,7 @@ const Navbar = () => {
 
   return (
     <Container>
-      <nav className="py-7 flex justify-between items-center gap-x-36">
+      <nav className="flex items-center justify-between gap-x-36 py-7">
         {/* logo image */}
         <div>
           <Link href={"/"}>
@@ -77,21 +77,21 @@ const Navbar = () => {
         </div>
 
         {/* nav link and search bar */}
-        <div className="flex-1 flex items-center justify-center gap-10">
+        <div className="flex flex-1 items-center justify-center gap-10">
           {/* search */}
-          <div className="flex w-1/2 items-center relative">
+          <div className="relative flex w-1/2 items-center">
             <Input
               type="text"
               placeholder="Search"
-              className="pl-10 rounded-full"
+              className="rounded-full pl-10"
             />
             <Search
-              className="absolute left-4 font-light border-none"
+              className="absolute left-4 border-none font-light"
               size={20}
             />
             <Button
               type="submit"
-              className="absolute bg-primary-color right-0 rounded-l-none rounded-r-full"
+              className="absolute right-0 rounded-l-none rounded-r-full bg-primary-color"
             >
               Search
             </Button>
@@ -99,7 +99,7 @@ const Navbar = () => {
 
           {/* navLinks */}
           <nav>
-            <ul className="flex gap-8 items-center text-light-black">
+            <ul className="flex items-center gap-8 text-light-black">
               <li>
                 <Select onValueChange={handleCategoryChange}>
                   <SelectTrigger className="min-w-fit gap-2 border-none">
@@ -134,7 +134,7 @@ const Navbar = () => {
           <Link href={"/shopping-cart"}>
             <ShoppingCart />
           </Link>
-          <Link href={"/user/profile"}>
+          <Link href={"/sign-in"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="30"

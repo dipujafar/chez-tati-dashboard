@@ -3,9 +3,9 @@ const AboutUsContainer = () => {
     <div className="space-y-10">
       <h1 className="text-6xl font-bold">About us</h1>
       <p className="max-w-7xl text-primary-gray">
-        Welcome to [Your Company Name]. Before using our logo design service,
+        Welcome to Your Company Name. Before using our logo design service,
         please carefully review the following Terms and Conditions, as they
-        govern the contractual relationship between you and [Your Company Name].
+        govern the contractual relationship between you and Your Company Name.
         By using our logo design service, you acknowledge that you have read,
         understood, and agreed to these Terms and Conditions in their entirety.
       </p>
@@ -13,7 +13,7 @@ const AboutUsContainer = () => {
       <h1 className="mb-10 text-6xl font-bold">→ Scope of Service</h1>
       <div>
         <p className="mb-5 max-w-7xl text-primary-gray">
-          a. [Your Company Name] will provide custom logo design services to the
+          a. Your Company Name will provide custom logo design services to the
           Client based on the specifications provided by the Client.
         </p>
         <p className="max-w-7xl text-primary-gray">

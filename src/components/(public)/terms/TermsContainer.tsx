@@ -1,3 +1,5 @@
+import React from "react";
+
 const TermsContainer = () => {
   return (
     <div className="space-y-10">
@@ -5,10 +7,9 @@ const TermsContainer = () => {
       <p className="max-w-7xl text-primary-gray">
         Welcome to [Your Company Name]. Before using our logo design service,
         please carefully review the following Terms and Conditions, as they
-        govern the contractual relationship between yous and [Your Company
-        Name]. By using our logo design service, you acknowledge that you have
-        read, understood, and agreed to these Terms and Conditions in their
-        entirety.
+        govern the contractual relationship between you and [Your Company Name]
+        . By using our logo design service, you acknowledge that you have read,
+        understood, and agreed to these Terms and Conditions in their entirety.
       </p>
 
       <h1 className="mb-10 text-6xl font-bold">→ Scope of Service</h1>
