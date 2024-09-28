@@ -4,16 +4,7 @@ import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, Heart } from "lucide-react"; // Importing arrow icons
 import Image from "next/image";
 
-const categories = [
-  "SHORTS",
-  "HAT",
-  "JACKETS",
-  "SHOES",
-  "T-SHIRT",
-  "LAPTOP",
-  "FREEZE",
-  "TV",
-];
+const categories = ["New Arrival", "Discount", "Popular"];
 
 const products = [
   {
@@ -77,20 +68,6 @@ const TrendingProducts = () => {
   const [startIndex, setStartIndex] = useState(0); // Track the start index of the visible categories
   const visibleCategoriesCount = 5; // Number of categories to show at a time
 
-  // Handle next click
-  const handleNext = () => {
-    if (startIndex + visibleCategoriesCount < categories.length) {
-      setStartIndex(startIndex + 1);
-    }
-  };
-
-  // Handle previous click
-  const handlePrev = () => {
-    if (startIndex > 0) {
-      setStartIndex(startIndex - 1);
-    }
-  };
-
   return (
     <div>
       <hr />
@@ -98,19 +75,9 @@ const TrendingProducts = () => {
       <div className="mt-8 flex flex-col items-center justify-between gap-y-3 lg:flex-row">
         <h1 className="text-4xl font-bold">Trending</h1>
 
-        <div className="flex items-center space-x-3">
-          {/* Arrow to go back */}
-          <ChevronLeft
-            onClick={handlePrev}
-            className={`cursor-pointer ${
-              startIndex === 0
-                ? "cursor-not-allowed text-gray-400"
-                : "text-black"
-            }`}
-            size={24}
-          />
+        <div className="flex items-center ">
           {/* categoris list */}
-          <div className="flex flex-wrap gap-y-2">
+          <div className="flex flex-wrap  gap-x-2">
             {categories
               ?.slice(startIndex, startIndex + visibleCategoriesCount)
               .map((category, inx) => (
@@ -126,16 +93,6 @@ const TrendingProducts = () => {
                 </Button>
               ))}
           </div>
-          {/* Arrow to go forward */}
-          <ChevronRight
-            onClick={handleNext}
-            className={`cursor-pointer ${
-              startIndex + visibleCategoriesCount >= categories.length
-                ? "cursor-not-allowed text-gray-400"
-                : "du text-black"
-            }`}
-            size={24}
-          />
         </div>
       </div>
 

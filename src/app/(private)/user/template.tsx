@@ -1,4 +1,3 @@
-import React from "react";
 import DashboardSidebar from "./_components/DashboardSidebar";
 import TopbarBanner from "@/components/shared/TopbarBanner";
 import Container from "@/components/shared/Container";

@@ -1,17 +1,20 @@
-import "../../User.css";
-// import Image from "next/image";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Home, Mail, Phone } from "lucide-react";
-import Link from "next/link";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+} from "@/components/ui/pagination";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 const TABLE_HEADERS = [
   "Order ID",
@@ -72,71 +75,39 @@ const TABLE_DATA = [
     total: "$99.99",
     status: "Pending",
   },
+  {
+    orderId: "#738",
+    date: "8 Sep, 2020",
+    quantity: "5 Products",
+    total: "$135.00",
+    status: "Processing",
+  },
+  {
+    orderId: "#703",
+    date: "24 May, 2020",
+    quantity: "1 Product",
+    total: "$25.00",
+    status: "On the way",
+  },
+  {
+    orderId: "#692",
+    date: "22 Oct, 2020",
+    quantity: "4 Products",
+    total: "$250.00",
+    status: "Completed",
+  },
 ];
 
-export default function ProfileContainer() {
+const OrderHistrory = () => {
   return (
-    <div className="space-y-8 text-primary-black">
-      {/* Profile Details */}
-      <div className="flex items-stretch gap-x-8">
-        <div className="dashboard-card flex w-[60%] flex-col items-center justify-center space-y-4 py-8 text-center">
-          <Avatar className="size-36">
-            <AvatarImage src="https://randomuser.me/api/portraits/men/41.jpg" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-
-          <div>
-            <h5 className="text-2xl font-bold text-primary-black">
-              Dianne Russell
-            </h5>
-            <p className="mb-3 mt-1 text-base text-muted-foreground">
-              Customer
-            </p>
-
-            <Link href="/user/settings" className="dashboard-primary-link">
-              Edit Profile
-            </Link>
-          </div>
-        </div>
-        <div className="dashboard-card w-[40%] px-8 py-6">
-          <p className="font-medium uppercase text-muted-foreground">
-            Billing Address
-          </p>
-
-          <h4 className="my-4 text-xl font-semibold">Dianne Russell</h4>
-
-          <div className="space-y-3 text-lg">
-            <p className="flex items-center gap-x-3 font-medium text-primary-black/75">
-              <Mail size={22} />
-              dainne.ressell@gmail.com
-            </p>
-            <p className="flex items-center gap-x-3 font-medium text-primary-black/75">
-              <Home size={22} /> 4140 Parker Rd. Allentown, New Mexico 31134
-            </p>
-            <p className="flex items-center gap-x-3 font-medium text-primary-black/75">
-              <Phone size={22} /> +1 (555) 123-4567
-            </p>
-          </div>
-
-          <button className="dashboard-primary-link mt-7">Edit Address</button>
-        </div>
-      </div>
-
+    <div>
       {/* Recent Order History */}
       <div className="dashboard-card py-6">
         <div className="mb-5 flex items-center justify-between px-4">
-          <h3 className="text-2xl font-medium">Recent Order History</h3>
-          <Link
-            href="/user/order-history"
-            type="button"
-            className="dashboard-primary-link"
-          >
-            View All
-          </Link>
+          <h3 className="text-2xl font-medium">Order History</h3>
         </div>
 
         <Table>
-          <TableCaption>A list of your recent orders</TableCaption>
           <TableHeader>
             <TableRow className="bg-gray-scale-50">
               {TABLE_HEADERS.map((header) => (
@@ -167,7 +138,40 @@ export default function ProfileContainer() {
             ))}
           </TableBody>
         </Table>
+        <div className="mt-7 w-full">
+          {/* pagination for data slice */}
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem className="rounded-full bg-light-gray p-2 shadow-md">
+                <ChevronLeft />
+              </PaginationItem>
+              <PaginationItem className="rounded-full">
+                <PaginationLink
+                  href="#"
+                  isActive
+                  className="rounded-full bg-primary-color text-white"
+                >
+                  1
+                </PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">2</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">3</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+              <PaginationItem className="rounded-full bg-light-gray p-2 shadow-md">
+                <ChevronRight />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default OrderHistrory;
