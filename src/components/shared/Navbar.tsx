@@ -139,6 +139,8 @@ const Navbar = () => {
           </Link>
         </div>
       </nav>
+
+      {/* small device view */}
     </Container>
   );
 };

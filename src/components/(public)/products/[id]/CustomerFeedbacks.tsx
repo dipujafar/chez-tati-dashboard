@@ -42,46 +42,48 @@ const feedbackData = [
 const CustomerFeedbacks = () => {
   return (
     <div>
-      <h1 className="lg:text-4xl text-2xl font-bold">Customer Feedback</h1>
+      <h1 className="text-2xl font-bold lg:text-4xl">Customer Feedback</h1>
       <div className="lg:w-3/4">
-      {/* feedbacks */}
-      {feedbackData?.slice(0, 4)?.map((data, index) => (
-        <div className="mt-6">
-          <div>
-            <div className="flex justify-between">
-              <div className="flex items-center gap-3">
-                {data?.image ? (
-                  <Image
-                    src={data?.image}
-                    alt="userImage"
-                    width={950}
-                    height={700}
-                    className="size-14"
-                  ></Image>
-                ) : (
-                  <Image
-                    src="/nonUser.png"
-                    alt="userImage"
-                    width={950}
-                    height={700}
-                    className="size-14"
-                  ></Image>
-                )}
+        {/* feedbacks */}
+        {feedbackData?.slice(0, 4)?.map((data, index) => (
+          <div className="mt-6" key={index}>
+            <div>
+              <div className="flex justify-between">
+                <div className="flex items-center gap-3">
+                  {data?.image ? (
+                    <Image
+                      src={data?.image}
+                      alt="userImage"
+                      width={950}
+                      height={700}
+                      className="size-14"
+                    ></Image>
+                  ) : (
+                    <Image
+                      src="/nonUser.png"
+                      alt="userImage"
+                      width={950}
+                      height={700}
+                      className="size-14"
+                    ></Image>
+                  )}
 
-                <div>
-                  <h1 className="text-lg  text-primary-black font-medium ">
-                   {data?.name}
-                  </h1>
-                  <Rating rating={data?.rating} className="w-24"></Rating>
+                  <div>
+                    <h1 className="text-lg font-medium text-primary-black">
+                      {data?.name}
+                    </h1>
+                    <Rating rating={data?.rating} className="w-24"></Rating>
+                  </div>
                 </div>
+                <p className="text-primary-gray">{data?.time}</p>
               </div>
-              <p className="text-primary-gray">{data?.time}</p>
+              <p className="mt-4 max-w-5xl text-primary-gray">
+                {data?.feedback}
+              </p>
             </div>
-            <p className="mt-4 text-primary-gray max-w-5xl">{data?.feedback}</p>
+            {index === 3 ? "" : <hr className="mt-5" />}
           </div>
-          {index === 3 ? "" : <hr className="mt-5 " />}
-        </div>
-      ))}
+        ))}
       </div>
     </div>
   );

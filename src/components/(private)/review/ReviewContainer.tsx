@@ -1,9 +1,8 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { InputRating } from "@/components/ui/inputrating";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progressbar";
-import { Rating } from "@/components/ui/rating";
 import { Textarea } from "@/components/ui/textarea";
 import { Star } from "lucide-react";
 
@@ -84,15 +83,23 @@ const ReviewContainer = () => {
 
       {/* input rating */}
       <div>
-        <InputRating onRatingChange={handleRatingChange} className="w-96"></InputRating>
+        <InputRating
+          onRatingChange={handleRatingChange}
+          className="w-96"
+        ></InputRating>
       </div>
 
       {/* Feedback message */}
       <div className="space-y-2">
-        <Label  className="text-2xl text-primary-black">Please share your opinion about the product</Label>
-        <Textarea placeholder="your review" className="bg-light-gray" rows={7}></Textarea>
+        <Label className="text-2xl text-primary-black">
+          Please share your opinion about the product
+        </Label>
+        <Textarea
+          placeholder="your review"
+          className="bg-light-gray"
+          rows={7}
+        ></Textarea>
       </div>
-
 
       {/* submit button */}
       <Button className="w-full">Send Review</Button>
