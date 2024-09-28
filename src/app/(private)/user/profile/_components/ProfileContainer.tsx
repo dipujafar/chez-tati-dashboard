@@ -78,8 +78,8 @@ export default function ProfileContainer() {
   return (
     <div className="space-y-8 text-primary-black">
       {/* Profile Details */}
-      <div className="flex items-stretch gap-x-8">
-        <div className="dashboard-card flex w-[60%] flex-col items-center justify-center space-y-4 py-8 text-center">
+      <div className="flex flex-col items-stretch gap-x-8 gap-y-8 lg:flex-row">
+        <div className="dashboard-card flex flex-col items-center justify-center space-y-4 py-8 text-center lg:w-[60%]">
           <Avatar className="size-36">
             <AvatarImage src="https://randomuser.me/api/portraits/men/41.jpg" />
             <AvatarFallback>CN</AvatarFallback>
@@ -98,7 +98,7 @@ export default function ProfileContainer() {
             </Link>
           </div>
         </div>
-        <div className="dashboard-card w-[40%] px-8 py-6">
+        <div className="dashboard-card px-8 py-6 lg:w-[40%]">
           <p className="font-medium uppercase text-muted-foreground">
             Billing Address
           </p>

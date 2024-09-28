@@ -58,7 +58,7 @@ const SingleOrderDetails = () => {
       <hr />
       <div className="flex flex-col gap-7 px-7 py-6 lg:flex-row">
         {/* order Address */}
-        <div className="flex w-fit rounded border">
+        <div className="flex w-fit flex-col rounded border md:flex-row">
           <div className="border-r">
             <h1 className="border-b px-7 py-5 text-primary-gray">
               Billing Address
@@ -93,11 +93,11 @@ const SingleOrderDetails = () => {
         {/* order payment related details */}
         <div className="rounded border">
           <div className="flex">
-            <div className="border-b border-r px-6 py-5">
+            <div className="flex-1 border-b border-r px-6 py-5">
               <h3 className="text-primary-gray">Order ID:</h3>
               <p>#4152</p>
             </div>
-            <div className="border-b px-6 py-5">
+            <div className="flex-1 border-b px-6 py-5">
               <h3 className="text-primary-gray">Payment Method:</h3>
               <p>Paypal</p>
             </div>
@@ -127,11 +127,11 @@ const SingleOrderDetails = () => {
         </div>
       </div>
       {/* progressdbar */}
-      <div className="mx-auto mt-10 lg:w-3/4 px-2 lg:pl-10">
+      <div className="mx-auto mt-10 px-2 pl-14 lg:w-3/4 lg:pl-10">
         <ProgressBar
           stages={["Order Received", "Processing", "On the way", "Delivered"]}
-          percent={100} // Once "On the way" reaches 100%, "Delivered" will be checked
-          currentStage={2} // "On the way" is currently in progress
+          percent={20}
+          currentStage={2}
         />
       </div>
 
@@ -177,4 +177,3 @@ const SingleOrderDetails = () => {
 };
 
 export default SingleOrderDetails;
-

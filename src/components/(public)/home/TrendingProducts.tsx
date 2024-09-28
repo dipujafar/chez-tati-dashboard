@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, Heart } from "lucide-react"; // Importing arrow icons
 import Image from "next/image";
+import Link from "next/link";
 
 const categories = ["New Arrival", "Discount", "Popular"];
 
@@ -64,7 +65,7 @@ const products = [
 ];
 
 const TrendingProducts = () => {
-  const [selected, setSelected] = useState("SHORTS");
+  const [selected, setSelected] = useState("Popular");
   const [startIndex, setStartIndex] = useState(0); // Track the start index of the visible categories
   const visibleCategoriesCount = 5; // Number of categories to show at a time
 
@@ -75,9 +76,9 @@ const TrendingProducts = () => {
       <div className="mt-8 flex flex-col items-center justify-between gap-y-3 lg:flex-row">
         <h1 className="text-4xl font-bold">Trending</h1>
 
-        <div className="flex items-center ">
+        <div className="flex items-center">
           {/* categoris list */}
-          <div className="flex flex-wrap  gap-x-2">
+          <div className="flex flex-wrap gap-x-2">
             {categories
               ?.slice(startIndex, startIndex + visibleCategoriesCount)
               .map((category, inx) => (
@@ -99,20 +100,26 @@ const TrendingProducts = () => {
       {/* tranding products */}
       <div className="mt-7 grid grid-cols-1 gap-x-2 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
         {products?.map((product) => (
-          <div className="relative space-y-1" key={product?.name}>
-            <Image
-              src={product?.image}
-              alt="product_image"
-              width={1950}
-              height={1000}
-              className="max-h-[286px] w-full rounded-xl"
-            ></Image>
-            <h1 className="font-medium text-primary-black">{product?.name}</h1>
-            <p className="font-medium text-primary-gray">${product?.price}</p>
-            <div className="group absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-primary-black">
-              <Heart color="#fff" className="cursor-pointer" />
+          <Link href="/products">
+            <div className="group relative space-y-1" key={product?.name}>
+              <Image
+                src={product?.image}
+                alt="product_image"
+                width={1950}
+                height={1000}
+                className="hover: max-h-[286px] w-full rounded-xl duration-1000 group-hover:scale-95"
+              ></Image>
+              <h1 className="font-medium text-primary-black duration-1000 group-hover:pl-4">
+                {product?.name}
+              </h1>
+              <p className="font-medium text-primary-gray duration-1000 group-hover:pl-4">
+                ${product?.price}
+              </p>
+              <div className="group absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-primary-black text-primary-white duration-1000 hover:bg-primary-pink hover:text-primary-black group-hover:right-4">
+                <Heart className="cursor-pointer" />
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

@@ -9,7 +9,7 @@ export default function template({ children }: { children: React.ReactNode }) {
 
       {/* ============== Desktop Version =============== */}
       <div className="min-h-screen bg-primary-white py-10">
-        <Container className="hidden items-start gap-x-8 lg:flex">
+        <Container className="items-start gap-x-8 xl:flex">
           <DashboardSidebar />
           <div className="flex-grow">{children}</div>
         </Container>

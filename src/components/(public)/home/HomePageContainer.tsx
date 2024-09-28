@@ -12,7 +12,7 @@ const HomePageContainer = () => {
         <HeroSection></HeroSection>
         <TrendingProducts></TrendingProducts>
         <CustomerExprience></CustomerExprience>
-        <Feedbacks></Feedbacks>
+        {/* <Feedbacks></Feedbacks> */}
       </Container>
     </>
   );

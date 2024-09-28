@@ -135,7 +135,7 @@ const Navbar = () => {
             <ShoppingCart />
           </Link>
           <Link href={"/user/profile"}>
-           <User></User>
+            <User></User>
           </Link>
         </div>
       </nav>

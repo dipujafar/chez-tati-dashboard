@@ -13,17 +13,19 @@ interface TopbarBannerProps {
 
 const TopbarBanner = ({ pageName }: TopbarBannerProps) => {
   const pathName = usePathname();
+  const path = pathName?.split("/");
+  console.log(path);
 
   return (
-    <div className={`w-full h-[120px] bg-topbar-image flex items-center`}>
+    <div className={`bg-topbar-image flex h-[120px] w-full items-center`}>
       <div>
         <Container>
-          <div className="h-full flex gap-3 items-center">
+          <div className="flex h-full items-center gap-3">
             <Link href={"/"}>
               <House size={20} className="text-primary-white" />
             </Link>
             <ChevronRight size={20} className="text-primary-white" />
-            <p className="text-white font-bold capitalize">
+            <p className="font-bold capitalize text-white">
               {pageName || pathName
                 ? pathName
                     .split("/")[1]

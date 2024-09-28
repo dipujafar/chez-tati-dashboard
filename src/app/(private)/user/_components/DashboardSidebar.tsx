@@ -1,5 +1,5 @@
 "use client";
-
+import { useState, useEffect } from "react";
 import "../User.css";
 import { cn } from "@/lib/utils";
 import {
@@ -7,6 +7,8 @@ import {
   History,
   LayoutDashboard,
   LogOut,
+  Menu,
+  X,
   Settings,
   ShoppingCart,
 } from "lucide-react";
@@ -48,34 +50,87 @@ const SIDEBAR_LINKS = [
 
 export default function DashboardSidebar() {
   const pathname = usePathname();
+  const path = pathname?.split("/")[2];
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+
+  // Toggle the sidebar visibility
+  const toggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
+  };
+
+  // Close the sidebar when clicking outside
+  const handleClickOutside = (event: MouseEvent) => {
+    const sidebar = document.getElementById("dashboardSidebar");
+    if (sidebar && !sidebar.contains(event.target as Node)) {
+      setIsSidebarVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isSidebarVisible) {
+      document.addEventListener("click", handleClickOutside);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isSidebarVisible]);
 
   return (
-    <div className="dashboard-card w-[20%] bg-white py-5">
-      <h4 className="mb-5 px-5 text-xl font-bold">Navigation</h4>
-
-      <div className="space-y-2">
-        {SIDEBAR_LINKS.map((link) => (
-          <Link
-            href={link.href}
-            key={link.key}
-            className={cn(
-              "flex items-center gap-x-3 px-5 py-4 text-lg text-gray-scale-600 transition-all duration-300 ease-in-out",
-              pathname === link.href &&
-                "border-l-4 border-l-[#EA5326] bg-[#FDEEE9] text-black",
-            )}
-          >
-            {link.icon}
-            <span>{link.label}</span>
-          </Link>
-        ))}
-
+    <div>
+      {/* Menu Toggle Button for mobile/tablet devices */}
+      <div className="p-4 xl:hidden">
         <button
-          type="button"
-          className="flex items-center gap-x-3 px-5 py-4 text-lg text-gray-scale-600"
+          onClick={toggleSidebar}
+          className="text-gray-500 hover:text-gray-700"
         >
-          <LogOut size={25} />
-          <span>Logout</span>
+          {isSidebarVisible ? <X size={28} /> : <Menu size={28} />}{" "}
+          {/* Toggle between Menu and Close (X) icons */}
         </button>
+      </div>
+
+      {/* Sidebar */}
+      <div
+        id="dashboardSidebar"
+        className={`fixed inset-y-0 left-0 z-40 w-64 transform bg-white shadow-lg transition-transform duration-300 ease-in-out xl:relative xl:transform-none xl:shadow-none ${
+          isSidebarVisible
+            ? "translate-x-0"
+            : "-translate-x-full xl:translate-x-0"
+        }`}
+      >
+        <div className="dashboard-card bg-white py-5">
+          <h4 className="mb-5 px-5 text-xl font-bold">Navigation</h4>
+
+          <div className="space-y-2">
+            {SIDEBAR_LINKS.map((link) => (
+              <Link
+                href={link.href}
+                key={link.key}
+                className={cn(
+                  "flex items-center gap-x-3 px-5 py-4 text-lg text-gray-scale-600 transition-all duration-300 ease-in-out",
+                  pathname === link.href &&
+                    "border-l-4 border-l-[#EA5326] bg-[#FDEEE9] text-black",
+                  link.href.includes(path) &&
+                    "border-l-4 border-l-[#EA5326] bg-[#FDEEE9] text-black",
+                )}
+              >
+                {link.icon}
+                <span>{link.label}</span>
+              </Link>
+            ))}
+
+            <Link href={"/sign-in"}>
+              <button
+                type="button"
+                className="flex items-center gap-x-3 px-5 py-4 text-lg text-gray-scale-600"
+              >
+                <LogOut size={25} />
+                <span>Logout</span>
+              </button>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
