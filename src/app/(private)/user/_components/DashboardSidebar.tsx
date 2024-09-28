@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   LogOut,
   Settings,
+  ShoppingCart,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -29,13 +30,19 @@ const SIDEBAR_LINKS = [
     key: "wishlist",
     label: "Wishlist",
     icon: <Heart size={25} />,
-    href: "/user/wishlist",
+    href: "/favorite-products",
+  },
+  {
+    key: "shopping-cart",
+    label: "Shopping Cart",
+    icon: <ShoppingCart size={25} />,
+    href: "/shopping-cart",
   },
   {
     key: "settings",
     label: "Settings",
     icon: <Settings size={25} />,
-    href: "/user/settings",
+    href: "/user/account-settings",
   },
 ];
 

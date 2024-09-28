@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import Link from "next/link";
+import { MoveUpRight } from "lucide-react";
 
 const carouselData = [
   {
@@ -38,12 +39,12 @@ const HeroSection = () => {
       <div>
         <div className="grid grid-cols-1 gap-3 overflow-hidden xl:max-h-[650px] xl:grid-cols-3">
           <div className="col-span-2 rounded-md">
-            <Carousel className="w-full lg:max-h-[650px]">
+            <Carousel className="w-full px-1 lg:max-h-[650px]">
               <CarouselContent className="relative">
                 {carouselData?.map((data, index) => (
                   <CarouselItem key={index}>
                     <Card>
-                      <CardContent className="relative px-0">
+                      <CardContent className="relative">
                         <Image
                           src={data?.image}
                           width={1950}
@@ -68,7 +69,7 @@ const HeroSection = () => {
                           </p>
                           <Link href="/products">
                             <Button className="mx-auto mt-4 rounded-full lg:mt-8 lg:w-1/2">
-                              View Category
+                              View Products
                             </Button>
                           </Link>
                         </div>
@@ -81,35 +82,39 @@ const HeroSection = () => {
               <CarouselNext className="absolute right-1 bg-primary-color text-primary-white" />
             </Carousel>
           </div>
-          <div className="space-y-3">
-            <div className="relative">
-              <Image
-                src={img2}
-                alt="banner_image"
-                className="max-h-[319px] w-full rounded-3xl"
-              />
-              <h1 className="absolute left-8 top-8 z-20 text-3xl font-semibold text-primary-white md:text-4xl">
-                Indoor <br /> Active
-              </h1>
-            </div>
-            <div className="relative">
-              <Image
-                src={img3}
-                alt="banner_image"
-                className="max-h-[319px] w-full rounded-3xl"
-              />
-              <h1 className="absolute left-8 top-8 z-20 text-3xl font-semibold md:text-4xl">
-                Casual <br /> Comfort
-              </h1>
-            </div>
+          <div>
+            <Link href="/products">
+              <div className="relative">
+                <Image
+                  src={img2}
+                  alt="banner_image"
+                  className="max-h-[319px] w-full rounded-3xl"
+                />
+                <h1 className="absolute left-8 top-8 z-20 text-3xl font-semibold text-primary-white md:text-4xl">
+                  Indoor <br /> Active
+                </h1>
+              </div>
+            </Link>
+            <Link href="/products">
+              <div className="relative mt-3">
+                <Image
+                  src={img3}
+                  alt="banner_image"
+                  className="max-h-[319px] w-full rounded-3xl"
+                />
+                <h1 className="absolute left-8 top-8 z-20 text-3xl font-semibold md:text-4xl">
+                  Casual <br /> Comfort
+                </h1>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
 
       {/* Casual Inspirations section */}
-      <div className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-3">
-        <div className="space-y-2 lg:ml-9 xl:space-y-10">
-          <h1 className="text-3xl font-bold text-primary-black xl:text-5xl">
+      <div className="mt-3 grid grid-cols-1 items-center gap-3 lg:grid-cols-3">
+        <div className="lg:ml-9">
+          <h1 className="mb-5 text-3xl font-bold text-primary-black xl:text-5xl">
             Casual <br />
             Inspirations
           </h1>
@@ -117,32 +122,46 @@ const HeroSection = () => {
             Our favorite combinations for casual outfit that can inspire you to
             apply on your daily activity.
           </p>
-          <Button variant="outline" className="mx-auto rounded-full xl:w-3/4">
-            BROWS INSPIRATION
+          <Button
+            variant="outline"
+            className="mx-auto mt-10 rounded-full xl:w-3/4"
+          >
+            BROWSE INSPIRATIONS
           </Button>
         </div>
-        <div className="relative">
-          <Image
-            src={img4}
-            alt="banner_image"
-            className="max-h-[319px] w-full rounded-3xl"
-          />
-          <h1 className="absolute bottom-8 left-8 z-20 text-3xl font-semibold text-primary-white md:text-4xl">
-            Say it <br />
-            with Shirt
-          </h1>
-        </div>
-        <div className="relative">
-          <Image
-            src={img5}
-            alt="banner_image"
-            className="max-h-[319px] w-full rounded-3xl"
-          />
-          <h1 className="absolute bottom-8 left-8 z-20 text-3xl font-semibold text-primary-white md:text-4xl">
-            Electronics <br />
-            Gadgets
-          </h1>
-        </div>
+        <Link href="/products">
+          <div className="relative">
+            <Image
+              src={img4}
+              alt="banner_image"
+              className="max-h-[319px] w-full rounded-3xl brightness-75"
+            />
+            <h1 className="absolute bottom-8 left-8 z-20 text-3xl font-semibold text-primary-white md:text-4xl">
+              Say it <br />
+              with Shirt
+            </h1>
+            <div className="-gray absolute bottom-8 right-8 z-20 flex size-14 items-center justify-center rounded-full border border-primary-white text-3xl font-semibold text-primary-white md:text-4xl">
+              <MoveUpRight size={30} />
+            </div>
+          </div>
+        </Link>
+
+        <Link href="/products">
+          <div className="relative">
+            <Image
+              src={img5}
+              alt="banner_image"
+              className="max-h-[319px] w-full rounded-3xl"
+            />
+            <h1 className="absolute bottom-8 left-8 z-20 text-3xl font-semibold text-primary-white md:text-4xl">
+              Electronics <br />
+              Gadgets
+            </h1>
+            <div className="-gray absolute bottom-8 right-8 z-20 flex size-14 items-center justify-center rounded-full border border-primary-white text-3xl font-semibold text-primary-white md:text-4xl">
+              <MoveUpRight size={30} />
+            </div>
+          </div>
+        </Link>
       </div>
     </div>
   );
