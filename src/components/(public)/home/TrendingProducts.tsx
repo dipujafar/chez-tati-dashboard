@@ -95,16 +95,16 @@ const TrendingProducts = () => {
     <div>
       <hr />
       {/* title and category list */}
-      <div className="mt-8 flex justify-between items-center flex-col lg:flex-row gap-y-3">
+      <div className="mt-8 flex flex-col items-center justify-between gap-y-3 lg:flex-row">
         <h1 className="text-4xl font-bold">Trending</h1>
 
-        <div className="space-x-3 flex  items-center">
+        <div className="flex items-center space-x-3">
           {/* Arrow to go back */}
           <ChevronLeft
             onClick={handlePrev}
             className={`cursor-pointer ${
               startIndex === 0
-                ? "text-gray-400 cursor-not-allowed"
+                ? "cursor-not-allowed text-gray-400"
                 : "text-black"
             }`}
             size={24}
@@ -131,8 +131,8 @@ const TrendingProducts = () => {
             onClick={handleNext}
             className={`cursor-pointer ${
               startIndex + visibleCategoriesCount >= categories.length
-                ? "text-gray-400 cursor-not-allowed"
-                : "text-black du"
+                ? "cursor-not-allowed text-gray-400"
+                : "du text-black"
             }`}
             size={24}
           />
@@ -140,19 +140,19 @@ const TrendingProducts = () => {
       </div>
 
       {/* tranding products */}
-      <div className="mt-7 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-5">
-        {products?.map((product, inx) => (
-          <div className="space-y-1 relative">
+      <div className="mt-7 grid grid-cols-1 gap-x-2 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
+        {products?.map((product) => (
+          <div className="relative space-y-1" key={product?.name}>
             <Image
               src={product?.image}
               alt="product_image"
               width={1950}
               height={1000}
-              className=" max-h-[286px] rounded-xl w-full"
+              className="max-h-[286px] w-full rounded-xl"
             ></Image>
-            <h1 className="text-primary-black font-medium">{product?.name}</h1>
-            <p className="text-primary-gray font-medium">${product?.price}</p>
-            <div className="absolute top-2 right-2 size-10 rounded-full bg-primary-black flex justify-center items-center group">
+            <h1 className="font-medium text-primary-black">{product?.name}</h1>
+            <p className="font-medium text-primary-gray">${product?.price}</p>
+            <div className="group absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-primary-black">
               <Heart color="#fff" className="cursor-pointer" />
             </div>
           </div>

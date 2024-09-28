@@ -1,4 +1,3 @@
-import img1 from "@/assets/images/home_bg_1.png";
 import img2 from "@/assets/images/home_bg_2.png";
 import img3 from "@/assets/images/home_bg_3.png";
 import img4 from "@/assets/images/hero-image-5.png";
@@ -37,38 +36,38 @@ const HeroSection = () => {
   return (
     <div className="mt-6">
       <div>
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-3 xl:max-h-[650px] overflow-hidden">
+        <div className="grid grid-cols-1 gap-3 overflow-hidden xl:max-h-[650px] xl:grid-cols-3">
           <div className="col-span-2 rounded-md">
             <Carousel className="w-full lg:max-h-[650px]">
-              <CarouselContent className="relative ">
+              <CarouselContent className="relative">
                 {carouselData?.map((data, index) => (
                   <CarouselItem key={index}>
                     <Card>
-                      <CardContent className="relative  px-0">
+                      <CardContent className="relative px-0">
                         <Image
                           src={data?.image}
                           width={1950}
                           height={1700}
                           alt="banner_image"
-                          className="rounded-3xl h-full xl:h-[650px] min-h-[350px] "
+                          className="h-full min-h-[350px] rounded-3xl xl:h-[650px]"
                         />
-                        <div className="absolute lg:top-20 md:top-16 top-8 md:left-12 left-8 z-20 text-primary-white">
-                          <h1 className="lg:text-6xl md:text-5xl text-3xl font-bold max-w-md">
+                        <div className="absolute left-8 top-8 z-20 text-primary-white md:left-12 md:top-16 lg:top-20">
+                          <h1 className="max-w-md text-3xl font-bold md:text-5xl lg:text-6xl">
                             {data?.title.split(" ")[0]}
                           </h1>
-                          <h1 className="lg:text-6xl md:text-5xl text-3xl font-bold ">
+                          <h1 className="text-3xl font-bold md:text-5xl lg:text-6xl">
                             {`${data?.title.split(" ")[1]} ${
                               data?.title?.split(" ")[2]
                             }`}
                           </h1>
-                          <h1 className="lg:text-6xl md:text-5xl text-3xl font-bold max-w-md">
+                          <h1 className="max-w-md text-3xl font-bold md:text-5xl lg:text-6xl">
                             {data?.title?.split(" ")[3]}
                           </h1>
-                          <p className="lg:text-lg md:text-md text-sm lg:mt-4 mt-2 px-2">
+                          <p className="md:text-md mt-2 px-2 text-sm lg:mt-4 lg:text-lg">
                             {data?.description}
                           </p>
                           <Link href="/products">
-                            <Button className="lg:mt-8 mt-4 lg:w-1/2 mx-auto rounded-full">
+                            <Button className="mx-auto mt-4 rounded-full lg:mt-8 lg:w-1/2">
                               View Category
                             </Button>
                           </Link>
@@ -87,9 +86,9 @@ const HeroSection = () => {
               <Image
                 src={img2}
                 alt="banner_image"
-                className="rounded-3xl w-full max-h-[319px] "
+                className="max-h-[319px] w-full rounded-3xl"
               />
-              <h1 className="absolute top-8 left-8 text-3xl md:text-4xl font-semibold text-primary-white z-20">
+              <h1 className="absolute left-8 top-8 z-20 text-3xl font-semibold text-primary-white md:text-4xl">
                 Indoor <br /> Active
               </h1>
             </div>
@@ -97,9 +96,9 @@ const HeroSection = () => {
               <Image
                 src={img3}
                 alt="banner_image"
-                className="rounded-3xl w-full max-h-[319px] "
+                className="max-h-[319px] w-full rounded-3xl"
               />
-              <h1 className="absolute top-8 left-8 text-3xl md:text-4xl font-semibold z-20">
+              <h1 className="absolute left-8 top-8 z-20 text-3xl font-semibold md:text-4xl">
                 Casual <br /> Comfort
               </h1>
             </div>
@@ -108,17 +107,17 @@ const HeroSection = () => {
       </div>
 
       {/* Casual Inspirations section */}
-      <div className="mt-3 grid grid-cols-1 lg:grid-cols-3 gap-3">
-        <div className="lg:ml-9 xl:space-y-10 space-y-2">
-          <h1 className="xl:text-5xl text-3xl font-bold text-primary-black">
+      <div className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-3">
+        <div className="space-y-2 lg:ml-9 xl:space-y-10">
+          <h1 className="text-3xl font-bold text-primary-black xl:text-5xl">
             Casual <br />
             Inspirations
           </h1>
-          <p className="text-secondary-gray max-w-md">
+          <p className="max-w-md text-secondary-gray">
             Our favorite combinations for casual outfit that can inspire you to
             apply on your daily activity.
           </p>
-          <Button variant="outline" className="rounded-full xl:w-3/4 mx-auto">
+          <Button variant="outline" className="mx-auto rounded-full xl:w-3/4">
             BROWS INSPIRATION
           </Button>
         </div>
@@ -126,9 +125,9 @@ const HeroSection = () => {
           <Image
             src={img4}
             alt="banner_image"
-            className="rounded-3xl w-full max-h-[319px] "
+            className="max-h-[319px] w-full rounded-3xl"
           />
-          <h1 className="absolute bottom-8 left-8 text-3xl md:text-4xl font-semibold text-primary-white z-20">
+          <h1 className="absolute bottom-8 left-8 z-20 text-3xl font-semibold text-primary-white md:text-4xl">
             Say it <br />
             with Shirt
           </h1>
@@ -137,9 +136,9 @@ const HeroSection = () => {
           <Image
             src={img5}
             alt="banner_image"
-            className="rounded-3xl w-full max-h-[319px] "
+            className="max-h-[319px] w-full rounded-3xl"
           />
-          <h1 className="absolute bottom-8 left-8 text-3xl md:text-4xl font-semibold text-primary-white z-20">
+          <h1 className="absolute bottom-8 left-8 z-20 text-3xl font-semibold text-primary-white md:text-4xl">
             Electronics <br />
             Gadgets
           </h1>

@@ -119,15 +119,15 @@ const ProductsContainer = () => {
 
   return (
     <>
-      <div className="grid grid-cols-1 2xl:grid-cols-4 gap-20">
+      <div className="grid grid-cols-1 gap-20 2xl:grid-cols-4">
         {/* Sidebar */}
         <div className="col-span-1 space-y-8">
           {/* Search bar */}
-          <div className="flex items-center relative">
+          <div className="relative flex items-center">
             <Input
               type="text"
               placeholder="Search"
-              className="pl-9 w-full rounded-full"
+              className="w-full rounded-full pl-9"
             />
             <Search className="absolute left-3 font-light" size={20} />
           </div>
@@ -135,15 +135,15 @@ const ProductsContainer = () => {
           {/* Category List */}
           <div className="relative">
             <div className="flex-1">
-              <h1 className="text-2xl font-bold mb-3">All Categories</h1>
+              <h1 className="mb-3 text-2xl font-bold">All Categories</h1>
               {/* Category radio list */}
-              <RadioGroup className="space-y-3 mx-2">
+              <RadioGroup className="mx-2 space-y-3">
                 {categories
                   .slice(startIndex, startIndex + visibleCount)
                   .map((category, inx) => (
                     <div className="flex items-center space-x-2" key={inx}>
                       {/* Dot with custom color */}
-                      <div className="w-3 h-3 rounded-full" />
+                      <div className="h-3 w-3 rounded-full" />
                       <RadioGroupItem
                         value={category.value}
                         id={`r${inx}`}
@@ -155,21 +155,21 @@ const ProductsContainer = () => {
               </RadioGroup>
             </div>
             {/* Slider to scroll through categories */}
-            <div className="mt-4 absolute right-0 top-28">
+            <div className="absolute right-0 top-28 mt-4">
               <input
                 type="range"
                 min="0"
                 max={maxIndex}
                 value={startIndex}
                 onChange={handleSliderChange}
-                className="w-[250px] h-2  bg-gray-300 rounded-lg appearance-none cursor-pointer rotate-90 px-1 "
+                className="h-2 w-[250px] rotate-90 cursor-pointer appearance-none rounded-lg bg-gray-300 px-1"
               />
             </div>
           </div>
 
           {/* price */}
           <div>
-            <h1 className="text-2xl font-bold mb-3">Price</h1>
+            <h1 className="mb-3 text-2xl font-bold">Price</h1>
             {/* price filter slider */}
             <RangeSlider
               value={pricecValue}
@@ -187,11 +187,11 @@ const ProductsContainer = () => {
         {/* Products section */}
         <div className="2xl:col-span-3">
           {/* Header */}
-          <div className="flex justify-between items-center flex-wrap gap-4">
-            <div className="flex items-center gap-2 w-[280px]">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex w-[280px] items-center gap-2">
               <h1 className="">Sort by: </h1>
               <Select onValueChange={handleSortChange}>
-                <SelectTrigger className=" gap-2 w-[120px]">
+                <SelectTrigger className="w-[120px] gap-2">
                   <SelectValue placeholder="Latest" />
                 </SelectTrigger>
                 <SelectContent className="w-fit">
@@ -211,47 +211,47 @@ const ProductsContainer = () => {
           </div>
 
           {/* display produts */}
-          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-x-5 gap-y-5 justify-between">
+          <div className="mt-5 grid grid-cols-1 justify-between gap-x-5 gap-y-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
             {products?.slice(0, 12).map((product, inx) => (
-              <Link href={`/products/${inx}`}>
-              <Card className="w-[350px]">
-                <CardContent className="relative">
-                  <Image
-                    src={product?.image}
-                    alt="product_image"
-                    width={1950}
-                    height={1000}
-                    className="w-full h-full"
-                  ></Image>
-                  <div>
-                    <div className="absolute top-2 right-2 size-10 rounded-full bg-[#FDEEE9] hover:bg-primary-black hover:text-primary-white flex justify-center items-center group">
-                      <Heart className="cursor-pointer" />
-                    </div>
-                    {product?.discount && (
-                      <div className="absolute top-2 left-2 px-2 py-1 rounded-md bg-primary-color text-primary-white flex justify-center items-center group">
-                        Sale {product?.discount}% off
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <div>
+              <Link href={`/products/${inx}`} key={inx}>
+                <Card className="w-[350px]">
+                  <CardContent className="relative">
+                    <Image
+                      src={product?.image}
+                      alt="product_image"
+                      width={1950}
+                      height={1000}
+                      className="h-full w-full"
+                    ></Image>
                     <div>
-                      <p className="text-primary-color font-bold">
-                        {product?.name}
-                      </p>
-                      <p>${product?.price}</p>
-                      <Rating
-                        rating={product?.rating}
-                        className="w-20"
-                      ></Rating>
+                      <div className="group absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-[#FDEEE9] hover:bg-primary-black hover:text-primary-white">
+                        <Heart className="cursor-pointer" />
+                      </div>
+                      {product?.discount && (
+                        <div className="group absolute left-2 top-2 flex items-center justify-center rounded-md bg-primary-color px-2 py-1 text-primary-white">
+                          Sale {product?.discount}% off
+                        </div>
+                      )}
                     </div>
-                  </div>
-                  <div className="p-3 rounded-full bg-light-gray">
-                    <ShoppingCart size={20} />
-                  </div>
-                </CardFooter>
-              </Card>
+                  </CardContent>
+                  <CardFooter className="flex justify-between">
+                    <div>
+                      <div>
+                        <p className="font-bold text-primary-color">
+                          {product?.name}
+                        </p>
+                        <p>${product?.price}</p>
+                        <Rating
+                          rating={product?.rating}
+                          className="w-20"
+                        ></Rating>
+                      </div>
+                    </div>
+                    <div className="rounded-full bg-light-gray p-3">
+                      <ShoppingCart size={20} />
+                    </div>
+                  </CardFooter>
+                </Card>
               </Link>
             ))}
           </div>
