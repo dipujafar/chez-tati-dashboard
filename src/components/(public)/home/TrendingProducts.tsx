@@ -99,8 +99,8 @@ const TrendingProducts = () => {
 
       {/* tranding products */}
       <div className="mt-7 grid grid-cols-1 gap-x-2 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
-        {products?.map((product) => (
-          <Link href="/products">
+        {products?.map((product, inx) => (
+          <Link href="/products" key={inx}>
             <div className="group relative space-y-1" key={product?.name}>
               <Image
                 src={product?.image}

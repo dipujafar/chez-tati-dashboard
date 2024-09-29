@@ -17,23 +17,23 @@ interface FormData {
 const SetNewPassForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setConfirmShowPassword] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-      const onSubmit = (data: FormData) => {
+  const onSubmit = (data: FormData) => {
     console.log(data);
-    router.push("/sign-in")
+    router.push("/sign-in");
   };
 
   return (
     <div>
       <Card className="md:w-[650px]">
         <CardHeader>
-          <CardTitle className="text-4xl text-center font-semibold">
+          <CardTitle className="text-center text-4xl font-semibold">
             Set New Password
           </CardTitle>
         </CardHeader>
@@ -41,7 +41,7 @@ const SetNewPassForm = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid w-full items-center gap-4">
               {/* Input password with eye icon to toggle visibility */}
-              <div className="flex flex-col space-y-1.5 relative">
+              <div className="relative flex flex-col space-y-1.5">
                 <Input
                   id="password"
                   placeholder="Password"
@@ -51,13 +51,13 @@ const SetNewPassForm = () => {
                   })}
                 />
                 {errors.password && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-sm text-red-500">
                     {errors.password.message}
                   </p>
                 )}
                 {/* Eye icon to toggle password visibility */}
                 <div
-                  className="absolute right-3 top-1/3 transform -translate-y-1/2 cursor-pointer"
+                  className="absolute right-3 top-1/3 -translate-y-1/2 transform cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
@@ -69,7 +69,7 @@ const SetNewPassForm = () => {
               </div>
 
               {/* Input Confirm Password with eye icon to toggle visibility */}
-              <div className="flex flex-col space-y-1.5 relative">
+              <div className="relative flex flex-col space-y-1.5">
                 <Input
                   id="confirmPassword"
                   placeholder="Confirm Password"
@@ -79,13 +79,13 @@ const SetNewPassForm = () => {
                   })}
                 />
                 {errors.confirmPassword && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-sm text-red-500">
                     {errors.confirmPassword.message}
                   </p>
                 )}
                 {/* Eye icon to toggle password visibility */}
                 <div
-                  className="absolute right-3 top-1/3 transform -translate-y-1/2 cursor-pointer"
+                  className="absolute right-3 top-1/3 -translate-y-1/2 transform cursor-pointer"
                   onClick={() => setConfirmShowPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? (
@@ -96,9 +96,8 @@ const SetNewPassForm = () => {
                 </div>
               </div>
 
-
               {/* Login button */}
-              <Button type="submit" className="bg-primary-color rounded-full">
+              <Button type="submit" className="rounded-full bg-primary-color">
                 Create Account
               </Button>
             </div>

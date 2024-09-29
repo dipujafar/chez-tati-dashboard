@@ -10,7 +10,7 @@ interface FormData {
 }
 
 const ForgetPasswordFrom = () => {
-    const router = useRouter()
+  const router = useRouter();
 
   const {
     register,
@@ -19,15 +19,14 @@ const ForgetPasswordFrom = () => {
   } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
-    router.push("/set-new-password")
+    router.push("/set-new-password");
   };
 
   return (
     <div>
       <Card className="lg:w-[650px]">
         <CardHeader>
-          <CardTitle className="text-4xl text-center font-semibold">
+          <CardTitle className="text-center text-4xl font-semibold">
             Forgot password
           </CardTitle>
         </CardHeader>
@@ -50,12 +49,12 @@ const ForgetPasswordFrom = () => {
                   })}
                 />
                 {errors.email && (
-                  <p className="text-red-500 text-sm">{errors.email.message}</p>
+                  <p className="text-sm text-red-500">{errors.email.message}</p>
                 )}
               </div>
 
               {/* Login button */}
-              <Button type="submit" className="bg-primary-color rounded-full">
+              <Button type="submit" className="rounded-full bg-primary-color">
                 Submit
               </Button>
             </div>
