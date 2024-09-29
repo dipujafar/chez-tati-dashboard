@@ -14,8 +14,8 @@ const figtree = Figtree({
 
 export const metadata: Metadata = {
   title: {
-    default: "Home Page | Chez Tati ",
-    template: "%s | Chez tati",
+    default: "Chez Tati ",
+    template: "%s | Chez Tati",
   },
   description: "This is Official Application for Chez Tati",
 };
