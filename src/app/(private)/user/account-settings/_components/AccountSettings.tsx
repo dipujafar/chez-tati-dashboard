@@ -29,7 +29,7 @@ const AccountSettings = () => {
         {/* user information  */}
         <div className="px-7 py-5">
           <form>
-            <div className="flex flex-col gap-5 lg:flex-row">
+            <div className="flex flex-col-reverse gap-5 lg:flex-row">
               <div className="flex-1">
                 {/* first name */}
                 <div className="mb-2 space-y-1">

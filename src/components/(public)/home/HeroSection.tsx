@@ -114,7 +114,7 @@ const HeroSection = () => {
       {/* Casual Inspirations section */}
       <div className="mt-3 grid grid-cols-1 items-center gap-3 lg:grid-cols-3">
         <div className="lg:ml-9">
-          <h1 className="mb-5 text-3xl font-bold text-primary-black xl:text-5xl">
+          <h1 className="mt-3 text-3xl font-bold text-primary-black xl:mb-5 xl:text-5xl">
             Casual <br />
             Inspirations
           </h1>
@@ -124,7 +124,7 @@ const HeroSection = () => {
           </p>
           <Button
             variant="outline"
-            className="mx-auto mt-10 rounded-full xl:w-3/4"
+            className="mx-auto mt-3 rounded-full xl:mt-10 xl:w-3/4"
           >
             BROWSE INSPIRATIONS
           </Button>
@@ -140,7 +140,7 @@ const HeroSection = () => {
               Say it <br />
               with Shirt
             </h1>
-            <div className="-gray absolute bottom-8 right-8 z-20 flex size-14 items-center justify-center rounded-full border border-primary-white text-3xl font-semibold text-primary-white md:text-4xl">
+            <div className="-gray absolute bottom-4 right-4 z-20 flex size-14 items-center justify-center rounded-full border border-primary-white text-3xl font-semibold text-primary-white md:text-4xl xl:bottom-8 xl:right-8">
               <MoveUpRight size={30} />
             </div>
           </div>
@@ -157,7 +157,7 @@ const HeroSection = () => {
               Electronics <br />
               Gadgets
             </h1>
-            <div className="-gray absolute bottom-8 right-8 z-20 flex size-14 items-center justify-center rounded-full border border-primary-white text-3xl font-semibold text-primary-white md:text-4xl">
+            <div className="-gray absolute bottom-4 right-4 z-20 flex size-14 items-center justify-center rounded-full border border-primary-white text-3xl font-semibold text-primary-white md:text-4xl xl:bottom-8 xl:right-8">
               <MoveUpRight size={30} />
             </div>
           </div>
