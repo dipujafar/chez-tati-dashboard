@@ -39,12 +39,12 @@ const HeroSection = () => {
       <div>
         <div className="grid grid-cols-1 gap-3 overflow-hidden xl:max-h-[650px] xl:grid-cols-3">
           <div className="col-span-2 rounded-md">
-            <Carousel className="w-full px-1 lg:max-h-[650px]">
+            <Carousel className="w-full pl-4 pr-2 lg:max-h-[650px]">
               <CarouselContent className="relative">
                 {carouselData?.map((data, index) => (
                   <CarouselItem key={index}>
-                    <Card>
-                      <CardContent className="relative">
+                    <Card className="rounded-3xl">
+                      <CardContent className="relative px-0 pb-0">
                         <Image
                           src={data?.image}
                           width={1950}

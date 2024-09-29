@@ -79,7 +79,7 @@ const Navbar = () => {
 
   return (
     <Container>
-      <nav className="flex items-center justify-between gap-x-5 py-7 2xl:gap-x-36">
+      <nav className="flex items-center justify-between gap-x-5 py-4 md:py-7 2xl:gap-x-36">
         {/* logo image */}
         <div>
           <Link href={"/"}>
@@ -88,7 +88,7 @@ const Navbar = () => {
               alt="logo"
               width={1200}
               height={1200}
-              className="w-auto"
+              className="h-12 w-auto md:h-16 lg:h-auto"
             />
           </Link>
         </div>
@@ -172,7 +172,7 @@ const Navbar = () => {
                         alt="logo"
                         width={1200}
                         height={1200}
-                        className="w-auto"
+                        className="h-16 w-auto"
                       />
                     </Link>
                   </div>
