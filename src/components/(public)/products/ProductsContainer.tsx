@@ -3,7 +3,15 @@ import { ChangeEvent, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Heart, Search, ShoppingCart } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronDown,
+  ChevronUp,
+  Heart,
+  Search,
+  ShoppingCart,
+} from "lucide-react";
 import { RangeSlider } from "@/components/ui/slider";
 import {
   Select,
@@ -117,6 +125,14 @@ const ProductsContainer = () => {
     console.log(value);
   };
 
+  const handlePrevClick = () => {
+    setStartIndex((prev) => Math.max(0, prev - visibleCount));
+  };
+
+  const handleNextClick = () => {
+    setStartIndex((prev) => Math.min(maxIndex, prev + visibleCount));
+  };
+
   return (
     <>
       <div className="grid grid-cols-1 gap-20 2xl:grid-cols-4">
@@ -154,16 +170,23 @@ const ProductsContainer = () => {
                   ))}
               </RadioGroup>
             </div>
-            {/* Slider to scroll through categories */}
-            <div className="absolute right-0 top-28 mt-4">
-              <input
-                type="range"
-                min="0"
-                max={maxIndex}
-                value={startIndex}
-                onChange={handleSliderChange}
-                className="h-2 w-[250px] rotate-90 cursor-pointer appearance-none rounded-lg bg-gray-300 px-1"
-              />
+
+            {/* Arrow controls for navigation */}
+            <div className="mt-4 flex space-x-2">
+              <button
+                onClick={handlePrevClick}
+                disabled={startIndex === 0}
+                className="absolute right-0 top-0 rounded-full bg-gray-200 p-2 shadow-md duration-200 hover:bg-gray-300 disabled:opacity-50"
+              >
+                <ChevronUp size={24} />
+              </button>
+              <button
+                onClick={handleNextClick}
+                disabled={startIndex >= maxIndex}
+                className="absolute bottom-0 right-0 rounded-full bg-gray-200 p-2 shadow-md duration-200 hover:bg-gray-300 disabled:opacity-50"
+              >
+                <ChevronDown size={24} />
+              </button>
             </div>
           </div>
 
