@@ -1,11 +1,9 @@
 "use client";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
-  ArrowLeft,
-  ArrowRight,
   ChevronDown,
   ChevronUp,
   Heart,
@@ -108,13 +106,9 @@ const sortData = ["Letast"];
 
 const ProductsContainer = () => {
   const [startIndex, setStartIndex] = useState(0);
-  const visibleCount = 7; // Number of visible categories at a time
+  const visibleCount = 7;
   const maxIndex = categories.length - visibleCount;
   const [pricecValue, setPriceValue] = useState([100, 700]);
-
-  const handleSliderChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setStartIndex(Number(event.target.value));
-  };
 
   const handlePriceSliderChange = (value: number[]) => {
     setPriceValue(value);
@@ -165,7 +159,12 @@ const ProductsContainer = () => {
                         id={`r${inx}`}
                         className=""
                       />
+
                       <Label htmlFor={`r${inx}`}>{category.label}</Label>
+                      <p className="text-primary-gray">
+                        {" "}
+                        {`(${category?.quantity})`}
+                      </p>
                     </div>
                   ))}
               </RadioGroup>
@@ -237,27 +236,27 @@ const ProductsContainer = () => {
           <div className="mt-5 grid grid-cols-1 justify-between gap-x-5 gap-y-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
             {products?.slice(0, 12).map((product, inx) => (
               <Link href={`/products/${inx}`} key={inx}>
-                <Card className="w-[350px]">
+                <Card className="group">
                   <CardContent className="relative">
                     <Image
                       src={product?.image}
                       alt="product_image"
                       width={1950}
                       height={1000}
-                      className="h-full w-full"
+                      className="h-full w-full duration-1000 group-hover:scale-95"
                     ></Image>
                     <div>
-                      <div className="group absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-[#FDEEE9] hover:bg-primary-black hover:text-primary-white">
+                      <div className="group absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-[#FDEEE9] duration-1000 hover:bg-primary-black hover:text-primary-white group-hover:right-4">
                         <Heart className="cursor-pointer" />
                       </div>
                       {product?.discount && (
-                        <div className="group absolute left-2 top-2 flex items-center justify-center rounded-md bg-primary-color px-2 py-1 text-primary-white">
+                        <div className="group absolute left-2 top-2 flex items-center justify-center rounded-md bg-primary-color px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
                           Sale {product?.discount}% off
                         </div>
                       )}
                     </div>
                   </CardContent>
-                  <CardFooter className="flex justify-between">
+                  <CardFooter className="flex justify-between duration-1000 group-hover:px-8">
                     <div>
                       <div>
                         <p className="font-bold text-primary-color">

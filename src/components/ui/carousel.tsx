@@ -19,8 +19,9 @@ type CarouselProps = {
   plugins?: CarouselPlugin;
   orientation?: "horizontal" | "vertical";
   setApi?: (api: CarouselApi) => void;
+  autoSlide?: boolean; // New prop for auto-sliding
+  delay?: number; // New prop for delay between slides
 };
-
 type CarouselContextProps = {
   carouselRef: ReturnType<typeof useEmblaCarousel>[0];
   api: ReturnType<typeof useEmblaCarousel>[1];
@@ -54,6 +55,8 @@ const Carousel = React.forwardRef<
       plugins,
       className,
       children,
+      autoSlide = false, // Default autoSlide to false
+      delay = 3000, // Default delay to 3000ms
       ...props
     },
     ref,
@@ -82,7 +85,19 @@ const Carousel = React.forwardRef<
     }, [api]);
 
     const scrollNext = React.useCallback(() => {
-      api?.scrollNext();
+      if (!api) return;
+
+      const currentIndex = api.selectedScrollSnap();
+      const lastIndex = api.scrollSnapList().length - 1;
+
+      // If it's the last slide, smoothly go back to the first slide
+      if (currentIndex === lastIndex) {
+        // Scroll instantly to the first slide without animation
+        api.scrollTo(0, false); // `false` disables animation
+      } else {
+        // Smooth scroll to the next slide
+        api.scrollNext();
+      }
     }, [api]);
 
     const handleKeyDown = React.useCallback(
@@ -97,6 +112,21 @@ const Carousel = React.forwardRef<
       },
       [scrollPrev, scrollNext],
     );
+
+    // Auto-slide effect using useEffect and setInterval
+    React.useEffect(() => {
+      let intervalId: NodeJS.Timeout | null = null;
+
+      if (autoSlide && api) {
+        intervalId = setInterval(() => {
+          scrollNext();
+        }, delay);
+      }
+
+      return () => {
+        if (intervalId) clearInterval(intervalId);
+      };
+    }, [autoSlide, delay, api, scrollNext]);
 
     React.useEffect(() => {
       if (!api || !setApi) {
@@ -148,6 +178,7 @@ const Carousel = React.forwardRef<
     );
   },
 );
+
 Carousel.displayName = "Carousel";
 
 const CarouselContent = React.forwardRef<

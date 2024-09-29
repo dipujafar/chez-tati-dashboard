@@ -107,7 +107,7 @@ const TrendingProducts = () => {
                 alt="product_image"
                 width={1950}
                 height={1000}
-                className="hover: max-h-[286px] w-full rounded-xl duration-1000 group-hover:scale-95"
+                className="max-h-[286px] w-full rounded-xl duration-1000 group-hover:scale-95"
               ></Image>
               <h1 className="font-medium text-primary-black duration-1000 group-hover:pl-4">
                 {product?.name}
