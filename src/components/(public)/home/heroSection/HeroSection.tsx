@@ -1,3 +1,4 @@
+"use client";
 import img2 from "@/assets/images/home_bg_2.png";
 import img3 from "@/assets/images/home_bg_3.png";
 import img4 from "@/assets/images/hero-image-5.png";
@@ -13,6 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MoveUpRight } from "lucide-react";
 import Animatetext from "@/components/Animation/Animatetext";
+import Autoplay from "embla-carousel-autoplay";
 import "./style.css";
 
 const carouselData = [
@@ -22,12 +24,12 @@ const carouselData = [
     description: "100+ Collections for your outfit inspirations in this summer",
   },
   {
-    image: "/laptopImage.jpg",
+    image: "/fashionProduct.jpg",
     title: "Best Home Appliance Products",
     description: "100+ Collections for your outfit inspirations in this summer",
   },
   {
-    image: "/fashionProduct.jpg",
+    image: "/laptopImage.jpg",
     title: "Best Home Appliance Products",
     description: "100+ Collections for your outfit inspirations in this summer",
   },
@@ -40,8 +42,18 @@ const HeroSection = () => {
         <div className="grid grid-cols-1 gap-3 overflow-hidden xl:max-h-[650px] xl:grid-cols-3">
           <div className="col-span-2 rounded-md">
             <Carousel
-              autoSlide={true}
-              delay={2500}
+              opts={{
+                loop: true,
+                duration: 55,
+                align: "start",
+              }}
+              plugins={[
+                Autoplay({
+                  delay: 3500,
+                  stopOnInteraction: false,
+                  stopOnMouseEnter: true,
+                }),
+              ]}
               className="w-full pl-4 pr-2 lg:max-h-[650px]"
             >
               <CarouselContent className="relative">
@@ -54,7 +66,7 @@ const HeroSection = () => {
                           width={1950}
                           height={1700}
                           alt="banner_image"
-                          className="h-full min-h-[350px] rounded-3xl brightness-75 xl:h-[650px]"
+                          className="h-full min-h-[350px] rounded-3xl brightness-75 md:h-[450px] lg:h-[550px] xl:h-[650px]"
                         />
                         <div className="absolute left-8 top-8 z-20 text-primary-white md:left-12 md:top-16 lg:top-20">
                           <h1 className="max-w-md text-3xl font-bold md:text-5xl lg:text-6xl">

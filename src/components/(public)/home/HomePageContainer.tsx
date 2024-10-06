@@ -1,6 +1,6 @@
 import Container from "@/components/shared/Container";
 
-import TrendingProducts from "./TrendingProducts";
+import TrendingProducts from "./trendingProducts/TrendingProducts";
 import CustomerExprience from "./CustomerExprience";
 import Feedbacks from "./Feedbacks";
 import HeroSection from "./heroSection/HeroSection";
