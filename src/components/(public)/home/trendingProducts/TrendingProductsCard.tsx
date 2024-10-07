@@ -16,7 +16,7 @@ const TrendingProductsCard = () => {
     visible: isView
       ? {
           opacity: 1,
-          transition: { staggerChildren: 0.3, easeIn },
+          transition: { staggerChildren: 0.3, easeIn: "easeIn" },
         }
       : {},
   };
