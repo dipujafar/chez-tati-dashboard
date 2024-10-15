@@ -59,12 +59,15 @@ function AnimatedButton({ children, className, disabled }: TProsType) {
     ]);
 
     animate([
+      // @ts-ignore
       ...sparklesReset,
       [".letter", { y: -32 }, { duration: 0.2, delay: stagger(0.05) }],
       ["button", { scale: 0.8 }, { duration: 0.1, at: "<" }],
       ["button", { scale: 1 }, { duration: 0.1 }],
+      // @ts-ignore
       ...sparklesAnimation,
       [".letter", { y: 0 }, { duration: 0.000001 }],
+      // @ts-ignore
       ...sparklesFadeOut,
     ]);
   };

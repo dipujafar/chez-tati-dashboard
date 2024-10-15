@@ -2,8 +2,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 
-
-
 const initialState = {
   user: null,
   token: null,
@@ -20,7 +18,7 @@ const authSlice = createSlice({
       state.token = token;
 
       // Store token in Cookies for middleware authentication
-      Cookies.set("graphic-access-token", token, { path: "/" });
+      Cookies.set("chez-tati-access-token", token, { path: "/" });
     },
 
     logout: (state) => {
@@ -28,7 +26,7 @@ const authSlice = createSlice({
       state.token = null;
 
       // Remove token from cookie
-      Cookies.remove("graphic-access-token", { path: "/" });
+      Cookies.remove("chez-tati-access-token", { path: "/" });
     },
   },
 });

@@ -14,6 +14,11 @@ import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import google from "@/assets/images/google.png";
 import Image from "next/image";
+import { Error_Modal } from "@/utils/models";
+import { useSignUpMutation } from "@/redux/api/authApi";
+import { LoadingButton } from "@/components/ui/loading-button";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 // Define form data types
 interface FormData {
@@ -25,24 +30,41 @@ interface FormData {
 const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setConfirmShowPassword] = useState(false);
+  const [signUp, { isLoading }] = useSignUpMutation();
+  const router = useRouter();
+  const [isAccepted, setIsAccepted] = useState(false);
 
- 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
 
- 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+  const onSubmit = async (data: FormData) => {
+    if (data.password !== data.confirmPassword) {
+      Error_Modal({ title: "Passwords do not match!" });
+      return null;
+    }
+
+    const userData = { email: data?.email, password: data?.password };
+
+    try {
+      const res = await signUp(userData).unwrap();
+
+      if (res?.data?.otpToken?.token) {
+        sessionStorage.setItem("signUpToken", res?.data?.otpToken?.token);
+        router.push("/verify-otp");
+      }
+    } catch (error: any) {
+      Error_Modal({ title: error?.data?.message });
+    }
   };
 
   return (
     <div>
       <Card className="md:w-[650px]">
         <CardHeader>
-          <CardTitle className="text-4xl text-center font-semibold">
+          <CardTitle className="text-center text-4xl font-semibold">
             Create Account
           </CardTitle>
         </CardHeader>
@@ -65,28 +87,37 @@ const SignUpForm = () => {
                   })}
                 />
                 {errors.email && (
-                  <p className="text-red-500 text-sm">{errors.email.message}</p>
+                  <p className="text-sm text-red-500">{errors.email.message}</p>
                 )}
               </div>
 
-              {/* Input password with eye icon to toggle visibility */}
-              <div className="flex flex-col space-y-1.5 relative">
+              {/* Input password  */}
+              <div className="relative flex flex-col space-y-1.5">
                 <Input
                   id="password"
                   placeholder="Password"
                   type={showPassword ? "text" : "password"}
                   {...register("password", {
                     required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters long",
+                    },
+                    pattern: {
+                      value: /^(?=.*[A-Z])(?=.*[!@#$%^&*])/,
+                      message:
+                        "Password must contain an uppercase letter and a symbol",
+                    },
                   })}
                 />
                 {errors.password && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-sm text-red-500">
                     {errors.password.message}
                   </p>
                 )}
                 {/* Eye icon to toggle password visibility */}
                 <div
-                  className="absolute right-3 top-1/3 transform -translate-y-1/2 cursor-pointer"
+                  className="absolute right-3 top-1/3 -translate-y-1/2 transform cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
@@ -97,24 +128,24 @@ const SignUpForm = () => {
                 </div>
               </div>
 
-              {/* Input Confirm Password with eye icon to toggle visibility */}
-              <div className="flex flex-col space-y-1.5 relative">
+              {/* Input Confirm Password  */}
+              <div className="relative flex flex-col space-y-1.5">
                 <Input
                   id="confirmPassword"
                   placeholder="Confirm Password"
-                  type={showPassword ? "text" : "password"}
+                  type={showConfirmPassword ? "text" : "password"}
                   {...register("confirmPassword", {
                     required: "Confirm Password is required",
                   })}
                 />
                 {errors.confirmPassword && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-sm text-red-500">
                     {errors.confirmPassword.message}
                   </p>
                 )}
                 {/* Eye icon to toggle password visibility */}
                 <div
-                  className="absolute right-3 top-1/3 transform -translate-y-1/2 cursor-pointer"
+                  className="absolute right-3 top-1/3 -translate-y-1/2 transform cursor-pointer"
                   onClick={() => setConfirmShowPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? (
@@ -128,16 +159,24 @@ const SignUpForm = () => {
               {/*Accept all terms & Conditions section */}
 
               <div className="flex items-center space-x-2">
-                <Checkbox id="terms" />
-                <label htmlFor="terms" className="text-secondary-gray">
+                <Checkbox
+                  id="terms"
+                  onClick={() => setIsAccepted(!isAccepted)}
+                />
+                <Link href="/terms-condition" className="text-secondary-gray">
                   Accept all terms & Conditions
-                </label>
+                </Link>
               </div>
 
               {/* Login button */}
-              <Button type="submit" className="bg-primary-color rounded-full">
+              <LoadingButton
+                disabled={!isAccepted}
+                loading={isLoading}
+                type="submit"
+                className="rounded-full bg-primary-color"
+              >
                 Create Account
-              </Button>
+              </LoadingButton>
             </div>
           </form>
         </CardContent>

@@ -23,15 +23,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { Label } from "../ui/label";
 
 const categories = [
   {

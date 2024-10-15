@@ -7,7 +7,7 @@ const SignUpPage = () => {
     <div>
       <TopbarBanner></TopbarBanner>
       <Container className="mt-[70px] flex justify-center">
-       <SignUpForm></SignUpForm>
+        <SignUpForm></SignUpForm>
       </Container>
     </div>
   );

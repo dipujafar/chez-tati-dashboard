@@ -8,6 +8,7 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: (headers, { getState }) => {
     const otpToken = sessionStorage.getItem("token");
     const forgotPasswordToken = sessionStorage.getItem("forgotPasswordToken");
+    const signUpToken = sessionStorage.getItem("signUpToken");
     const token = (getState() as any).auth.token;
 
     if (token) {
@@ -18,6 +19,9 @@ const baseQuery = fetchBaseQuery({
     }
     if (forgotPasswordToken) {
       headers.set("token", forgotPasswordToken);
+    }
+    if (signUpToken) {
+      headers.set("token", signUpToken);
     }
 
     return headers;
