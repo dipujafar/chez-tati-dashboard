@@ -16,6 +16,7 @@ import { MoveUpRight } from "lucide-react";
 import Animatetext from "@/components/Animation/Animatetext";
 import Autoplay from "embla-carousel-autoplay";
 import "./style.css";
+import ArrowCircleButton from "./ArrowCircleButton";
 
 const carouselData = [
   {
@@ -178,12 +179,11 @@ const HeroSection = () => {
             </p>
           </Animatetext>
           <Animatetext duration={1} y={20}>
-            <button
-              // variant="outline"
-              className="animatebtn mt-3 xl:mt-10"
-            >
-              BROWSE INSPIRATIONS
-            </button>
+            <Link href={"/products"}>
+              <button className="animatebtn mt-3 xl:mt-10">
+                BROWSE INSPIRATIONS
+              </button>
+            </Link>
           </Animatetext>
         </div>
         <Link href="/products">
@@ -197,8 +197,8 @@ const HeroSection = () => {
               Say it <br />
               with Shirt
             </h1>
-            <div className="absolute bottom-4 right-4 z-20 flex size-14 items-center justify-center rounded-full border border-primary-white text-3xl font-semibold text-primary-white md:text-4xl xl:bottom-8 xl:right-8">
-              <MoveUpRight size={30} className="animatecircle" />
+            <div className="absolute bottom-4 right-4 z-20 flex size-14 items-center justify-center rounded-full text-3xl font-semibold text-primary-white duration-1000 group-hover:bottom-10 group-hover:right-10 md:text-4xl xl:bottom-8 xl:right-8">
+              <ArrowCircleButton></ArrowCircleButton>
             </div>
           </div>
         </Link>
@@ -214,8 +214,8 @@ const HeroSection = () => {
               Electronics <br />
               Gadgets
             </h1>
-            <div className="-gray absolute bottom-4 right-4 z-20 flex size-14 items-center justify-center rounded-full border border-primary-white text-3xl font-semibold text-primary-white md:text-4xl xl:bottom-8 xl:right-8">
-              <MoveUpRight size={30} />
+            <div className="-gray absolute bottom-4 right-4 z-20 flex size-14 items-center justify-center rounded-full text-3xl font-semibold text-primary-white duration-1000 group-hover:bottom-10 group-hover:right-10 md:text-4xl xl:bottom-8 xl:right-8">
+              <ArrowCircleButton></ArrowCircleButton>
             </div>
           </div>
         </Link>

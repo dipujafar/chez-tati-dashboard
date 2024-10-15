@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description:
     "Explore detailed information about Chez Tati's products, including features, specifications, customer reviews, and pricing. Make informed decisions before adding items to your cart.",
 };
-const ProductDetaisPage = () => {
+const ProductDetailsPage = () => {
   return (
     <div>
       <TopbarBanner></TopbarBanner>
@@ -20,4 +20,4 @@ const ProductDetaisPage = () => {
   );
 };
 
-export default ProductDetaisPage;
+export default ProductDetailsPage;

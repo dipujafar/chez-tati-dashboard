@@ -130,36 +130,43 @@ const ProductDetailsContainer = () => {
           ></Image> */}
         {/* </div>  */}
         {/* _________________________ Product Images Carousel __________________ */}
-        <div className="max-h-[600px] max-w-[600px] gap-x-2 overflow-auto">
-          <div ref={sliderRef} className="keen-slider w-3/4">
-            {productDetailsImages.map((image, idx) => (
-              <Image
-                key={idx}
-                src={image?.image}
-                alt="product_image"
-                width={900}
-                height={700}
-                className="keen-slider__slide h-[150px] w-[100px] pl-0 md:h-[320px] md:w-[200px]"
-              ></Image>
-            ))}
+        <div className="flex max-h-[600px] max-w-[600px] flex-row-reverse gap-x-2 overflow-auto">
+          <div className="flex-1">
+            <div
+              ref={sliderRef}
+              className="keen-slider max-h-[600px] w-full max-w-[200px]"
+            >
+              {productDetailsImages.map((image, idx) => (
+                <Image
+                  key={idx}
+                  src={image?.image}
+                  alt="product_image"
+                  width={900}
+                  height={700}
+                  className="keen-slider__slide h-[150px] w-[100px] pl-0 md:h-[320px] md:w-[200px]"
+                ></Image>
+              ))}
+            </div>
           </div>
 
           {/* thumbnail  images  */}
-          <div
-            ref={thumbnailRef}
-            className="keen-slider thumbnail thumbnail-image h-[80px]"
-          >
-            {productDetailsImages.map((image, idx) => (
-              <div key={idx}>
-                <Image
-                  src={image?.image}
-                  alt="product_image"
-                  width={950}
-                  height={700}
-                  className={`keen-slider__slide slider-image translate-0 h-[80px] border`}
-                ></Image>
-              </div>
-            ))}
+          <div className="w-[50px] border">
+            <div
+              ref={thumbnailRef}
+              className="thumbnail thumbnail-image flex w-[200px] flex-col justify-center"
+            >
+              {productDetailsImages.map((image, idx) => (
+                <div key={idx} className="w-fit border">
+                  <Image
+                    src={image?.image}
+                    alt="product_image"
+                    width={950}
+                    height={700}
+                    className={`keen-slider__slide slider-image translate-0 h-[80px] border`}
+                  ></Image>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

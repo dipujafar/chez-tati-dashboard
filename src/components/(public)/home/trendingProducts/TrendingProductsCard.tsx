@@ -13,12 +13,10 @@ const TrendingProductsCard = () => {
     hidden: {
       opacity: 0,
     },
-    visible: isView
-      ? {
-          opacity: 1,
-          transition: { staggerChildren: 0.3, easeIn: "easeIn" },
-        }
-      : {},
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.3, easeIn: [0.17, 0.67, 0.83, 0.67] },
+    },
   };
 
   const itemVarient = {
@@ -26,13 +24,11 @@ const TrendingProductsCard = () => {
       opacity: 0,
       y: 20,
     },
-    visible: isView
-      ? {
-          opacity: 1,
-          y: 0,
-          transition: { duratioin: 0.5, easeIn },
-        }
-      : {},
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duratioin: 0.5, easeIn: [0.17, 0.67, 0.83, 0.67] },
+    },
   };
 
   return (
@@ -40,7 +36,7 @@ const TrendingProductsCard = () => {
       ref={ref}
       variants={containerVarient}
       initial="hidden"
-      animate="visible"
+      whileInView="visible"
       className="mt-7 grid grid-cols-1 gap-x-2 gap-y-5 md:grid-cols-2 lg:grid-cols-3"
     >
       {trendingProducts?.map((product, inx) => (
