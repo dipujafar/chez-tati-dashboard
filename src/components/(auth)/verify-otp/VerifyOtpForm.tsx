@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { use, useState } from "react";
 import { useVerifyOtpMutation } from "@/redux/api/authApi";
-import { Error_Modal } from "@/utils/models";
+import { Error_Modal, Success_model } from "@/utils/models";
 import { TError } from "@/types/types";
 import { LoadingButton } from "@/components/ui/loading-button";
 
@@ -31,9 +31,20 @@ const VerifyOtpForm = () => {
     const signUpToken = sessionStorage.getItem("signUpToken");
     try {
       const res = await verifyOtp({ otp }).unwrap();
+
+      console.log(res);
       if (res?.data?.token && signUpToken) {
         router.push("/sign-in");
+        Success_model({ title: "Otp verified successfully." });
         sessionStorage.removeItem("signUpToken");
+        return;
+      }
+
+      if (res?.data?.token) {
+        router.push("/set-new-password");
+        sessionStorage.setItem("token", res?.data?.token);
+        Success_model({ title: "Otp verified successfully." });
+        return;
       }
     } catch (error: TError | any) {
       Error_Modal({ title: error?.data?.message });

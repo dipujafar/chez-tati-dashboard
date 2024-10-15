@@ -14,6 +14,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAppDispatch } from "@/redux/hooks";
+import { logout } from "@/redux/features/authSlice";
+import { useRouter } from "next/navigation";
 
 const SIDEBAR_LINKS = [
   {
@@ -52,6 +55,8 @@ export default function DashboardSidebar() {
   const pathname = usePathname();
   const path = pathname?.split("/")[2];
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   // Toggle the sidebar visibility
   const toggleSidebar = () => {
@@ -120,15 +125,17 @@ export default function DashboardSidebar() {
               </Link>
             ))}
 
-            <Link href={"/sign-in"}>
-              <button
-                type="button"
-                className="flex items-center gap-x-3 px-5 py-4 text-lg text-gray-scale-600"
-              >
-                <LogOut size={25} />
-                <span>Logout</span>
-              </button>
-            </Link>
+            <button
+              onClick={() => {
+                dispatch(logout());
+                router.refresh();
+              }}
+              type="button"
+              className="flex items-center gap-x-3 px-5 py-4 text-lg text-gray-scale-600"
+            >
+              <LogOut size={25} />
+              <span>Logout</span>
+            </button>
           </div>
         </div>
       </div>

@@ -1,16 +1,17 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useReSetPasswordMutation } from "@/redux/api/authApi";
+import { Error_Modal, Success_model } from "@/utils/models";
+import { LoadingButton } from "@/components/ui/loading-button";
 
 // Define form data types
 interface FormData {
-  email: string;
-  password: string;
+  newPassword: string;
   confirmPassword: string;
 }
 
@@ -18,15 +19,28 @@ const SetNewPassForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setConfirmShowPassword] = useState(false);
   const router = useRouter();
+  const [resetPassword, { isLoading }] = useReSetPasswordMutation();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-    router.push("/sign-in");
+  const onSubmit = async (data: FormData) => {
+    if (data.newPassword !== data.confirmPassword) {
+      Error_Modal({
+        title: "Confirm Password do not match with New Password!",
+      });
+      return null;
+    }
+
+    try {
+      await resetPassword(data).unwrap();
+      Success_model({ title: "Password reset successfully!!" });
+      router.push("/sign-in");
+    } catch (error: any) {
+      Error_Modal({ title: error?.data?.message });
+    }
   };
 
   return (
@@ -43,16 +57,25 @@ const SetNewPassForm = () => {
               {/* Input password with eye icon to toggle visibility */}
               <div className="relative flex flex-col space-y-1.5">
                 <Input
-                  id="password"
-                  placeholder="Password"
+                  id="newPassword"
+                  placeholder="New Password"
                   type={showPassword ? "text" : "password"}
-                  {...register("password", {
-                    required: "Password is required",
+                  {...register("newPassword", {
+                    required: "New Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters long",
+                    },
+                    pattern: {
+                      value: /^(?=.*[A-Z])(?=.*[!@#$%^&*])/,
+                      message:
+                        "Password must contain an uppercase letter and a symbol",
+                    },
                   })}
                 />
-                {errors.password && (
+                {errors.newPassword && (
                   <p className="text-sm text-red-500">
-                    {errors.password.message}
+                    {errors.newPassword.message}
                   </p>
                 )}
                 {/* Eye icon to toggle password visibility */}
@@ -97,9 +120,13 @@ const SetNewPassForm = () => {
               </div>
 
               {/* Login button */}
-              <Button type="submit" className="rounded-full bg-primary-color">
+              <LoadingButton
+                loading={isLoading}
+                type="submit"
+                className="rounded-full bg-primary-color"
+              >
                 Create Account
-              </Button>
+              </LoadingButton>
             </div>
           </form>
         </CardContent>

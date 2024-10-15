@@ -3,6 +3,7 @@ export const tagTypes = {
   users: "Users",
   user: "User",
   otp: "Otp",
+  forgetPassword: "ForgetPassword",
   products: "Products",
 };
 
@@ -11,5 +12,6 @@ export const tagTypesList = [
   tagTypes.auth,
   tagTypes.users,
   tagTypes.user,
+  tagTypes.forgetPassword,
   tagTypes.products,
 ];

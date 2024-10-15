@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import google from "@/assets/images/google.png";
 import Image from "next/image";
-import { Error_Modal } from "@/utils/models";
+import { Error_Modal, Success_model } from "@/utils/models";
 import { useSignUpMutation } from "@/redux/api/authApi";
 import { LoadingButton } from "@/components/ui/loading-button";
 import { useRouter } from "next/navigation";
@@ -42,7 +42,7 @@ const SignUpForm = () => {
 
   const onSubmit = async (data: FormData) => {
     if (data.password !== data.confirmPassword) {
-      Error_Modal({ title: "Passwords do not match!" });
+      Error_Modal({ title: "Confirm Password do not match with Password!" });
       return null;
     }
 
@@ -53,6 +53,8 @@ const SignUpForm = () => {
 
       if (res?.data?.otpToken?.token) {
         sessionStorage.setItem("signUpToken", res?.data?.otpToken?.token);
+
+        Success_model({ title: "Send a One Time Password to your email" });
         router.push("/verify-otp");
       }
     } catch (error: any) {
