@@ -1,6 +1,4 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -11,9 +9,17 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
+import { useLoginMutation } from "@/redux/api/authApi";
+import { Error_Modal, Success_model } from "@/utils/models";
+import { TError } from "@/types/types";
+import { LoadingButton } from "@/components/ui/loading-button";
+import { useAppDispatch } from "@/redux/hooks";
+import { useRouter } from "next/navigation";
+import { setUser } from "@/redux/features/authSlice";
+import { jwtDecode } from "jwt-decode";
 
 // Define form data types
 interface FormData {
@@ -23,6 +29,9 @@ interface FormData {
 
 const SignForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useAppDispatch();
+  const [login, { isLoading }] = useLoginMutation();
+  const router = useRouter();
 
   const {
     register,
@@ -30,8 +39,23 @@ const SignForm = () => {
     formState: { errors },
   } = useForm<FormData>();
 
- 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
+    try {
+      const res = await login(data).unwrap();
+      if (res?.data?.accessToken) {
+        Success_model({ title: "Login Successful" });
+        dispatch(
+          setUser({
+            user: jwtDecode(res?.data?.accessToken),
+            token: res?.data?.accessToken,
+          }),
+        );
+        router.push("/");
+        router.refresh();
+      }
+    } catch (error: TError | any) {
+      Error_Modal({ title: error?.data?.message });
+    }
     console.log(data);
   };
 
@@ -39,7 +63,7 @@ const SignForm = () => {
     <div>
       <Card className="lg:w-[650px]">
         <CardHeader>
-          <CardTitle className="text-4xl text-center font-semibold">
+          <CardTitle className="text-center text-4xl font-semibold">
             Sign In
           </CardTitle>
         </CardHeader>
@@ -62,12 +86,12 @@ const SignForm = () => {
                   })}
                 />
                 {errors.email && (
-                  <p className="text-red-500 text-sm">{errors.email.message}</p>
+                  <p className="text-sm text-red-500">{errors.email.message}</p>
                 )}
               </div>
 
               {/* Input password with eye icon to toggle visibility */}
-              <div className="flex flex-col space-y-1.5 relative">
+              <div className="relative flex flex-col space-y-1.5">
                 <Input
                   id="password"
                   placeholder="Password"
@@ -77,13 +101,13 @@ const SignForm = () => {
                   })}
                 />
                 {errors.password && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-sm text-red-500">
                     {errors.password.message}
                   </p>
                 )}
                 {/* Eye icon to toggle password visibility */}
                 <div
-                  className="absolute right-3 top-1/3 transform -translate-y-1/2 cursor-pointer"
+                  className="absolute right-3 top-1/3 -translate-y-1/2 transform cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
@@ -95,7 +119,7 @@ const SignForm = () => {
               </div>
 
               {/* Remember me and forget password section */}
-              <div className="flex flex-col md:flex-row justify-between gap-y-3 ">
+              <div className="flex flex-col justify-between gap-y-3 md:flex-row">
                 <div className="flex items-center space-x-2">
                   <Checkbox id="terms" />
                   <label htmlFor="terms" className="text-secondary-gray">
@@ -108,9 +132,13 @@ const SignForm = () => {
               </div>
 
               {/* Login button */}
-              <Button type="submit" className="bg-primary-color rounded-full">
+              <LoadingButton
+                loading={isLoading}
+                type="submit"
+                className="rounded-full bg-primary-color"
+              >
                 Login
-              </Button>
+              </LoadingButton>
             </div>
           </form>
         </CardContent>

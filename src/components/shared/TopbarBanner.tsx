@@ -13,8 +13,6 @@ interface TopbarBannerProps {
 
 const TopbarBanner = ({ pageName }: TopbarBannerProps) => {
   const pathName = usePathname();
-  const path = pathName?.split("/");
-  console.log(path);
 
   return (
     <div className={`bg-topbar-image flex h-[120px] w-full items-center`}>
