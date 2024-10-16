@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/input-otp";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { use, useState } from "react";
+import { useState } from "react";
 import { useVerifyOtpMutation } from "@/redux/api/authApi";
 import { Error_Modal, Success_model } from "@/utils/models";
 import { TError } from "@/types/types";
@@ -31,8 +31,6 @@ const VerifyOtpForm = () => {
     const signUpToken = sessionStorage.getItem("signUpToken");
     try {
       const res = await verifyOtp({ otp }).unwrap();
-
-      console.log(res);
       if (res?.data?.token && signUpToken) {
         router.push("/sign-in");
         Success_model({ title: "Otp verified successfully." });
@@ -67,7 +65,11 @@ const VerifyOtpForm = () => {
                 <InputOTP maxLength={6} onChange={(value) => setValue(value)}>
                   <InputOTPGroup>
                     {Array.from({ length: 6 }, (_, index) => (
-                      <InputOTPSlot key={index} index={index} />
+                      <InputOTPSlot
+                        key={index}
+                        index={index}
+                        className="border-primary-black/70"
+                      />
                     ))}
                   </InputOTPGroup>
                 </InputOTP>

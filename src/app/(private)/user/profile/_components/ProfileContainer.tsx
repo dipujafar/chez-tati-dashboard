@@ -1,3 +1,4 @@
+"use client";
 import "../../User.css";
 // import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useGetProfileDataQuery } from "@/redux/api/profileApi";
 
 const TABLE_HEADERS = [
   "Order ID",
@@ -75,25 +77,40 @@ const TABLE_DATA = [
 ];
 
 export default function ProfileContainer() {
+  const { data, isLoading } = useGetProfileDataQuery(undefined);
+  console.log(data?.data);
+
   return (
     <div className="space-y-8 text-primary-black">
       {/* Profile Details */}
       <div className="flex flex-col items-stretch gap-x-8 gap-y-8 lg:flex-row">
         <div className="dashboard-card flex flex-col items-center justify-center space-y-4 py-8 text-center lg:w-[60%]">
           <Avatar className="size-36">
-            <AvatarImage src="https://randomuser.me/api/portraits/men/41.jpg" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src={data?.data?.image} />
+            <AvatarFallback className="text-3xl uppercase">
+              {data?.data?.name.split(" ").length > 1 ? (
+                <p>
+                  {data?.data?.name.split(" ")[0].slice(0, 1)}
+                  {data?.data?.name.split(" ")[1].slice(0, 1)}
+                </p>
+              ) : (
+                data?.data?.name.split(" ")[0].slice(0, 2)
+              )}
+            </AvatarFallback>
           </Avatar>
 
           <div>
             <h5 className="text-2xl font-bold text-primary-black">
-              Dianne Russell
+              {data?.data?.name}
             </h5>
             <p className="mb-3 mt-1 text-base text-muted-foreground">
-              Customer
+              {data?.data?.role === "admin" ? "Admin" : "Customer"}
             </p>
 
-            <Link href="/user/settings" className="dashboard-primary-link">
+            <Link
+              href="/user/account-settings"
+              className="dashboard-primary-link"
+            >
               Edit Profile
             </Link>
           </div>
@@ -103,22 +120,28 @@ export default function ProfileContainer() {
             Billing Address
           </p>
 
-          <h4 className="my-4 text-xl font-semibold">Dianne Russell</h4>
+          <h4 className="my-4 text-xl font-semibold">{data?.data?.name}</h4>
 
           <div className="space-y-3 text-lg">
             <p className="flex items-center gap-x-3 font-medium text-primary-black/75">
               <Mail size={22} />
-              dainne.ressell@gmail.com
+              {data?.data?.email ? data?.data?.email : "N/A"}
             </p>
             <p className="flex items-center gap-x-3 font-medium text-primary-black/75">
-              <Home size={22} /> 4140 Parker Rd. Allentown, New Mexico 31134
+              <Home size={22} />{" "}
+              {data?.data?.address ? data?.data?.address : "N/A"}
             </p>
             <p className="flex items-center gap-x-3 font-medium text-primary-black/75">
-              <Phone size={22} /> +1 (555) 123-4567
+              <Phone size={22} />{" "}
+              {data?.data?.phoneNumber ? data?.data?.phoneNumber : "N/A"}
             </p>
           </div>
 
-          <button className="dashboard-primary-link mt-7">Edit Address</button>
+          <Link href={"/user/account-settings#address"}>
+            <button className="dashboard-primary-link mt-7">
+              Edit Address
+            </button>
+          </Link>
         </div>
       </div>
 

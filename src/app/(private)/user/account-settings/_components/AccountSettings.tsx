@@ -83,7 +83,7 @@ const AccountSettings = () => {
       </div>
 
       {/* Billing Address */}
-      <div className="dashboard-card">
+      <div className="dashboard-card" id="address">
         <h1 className="px-7 py-5 text-2xl font-medium">Billing Address</h1>
         <hr />
         <div className="px-7 py-5">

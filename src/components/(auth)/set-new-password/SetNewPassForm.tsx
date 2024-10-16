@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useReSetPasswordMutation } from "@/redux/api/authApi";
 import { Error_Modal, Success_model } from "@/utils/models";
 import { LoadingButton } from "@/components/ui/loading-button";
+import { TError } from "@/types/types";
 
 // Define form data types
 interface FormData {
@@ -38,7 +39,7 @@ const SetNewPassForm = () => {
       await resetPassword(data).unwrap();
       Success_model({ title: "Password reset successfully!!" });
       router.push("/sign-in");
-    } catch (error: any) {
+    } catch (error: TError | any) {
       Error_Modal({ title: error?.data?.message });
     }
   };

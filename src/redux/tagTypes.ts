@@ -5,6 +5,9 @@ export const tagTypes = {
   otp: "Otp",
   forgetPassword: "ForgetPassword",
   products: "Products",
+  profile: "Profile",
+  category: "Category",
+  order: "Order",
 };
 
 export const tagTypesList = [
@@ -14,4 +17,7 @@ export const tagTypesList = [
   tagTypes.user,
   tagTypes.forgetPassword,
   tagTypes.products,
+  tagTypes.profile,
+  tagTypes.category,
+  tagTypes.order,
 ];

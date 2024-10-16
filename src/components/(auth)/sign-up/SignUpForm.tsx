@@ -19,9 +19,11 @@ import { useSignUpMutation } from "@/redux/api/authApi";
 import { LoadingButton } from "@/components/ui/loading-button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { TError } from "@/types/types";
 
 // Define form data types
 interface FormData {
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -46,7 +48,11 @@ const SignUpForm = () => {
       return null;
     }
 
-    const userData = { email: data?.email, password: data?.password };
+    const userData = {
+      email: data?.email,
+      password: data?.password,
+      name: data?.name,
+    };
 
     try {
       const res = await signUp(userData).unwrap();
@@ -57,7 +63,7 @@ const SignUpForm = () => {
         Success_model({ title: "Send a One Time Password to your email" });
         router.push("/verify-otp");
       }
-    } catch (error: any) {
+    } catch (error: TError | any) {
       Error_Modal({ title: error?.data?.message });
     }
   };
@@ -73,6 +79,21 @@ const SignUpForm = () => {
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid w-full items-center gap-4">
+              {/* Input name */}
+              <div className="flex flex-col space-y-1.5">
+                <Input
+                  id="name"
+                  placeholder="Name"
+                  type="text"
+                  {...register("name", {
+                    required: "name is required",
+                  })}
+                />
+                {errors.name && (
+                  <p className="text-sm text-red-500">{errors.name.message}</p>
+                )}
+              </div>
+
               {/* Input email */}
               <div className="flex flex-col space-y-1.5">
                 <Input
@@ -112,11 +133,7 @@ const SignUpForm = () => {
                     },
                   })}
                 />
-                {errors.password && (
-                  <p className="text-sm text-red-500">
-                    {errors.password.message}
-                  </p>
-                )}
+
                 {/* Eye icon to toggle password visibility */}
                 <div
                   className="absolute right-3 top-1/3 -translate-y-1/2 transform cursor-pointer"
@@ -129,6 +146,11 @@ const SignUpForm = () => {
                   )}
                 </div>
               </div>
+              {errors.password && (
+                <p className="text-sm text-red-500">
+                  {errors.password.message}
+                </p>
+              )}
 
               {/* Input Confirm Password  */}
               <div className="relative flex flex-col space-y-1.5">
@@ -140,11 +162,7 @@ const SignUpForm = () => {
                     required: "Confirm Password is required",
                   })}
                 />
-                {errors.confirmPassword && (
-                  <p className="text-sm text-red-500">
-                    {errors.confirmPassword.message}
-                  </p>
-                )}
+
                 {/* Eye icon to toggle password visibility */}
                 <div
                   className="absolute right-3 top-1/3 -translate-y-1/2 transform cursor-pointer"
@@ -157,6 +175,11 @@ const SignUpForm = () => {
                   )}
                 </div>
               </div>
+              {errors.confirmPassword && (
+                <p className="text-sm text-red-500">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
 
               {/*Accept all terms & Conditions section */}
 
