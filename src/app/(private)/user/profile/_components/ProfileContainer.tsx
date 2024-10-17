@@ -132,7 +132,7 @@ export default function ProfileContainer() {
             </Link>
           </div>
 
-          {orderData?.data?.length === 0 ? (
+          {orderData?.data?.length == 0 ? (
             <Empty></Empty>
           ) : (
             <Table>
