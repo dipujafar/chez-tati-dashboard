@@ -9,12 +9,14 @@ export const metadata: Metadata = {
   description:
     "Explore detailed information about Chez Tati's products, including features, specifications, customer reviews, and pricing. Make informed decisions before adding items to your cart.",
 };
-const ProductDetailsPage = () => {
+const ProductDetailsPage = ({ params }: { params: { id: string } }) => {
   return (
     <div>
       <TopbarBanner></TopbarBanner>
       <Container className="mt-8">
-        <ProductDetailsContainer></ProductDetailsContainer>
+        <ProductDetailsContainer
+          productsId={params.id}
+        ></ProductDetailsContainer>
       </Container>
     </div>
   );

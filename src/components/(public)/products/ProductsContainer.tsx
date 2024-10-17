@@ -33,86 +33,32 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import Link from "next/link";
+import { useGetCategoriesQuery } from "@/redux/api/categoriesApi";
+import { TCategory, TProduct } from "@/types/types";
+import Loading from "@/utils/Loading";
+import { useGetProductsQuery } from "@/redux/api/productsApi";
+import ProductCardSkeleton from "@/utils/ProductCardSkeleton";
+import Empty from "@/utils/Empty";
 
-const categories = [
-  {
-    label: "All Category",
-    value: "all-category",
-    quantity: 100,
-  },
-  {
-    label: "Laptop",
-    value: "laptop",
-    quantity: 25,
-  },
-  {
-    label: "Washing Machine",
-    value: "washing-machine",
-    quantity: 12,
-  },
-  {
-    label: "Iron",
-    value: "iron",
-    quantity: 40,
-  },
-  {
-    label: "Freeze",
-    value: "freeze",
-    quantity: 15,
-  },
-  {
-    label: "Tv",
-    value: "tv",
-    quantity: 30,
-  },
-  {
-    label: "Air Conditioner",
-    value: "air-conditioner",
-    quantity: 8,
-  },
-  {
-    label: "Headphone",
-    value: "headphone",
-    quantity: 50,
-  },
-  {
-    label: "Mobile Phones",
-    value: "mobile-phones",
-    quantity: 60,
-  },
-  {
-    label: "Refrigerator",
-    value: "refrigerator",
-    quantity: 20,
-  },
-  {
-    label: "Smart Watches",
-    value: "smart-watches",
-    quantity: 35,
-  },
-  {
-    label: "Gaming Consoles",
-    value: "gaming-consoles",
-    quantity: 22,
-  },
-  {
-    label: "Microwave Ovens",
-    value: "microwave-ovens",
-    quantity: 18,
-  },
-];
-
-const sortData = ["Letast"];
+const sortData = ["Latest"];
 
 const ProductsContainer = () => {
   const [startIndex, setStartIndex] = useState(0);
-  const visibleCount = 7;
-  const maxIndex = categories.length - visibleCount;
-  const [pricecValue, setPriceValue] = useState([100, 700]);
+
+  const { data: categoriesData, isLoading: isCategoriesDataLoading } =
+    useGetCategoriesQuery(undefined);
+  const visibleCategories = 7;
+  const maxIndex = categoriesData?.data?.data?.length - visibleCategories;
+  const [priceValue, setPriceValue] = useState<number[]>([1, 200]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  // products data
+  const { data: productsData, isLoading: isProductDataLoading } =
+    useGetProductsQuery(undefined);
+  console.log(productsData?.data?.allProducts);
 
   const handlePriceSliderChange = (value: number[]) => {
     setPriceValue(value);
-    console.log(value[0]);
   };
 
   const handleSortChange = (value: string) => {
@@ -120,11 +66,11 @@ const ProductsContainer = () => {
   };
 
   const handlePrevClick = () => {
-    setStartIndex((prev) => Math.max(0, prev - visibleCount));
+    setStartIndex((prev) => Math.max(0, prev - visibleCategories));
   };
 
   const handleNextClick = () => {
-    setStartIndex((prev) => Math.min(maxIndex, prev + visibleCount));
+    setStartIndex((prev) => Math.min(maxIndex, prev + visibleCategories));
   };
 
   return (
@@ -146,47 +92,50 @@ const ProductsContainer = () => {
           <div className="relative">
             <div className="flex-1">
               <h1 className="mb-3 text-2xl font-bold">All Categories</h1>
-              {/* Category radio list */}
-              <RadioGroup className="mx-2 space-y-3">
-                {categories
-                  .slice(startIndex, startIndex + visibleCount)
-                  .map((category, inx) => (
-                    <div className="flex items-center space-x-2" key={inx}>
-                      {/* Dot with custom color */}
-                      <div className="h-3 w-3 rounded-full" />
-                      <RadioGroupItem
-                        value={category.value}
-                        id={`r${inx}`}
-                        className=""
-                      />
+              {isCategoriesDataLoading ? (
+                <Loading className="mx-auto h-[50px] w-full" />
+              ) : (
+                /* Category radio list */
+                <RadioGroup className="mx-2 space-y-3">
+                  {categoriesData?.data?.data
+                    ?.slice(startIndex, startIndex + visibleCategories)
+                    .map((category: TCategory, inx: number) => (
+                      <div className="flex items-center space-x-2" key={inx}>
+                        {/* Dot with custom color */}
+                        <div className="h-3 w-3 rounded-full" />
+                        <RadioGroupItem
+                          onClick={() => setSelectedCategory(category?.name)}
+                          value={category?.name}
+                          id={`r${inx}`}
+                          className=""
+                        />
 
-                      <Label htmlFor={`r${inx}`}>{category.label}</Label>
-                      <p className="text-primary-gray">
-                        {" "}
-                        {`(${category?.quantity})`}
-                      </p>
-                    </div>
-                  ))}
-              </RadioGroup>
+                        <Label>{category?.name}</Label>
+                      </div>
+                    ))}
+                </RadioGroup>
+              )}
             </div>
 
             {/* Arrow controls for navigation */}
-            <div className="mt-4 flex space-x-2">
-              <button
-                onClick={handlePrevClick}
-                disabled={startIndex === 0}
-                className="absolute right-0 top-0 rounded-full bg-gray-200 p-2 shadow-md duration-200 hover:bg-gray-300 disabled:opacity-50"
-              >
-                <ChevronUp size={24} />
-              </button>
-              <button
-                onClick={handleNextClick}
-                disabled={startIndex >= maxIndex}
-                className="absolute bottom-0 right-0 rounded-full bg-gray-200 p-2 shadow-md duration-200 hover:bg-gray-300 disabled:opacity-50"
-              >
-                <ChevronDown size={24} />
-              </button>
-            </div>
+            {categoriesData?.data?.data?.length > visibleCategories && (
+              <div className="mt-4 flex space-x-2">
+                <button
+                  onClick={handlePrevClick}
+                  disabled={startIndex === 0}
+                  className="absolute right-0 top-0 rounded-full bg-gray-200 p-2 shadow-md duration-200 hover:bg-gray-300 disabled:opacity-50"
+                >
+                  <ChevronUp size={24} />
+                </button>
+                <button
+                  onClick={handleNextClick}
+                  disabled={startIndex >= maxIndex}
+                  className="absolute bottom-0 right-0 rounded-full bg-gray-200 p-2 shadow-md duration-200 hover:bg-gray-300 disabled:opacity-50"
+                >
+                  <ChevronDown size={24} />
+                </button>
+              </div>
+            )}
           </div>
 
           {/* price */}
@@ -194,14 +143,14 @@ const ProductsContainer = () => {
             <h1 className="mb-3 text-2xl font-bold">Price</h1>
             {/* price filter slider */}
             <RangeSlider
-              value={pricecValue}
+              value={priceValue}
               onValueChange={handlePriceSliderChange}
               max={1000}
               step={1}
               className="w-[60%]"
             />
             <p className="mt-4">
-              Price : ${pricecValue[0]} - ${pricecValue[1]}
+              Price : ${priceValue[0]} - ${priceValue[1]}
             </p>
           </div>
         </div>
@@ -228,55 +177,71 @@ const ProductsContainer = () => {
               </Select>
             </div>
             <h1 className="text-lg font-medium">
-              <span className="font-bold">52</span> Results Found
+              <span className="font-bold">
+                {productsData?.data?.allProducts?.length}
+              </span>{" "}
+              Results Found
             </h1>
           </div>
 
           {/* display produts */}
-          <div className="mt-5 grid grid-cols-1 justify-between gap-x-5 gap-y-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
-            {products?.slice(0, 12).map((product, inx) => (
-              <Link href={`/products/${inx}`} key={inx}>
-                <Card className="group">
-                  <CardContent className="relative">
-                    <Image
-                      src={product?.image}
-                      alt="product_image"
-                      width={1950}
-                      height={1000}
-                      className="h-full w-full duration-1000 group-hover:scale-95"
-                    ></Image>
-                    <div>
-                      <div className="group absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-[#FDEEE9] duration-1000 hover:bg-primary-black hover:text-primary-white group-hover:right-4">
-                        <Heart className="cursor-pointer" />
-                      </div>
-                      {product?.discount && (
-                        <div className="group absolute left-2 top-2 flex items-center justify-center rounded-md bg-primary-color px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
-                          Sale {product?.discount}% off
+          {isProductDataLoading ? (
+            <div className="mt-7 grid grid-cols-1 gap-x-2 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 9 }).map((_, index) => (
+                <ProductCardSkeleton key={index}></ProductCardSkeleton>
+              ))}
+            </div>
+          ) : productsData?.data?.allProducts ? (
+            <div className="mt-5 grid grid-cols-1 justify-between gap-x-5 gap-y-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
+              {productsData?.data?.allProducts.map(
+                (product: TProduct, inx: number) => (
+                  <Link href={`/products/${product?._id}`} key={inx}>
+                    <Card className="group">
+                      <CardContent className="relative">
+                        <Image
+                          src={product?.images[0]?.url}
+                          alt="product_image"
+                          width={1950}
+                          height={1000}
+                          className="h-[250px] w-full rounded-xl duration-1000 group-hover:scale-95"
+                        ></Image>
+                        <div>
+                          <div className="group absolute right-2 top-0 flex size-10 items-center justify-center rounded-full bg-[#FDEEE9] duration-1000 hover:bg-primary-black hover:text-primary-white group-hover:right-4">
+                            <Heart className="cursor-pointer" />
+                          </div>
+
+                          {product?.discount > 0 && (
+                            <div className="group absolute left-2 top-0 flex items-center justify-center rounded-md bg-primary-color px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
+                              Sale {product?.discount}% off
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between duration-1000 group-hover:px-8">
-                    <div>
-                      <div>
-                        <p className="font-bold text-primary-color">
-                          {product?.name}
-                        </p>
-                        <p>${product?.price}</p>
-                        <Rating
-                          rating={product?.rating}
-                          className="w-20"
-                        ></Rating>
-                      </div>
-                    </div>
-                    <div className="rounded-full bg-light-gray p-3">
-                      <ShoppingCart size={20} />
-                    </div>
-                  </CardFooter>
-                </Card>
-              </Link>
-            ))}
-          </div>
+                      </CardContent>
+                      <CardFooter className="flex justify-between duration-1000 group-hover:px-8">
+                        <div>
+                          <div>
+                            <p className="font-bold text-primary-color">
+                              {product?.name}
+                            </p>
+                            <p>${product?.price}</p>
+                            <Rating
+                              rating={product?.averageRating || 0}
+                              className="w-20"
+                            ></Rating>
+                          </div>
+                        </div>
+                        <div className="rounded-full bg-light-gray p-3">
+                          <ShoppingCart size={20} />
+                        </div>
+                      </CardFooter>
+                    </Card>
+                  </Link>
+                ),
+              )}
+            </div>
+          ) : (
+            <Empty></Empty>
+          )}
         </div>
       </div>
 

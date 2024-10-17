@@ -10,7 +10,7 @@ const RelatedProducts = () => {
     <div>
       <h1 className="text-2xl font-bold lg:text-4xl">Related Products</h1>
 
-      {/* display produts */}
+      {/* display products */}
       <div className="mt-10 grid grid-cols-1 justify-between gap-x-5 gap-y-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {products?.slice(0, 4).map((product, inx) => (
           <Link href={`/products/${inx}`} key={inx}>

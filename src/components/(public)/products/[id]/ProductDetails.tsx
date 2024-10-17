@@ -22,6 +22,7 @@ import {
 } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import "./productDetails.css";
+import { TProduct } from "@/types/types";
 
 const productDetailsImages = [
   {
@@ -73,8 +74,13 @@ function ThumbnailPlugin(
   };
 }
 
-const ProductDetailsContainer = () => {
+const ProductDetailsContainer = ({
+  productData,
+}: {
+  productData: TProduct;
+}) => {
   const [quantity, setQuantity] = useState(0);
+  console.log(productData);
 
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
@@ -93,7 +99,7 @@ const ProductDetailsContainer = () => {
 `;
 
   return (
-    <div className="flex flex-col items-center gap-7 2xl:flex-row">
+    <div className="flex flex-col items-center gap-7 lg:flex-row">
       {/* products images */}
       <div className="flex-1">
         {/* products details
@@ -130,44 +136,42 @@ const ProductDetailsContainer = () => {
           ></Image> */}
         {/* </div>  */}
         {/* _________________________ Product Images Carousel __________________ */}
-        <div className="flex max-h-[600px] max-w-[600px] flex-row-reverse gap-x-2 overflow-auto">
-          <div className="flex-1">
-            <div
-              ref={sliderRef}
-              className="keen-slider max-h-[600px] w-full max-w-[200px]"
-            >
-              {productDetailsImages.map((image, idx) => (
-                <Image
-                  key={idx}
-                  src={image?.image}
-                  alt="product_image"
-                  width={900}
-                  height={700}
-                  className="keen-slider__slide h-[150px] w-[100px] pl-0 md:h-[320px] md:w-[200px]"
-                ></Image>
-              ))}
-            </div>
-          </div>
 
-          {/* thumbnail  images  */}
-          <div className="w-[50px] border">
-            <div
-              ref={thumbnailRef}
-              className="thumbnail thumbnail-image flex w-[200px] flex-col justify-center"
-            >
-              {productDetailsImages.map((image, idx) => (
-                <div key={idx} className="w-fit border">
-                  <Image
-                    src={image?.image}
-                    alt="product_image"
-                    width={950}
-                    height={700}
-                    className={`keen-slider__slide slider-image translate-0 h-[80px] border`}
-                  ></Image>
-                </div>
-              ))}
-            </div>
+        <div className="flex-1">
+          <div
+            ref={sliderRef}
+            className="keen-slider mx-auto max-h-[600px] w-full max-w-[300px]"
+          >
+            {productDetailsImages.map((image, idx) => (
+              <Image
+                key={idx}
+                src={image?.image}
+                alt="product_image"
+                width={900}
+                height={700}
+                className="keen-slider__slide h-[150px] w-[200px] pl-0 md:h-[320px] md:w-[250px]"
+              ></Image>
+            ))}
           </div>
+        </div>
+
+        {/* thumbnail  images  */}
+
+        <div
+          ref={thumbnailRef}
+          className="thumbnail thumbnail-image mx-auto flex w-[250px] overflow-x-auto md:w-[500px] lg:w-full"
+        >
+          {productDetailsImages.map((image, idx) => (
+            <div key={idx} className="w-fit">
+              <Image
+                src={image?.image}
+                alt="product_image"
+                width={950}
+                height={700}
+                className={`keen-slider__slide slider-image translate-0 ml-2 h-[80px] border`}
+              ></Image>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -175,11 +179,17 @@ const ProductDetailsContainer = () => {
       <div className="flex-1">
         <div className="flex items-center gap-2">
           <h1 className="text-3xl font-semibold text-primary-black lg:text-5xl">
-            Smart Freezer
+            {productData?.name}
           </h1>
-          <p className="rounded bg-primary-pink px-2 py-1 text-primary-red">
-            In Stock
-          </p>
+          {productData?.stock > 0 ? (
+            <p className="rounded bg-primary-pink px-2 py-1 text-primary-red">
+              In Stock
+            </p>
+          ) : (
+            <p className="rounded bg-black px-2 py-1 text-primary-red">
+              Out of Stock
+            </p>
+          )}
         </div>
         {/* rating and review */}
         <div className="mt-5 flex gap-2">

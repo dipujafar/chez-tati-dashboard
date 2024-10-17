@@ -1,5 +1,6 @@
 "use client";
 import { TProduct } from "@/types/types";
+import ProductCardSkeleton from "@/utils/ProductCardSkeleton";
 import { trendingProducts } from "@/utils/trendingProducts";
 import { motion } from "framer-motion";
 
@@ -35,7 +36,13 @@ const TrendingProductsCard = ({ productData, loading }: TProps) => {
     },
   };
 
-  return (
+  return loading ? (
+    <div className="mt-7 grid grid-cols-1 gap-x-2 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: 9 }).map((_, index) => (
+        <ProductCardSkeleton key={index}></ProductCardSkeleton>
+      ))}
+    </div>
+  ) : (
     <motion.div
       variants={containerVarient}
       initial="hidden"
@@ -64,7 +71,7 @@ const TrendingProductsCard = ({ productData, loading }: TProps) => {
             </p>
             <div
               onClick={(e) => e.stopPropagation()}
-              className="group absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-primary-black text-primary-white duration-1000 hover:bg-primary-pink hover:text-primary-black"
+              className="absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-primary-black text-primary-white duration-1000 hover:bg-primary-pink hover:text-primary-black group-hover:right-4"
             >
               <Heart className="cursor-pointer" />
             </div>
