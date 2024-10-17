@@ -2,44 +2,73 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import TrendingProductsCard from "./TrendingProductsCard";
+import { useGetProductsQuery } from "@/redux/api/productsApi";
+import Empty from "@/utils/Empty";
 
-const categories = ["New Arrival", "Discount", "Popular"];
+const categories = [
+  {
+    label: "New Arrival",
+    value: "newArrival",
+  },
+  {
+    label: "Discount",
+    value: "discount",
+  },
+  {
+    label: "Popular",
+    value: "popular",
+  },
+];
 
 const TrendingProducts = () => {
-  const [selected, setSelected] = useState("Popular");
-  const [startIndex, setStartIndex] = useState(0); // Track the start index of the visible categories
-  const visibleCategoriesCount = 5; // Number of categories to show at a time
-
+  const [selected, setSelected] = useState("popular");
+  const query =
+    (selected === "popular" && { sort: "-sales" }) ||
+    (selected === "discount" && { discount: "!=0" }) ||
+    (selected === "newArrival" && { sort: "createdAt" });
+  const { data: productsData, isLoading: isProductsDataLoading } =
+    useGetProductsQuery(query || undefined);
+  console.log(productsData?.data?.allProducts);
   return (
     <div>
       <hr />
       {/* title and category list */}
       <div className="mt-8 flex flex-col items-center justify-between gap-y-3 lg:flex-row">
-        <h1 className="text-4xl font-bold">Trending</h1>
+        <h1 className="text-4xl font-bold">
+          {selected === "newArrival" && "New Arrival"}
+          {selected === "popular" && "Trending"}
+          {selected === "discount" && "Best Sales Off"}
+        </h1>
 
         <div className="flex items-center">
-          {/* categoris list */}
+          {/* categoric list */}
           <div className="flex flex-wrap gap-x-2">
-            {categories
-              ?.slice(startIndex, startIndex + visibleCategoriesCount)
-              .map((category, inx) => (
-                <Button
-                  onClick={() => setSelected(category)}
-                  key={inx}
-                  variant="outline"
-                  className={`rounded-full ${
-                    selected === category && "bg-primary-red text-primary-white"
-                  } hover:bg-primary-color hover:text-primary-white`}
-                >
-                  {category}
-                </Button>
-              ))}
+            {categories?.map((category, inx) => (
+              <Button
+                onClick={() => setSelected(category?.value)}
+                key={inx}
+                variant="outline"
+                className={`rounded-full ${
+                  selected === category?.value &&
+                  "bg-primary-red text-primary-white"
+                } hover:bg-primary-color hover:text-primary-white`}
+              >
+                {category?.label}
+              </Button>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* tranding products */}
-      <TrendingProductsCard></TrendingProductsCard>
+      {/* trending products */}
+      {productsData?.data?.allProducts?.length === 0 ? (
+        <Empty></Empty>
+      ) : (
+        <TrendingProductsCard
+          productData={productsData?.data?.allProducts}
+          loading={isProductsDataLoading}
+        ></TrendingProductsCard>
+      )}
     </div>
   );
 };

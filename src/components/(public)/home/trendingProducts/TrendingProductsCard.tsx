@@ -1,14 +1,18 @@
 "use client";
+import { TProduct } from "@/types/types";
 import { trendingProducts } from "@/utils/trendingProducts";
-import { easeIn, motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
+
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const TrendingProductsCard = () => {
-  const ref = useRef(null);
-  const isView = useInView(ref);
+type TProps = {
+  productData: TProduct[];
+  loading: boolean;
+};
+
+const TrendingProductsCard = ({ productData, loading }: TProps) => {
   const containerVarient = {
     hidden: {
       opacity: 0,
@@ -33,13 +37,12 @@ const TrendingProductsCard = () => {
 
   return (
     <motion.div
-      ref={ref}
       variants={containerVarient}
       initial="hidden"
-      whileInView="visible"
+      animate="visible"
       className="mt-7 grid grid-cols-1 gap-x-2 gap-y-5 md:grid-cols-2 lg:grid-cols-3"
     >
-      {trendingProducts?.map((product, inx) => (
+      {productData?.map((product, inx) => (
         <Link href="/products" key={inx}>
           <motion.div
             variants={itemVarient}
@@ -47,7 +50,7 @@ const TrendingProductsCard = () => {
             key={product?.name}
           >
             <Image
-              src={product?.image}
+              src={product?.images[0]?.url}
               alt="product_image"
               width={1950}
               height={1000}
@@ -59,7 +62,10 @@ const TrendingProductsCard = () => {
             <p className="font-medium text-primary-gray duration-1000 group-hover:pl-4">
               ${product?.price}
             </p>
-            <div className="group absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-primary-black text-primary-white duration-1000 hover:bg-primary-pink hover:text-primary-black group-hover:right-4">
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="group absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-primary-black text-primary-white duration-1000 hover:bg-primary-pink hover:text-primary-black"
+            >
               <Heart className="cursor-pointer" />
             </div>
           </motion.div>

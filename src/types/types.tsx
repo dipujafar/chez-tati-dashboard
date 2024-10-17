@@ -53,3 +53,42 @@ export type TOrderData = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type TCategory = {
+  _id: string;
+  name: string;
+  banner: string;
+  isDeleted: boolean;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  __v: number;
+};
+
+export type TProductsImage = {
+  key: string;
+  url: string;
+  _id: string;
+};
+
+export type TProduct = {
+  _id: string;
+  id: string;
+  name: string;
+  description: string;
+  shortDescription: string;
+  price: number;
+  category: TCategory;
+  images: TProductsImage[];
+  stock: number;
+  sales: number;
+  size: string[]; // Assuming size is an array of strings
+  discount: number;
+  color: string[]; // Assuming color is an array of hex color strings
+  avgRating: number;
+  brand: string;
+  isDeleted: boolean;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  averageRating: number;
+  reviews: any[]; // Assuming reviews can be of any type; define more specifically if needed
+};
