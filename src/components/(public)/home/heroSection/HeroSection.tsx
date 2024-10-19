@@ -40,7 +40,7 @@ const HeroSection = () => {
   return (
     <div className="mt-6">
       <div>
-        <div className="grid grid-cols-1 gap-3 overflow-hidden xl:max-h-[650px] xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 overflow-hidden xl:grid-cols-3 2xl:max-h-[650px]">
           <div className="col-span-2 rounded-md">
             <Carousel
               opts={{
@@ -55,7 +55,7 @@ const HeroSection = () => {
                   stopOnMouseEnter: true,
                 }),
               ]}
-              className="w-full pl-4 pr-2 lg:max-h-[650px]"
+              className="w-full pl-4 pr-2 xl:h-[550px] 2xl:max-h-[650px]"
             >
               <CarouselContent className="relative">
                 {carouselData?.map((data, index) => (
@@ -67,7 +67,7 @@ const HeroSection = () => {
                           width={1950}
                           height={1700}
                           alt="banner_image"
-                          className="h-full min-h-[350px] rounded-3xl brightness-75 md:h-[450px] lg:h-[550px] xl:h-[650px]"
+                          className="h-full min-h-[350px] rounded-3xl brightness-75 md:h-[450px] lg:h-[550px] xl:h-[550px] 2xl:h-[650px]"
                         />
                         <div className="absolute left-8 top-8 z-20 text-primary-white md:left-12 md:top-16 lg:top-20">
                           <h1 className="max-w-md text-3xl font-bold md:text-5xl lg:text-6xl">
@@ -125,7 +125,7 @@ const HeroSection = () => {
                 <Image
                   src={img2}
                   alt="banner_image"
-                  className="max-h-[319px] w-full rounded-3xl duration-1000 group-hover:scale-95"
+                  className="max-h-[270px] w-full rounded-3xl duration-1000 group-hover:scale-95"
                 />
                 <h1 className="absolute left-8 top-8 z-20 text-3xl font-semibold text-primary-white duration-1000 group-hover:left-10 md:text-4xl">
                   <Animatetext y={20} duration={1} className="inline-block">
@@ -143,7 +143,7 @@ const HeroSection = () => {
                 <Image
                   src={img3}
                   alt="banner_image"
-                  className="max-h-[319px] w-full rounded-3xl duration-1000 group-hover:scale-95"
+                  className="max-h-[270px] w-full rounded-3xl duration-1000 group-hover:scale-95"
                 />
                 <h1 className="absolute left-8 top-8 z-20 text-3xl font-semibold duration-1000 group-hover:left-10 md:text-4xl">
                   <Animatetext y={20} duration={1} className="inline-block">

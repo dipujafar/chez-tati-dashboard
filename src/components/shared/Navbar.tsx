@@ -3,22 +3,16 @@ import Image from "next/image";
 import Container from "./Container";
 import logo from "@/assets/images/logo.png";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+
 import {
+  ChevronDown,
   Heart,
   Search,
   ShoppingCart,
   TableOfContents,
   User,
 } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -29,54 +23,47 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import { useGetCategoriesQuery } from "@/redux/api/categoriesApi";
-
-const categories = [
-  {
-    label: "All Category",
-    value: "all-categoty",
-  },
-  {
-    label: "Laptop",
-    value: "laptop",
-  },
-  {
-    label: "Washing Machine",
-    value: "washing-machine",
-  },
-  {
-    label: "Iron",
-    value: "iron",
-  },
-  {
-    label: "Freeze",
-    value: "freeze",
-  },
-  {
-    label: "Tv",
-    value: "tv",
-  },
-  {
-    label: "Air Conditioner",
-    value: "air-conditioner",
-  },
-  {
-    label: "Headphone",
-    value: "headphone",
-  },
-];
+import Loading from "@/utils/Loading";
+import { TCategory } from "@/types/types";
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+} from "../ui/menubar";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
-  const router = useRouter(); // Use useRouter hook
-
-  // Function to handle category selection
-  const handleCategoryChange = () => {
-    // Programmatically navigate to the category route
-    router.push(`/products`);
-  };
+  const [search, setSearch] = useState<string>("");
+  const router = useRouter();
 
   const { data: categoriesData, isLoading: isCategoriesDataLoading } =
     useGetCategoriesQuery(undefined);
 
+  const handleSearch = () => {
+    if (search) {
+      router.push(`/products?searchTerm=${search}`);
+    }
+    if (!search) {
+      router.push(`/products`);
+    }
+  };
   return (
     <Container>
       <nav className="flex items-center justify-between gap-x-5 py-4 md:py-7 2xl:gap-x-36">
@@ -102,7 +89,7 @@ const Navbar = () => {
               placeholder="Search"
               className="w-full rounded-full pl-10"
               onChange={(e) => {
-                console.log(e.target.value);
+                setSearch(e.target.value);
               }}
             />
             <Search
@@ -112,6 +99,7 @@ const Navbar = () => {
             <Button
               type="submit"
               className="absolute right-0 rounded-l-none rounded-r-full bg-primary-color"
+              onClick={handleSearch}
             >
               Search
             </Button>
@@ -120,27 +108,52 @@ const Navbar = () => {
           {/* navLinks */}
           <nav>
             <ul className="hidden items-center gap-8 text-light-black xl:flex">
+              {isCategoriesDataLoading ? (
+                <Loading></Loading>
+              ) : (
+                <li>
+                  <Menubar className="w-fit border-none bg-transparent shadow-none">
+                    <MenubarMenu>
+                      <MenubarTrigger className="truncate text-light-black">
+                        All Categories{" "}
+                        <ChevronDown className="ml-3" size={20} />
+                      </MenubarTrigger>
+                      <MenubarContent>
+                        <Link href={`/products`}>
+                          <MenubarItem className="max-w-[180px]">
+                            All Categories
+                          </MenubarItem>
+                        </Link>
+                        <hr />
+                        {categoriesData?.data?.data?.map(
+                          (category: TCategory, idx: number) => (
+                            <div key={idx}>
+                              <Link
+                                href={`/products?category=${category?._id}`}
+                              >
+                                <MenubarItem className="max-w-[180px]">
+                                  {category?.name}
+                                </MenubarItem>
+                              </Link>
+                              <hr />
+                            </div>
+                          ),
+                        )}
+                      </MenubarContent>
+                    </MenubarMenu>
+                  </Menubar>
+                </li>
+              )}
+
               <li>
-                <Select onValueChange={handleCategoryChange}>
-                  <SelectTrigger className="min-w-fit gap-2 border-none">
-                    <SelectValue placeholder="All Category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {categories?.map((category, inx) => (
-                        <SelectItem key={inx} value={category?.value}>
-                          {category?.label}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                <Link href="/about-us" className="truncate">
+                  About Us
+                </Link>
               </li>
               <li>
-                <Link href="/about-us">About Us</Link>
-              </li>
-              <li>
-                <Link href="/contact">Contact Us</Link>
+                <Link href="/contact" className="truncate">
+                  Contact Us
+                </Link>
               </li>
             </ul>
           </nav>
@@ -189,11 +202,15 @@ const Navbar = () => {
                     type="text"
                     placeholder="Search"
                     className="w-full rounded-full lg:pl-10"
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                    }}
                   />
 
                   <Button
                     type="submit"
                     className="absolute right-0 top-0 rounded-l-none rounded-r-full bg-primary-color"
+                    onClick={handleSearch}
                   >
                     Search
                   </Button>
@@ -201,25 +218,41 @@ const Navbar = () => {
 
                 {/* Navlinks */}
                 <nav>
-                  <ul className="mx-auto flex flex-col items-center gap-y-4 text-light-black">
+                  <ul className="mx-auto mt-5 flex flex-col items-center gap-y-4 text-light-black">
                     <li>
-                      <Select onValueChange={handleCategoryChange}>
-                        <SelectTrigger className="min-w-fit gap-2 border-none">
-                          <SelectValue
-                            placeholder="All Category"
-                            className="placeholder:text-xl"
-                          />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            {categories?.map((category, inx) => (
-                              <SelectItem key={inx} value={category?.value}>
-                                {category?.label}
-                              </SelectItem>
-                            ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <div className="flex cursor-pointer items-center">
+                            All Categories{" "}
+                            <ChevronDown className="ml-2" size={20} />{" "}
+                          </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="mx-auto w-56">
+                          <DropdownMenuGroup>
+                            <Link href={`/products`}>
+                              <DropdownMenuItem>
+                                All Categories
+                              </DropdownMenuItem>
+                            </Link>
+
+                            <hr />
+                            {categoriesData?.data?.data?.map(
+                              (category: TCategory, idx: number) => (
+                                <div key={idx}>
+                                  <Link
+                                    href={`/products?category=${category?._id}`}
+                                  >
+                                    <DropdownMenuItem className="max-w-[180px]">
+                                      {category?.name}
+                                    </DropdownMenuItem>
+                                  </Link>
+                                  <hr />
+                                </div>
+                              ),
+                            )}
+                          </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </li>
                     <li>
                       <Link href="/about-us">About Us</Link>

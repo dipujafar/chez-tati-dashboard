@@ -28,7 +28,7 @@ const TrendingProducts = () => {
     (selected === "newArrival" && undefined);
   const { data: productsData, isLoading: isProductsDataLoading } =
     useGetProductsQuery(query || undefined);
-  console.log(productsData?.data?.allProducts);
+
   return (
     <div>
       <hr />

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -20,7 +20,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { products } from "@/utils/products";
 import Image from "next/image";
 import { Rating } from "@/components/ui/rating";
 
@@ -33,18 +32,24 @@ import ProductCardSkeleton from "@/utils/ProductCardSkeleton";
 import Empty from "@/utils/Empty";
 import { Pagination } from "react-pagination-bar";
 import "react-pagination-bar/dist/index.css";
+import { useSearchParams } from "next/navigation";
 const sortData = ["Latest"];
 
 const ProductsContainer = () => {
   const [startIndex, setStartIndex] = useState(0);
+  const searchParams = useSearchParams();
+  const searchCategory = searchParams.get("category");
+  const searchTerm = searchParams.get("searchTerm");
 
   const { data: categoriesData, isLoading: isCategoriesDataLoading } =
     useGetCategoriesQuery(undefined);
   const visibleCategories = 7;
   const maxIndex = categoriesData?.data?.data?.length - visibleCategories;
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(searchTerm || "");
   const [priceValue, setPriceValue] = useState<number[]>([0, 0]);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(
+    searchCategory || "",
+  );
 
   // pagination related states
   const [currentPage, setCurrentPage] = useState(1);
@@ -70,6 +75,11 @@ const ProductsContainer = () => {
   const { data: productsData, isLoading: isProductDataLoading } =
     useGetProductsQuery(query || undefined);
   const meta = productsData?.data?.meta;
+
+  useEffect(() => {
+    setSelectedCategory(searchCategory || "");
+    setSearch(searchTerm || "");
+  }, [searchTerm, searchCategory]);
 
   const handlePriceSliderChange = (value: number[]) => {
     setPriceValue(value);
@@ -173,31 +183,12 @@ const ProductsContainer = () => {
         {/* Products section */}
         <div className="2xl:col-span-3">
           {/* Header */}
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex w-[280px] items-center gap-2">
-              <h1 className="">Sort by: </h1>
-              <Select onValueChange={handleSortChange}>
-                <SelectTrigger className="w-[120px] gap-2">
-                  <SelectValue placeholder="Latest" />
-                </SelectTrigger>
-                <SelectContent className="w-fit">
-                  <SelectGroup>
-                    {sortData?.map((data, inx) => (
-                      <SelectItem key={inx} value={data} className="capitalize">
-                        {data}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <h1 className="text-lg font-medium">
-              <span className="font-bold">
-                {productsData?.data?.allProducts?.length}
-              </span>{" "}
-              Results Found
-            </h1>
-          </div>
+          <h1 className="text-end text-lg font-medium">
+            <span className="font-bold">
+              {productsData?.data?.allProducts?.length}
+            </span>{" "}
+            Results Found
+          </h1>
 
           {/* display produts */}
           {isProductDataLoading ? (

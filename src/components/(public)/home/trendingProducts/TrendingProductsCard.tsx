@@ -72,11 +72,11 @@ const TrendingProductsCard = ({ productData, loading }: TProps) => {
               <p className="font-medium text-primary-gray duration-1000 group-hover:pl-4">
                 ${product?.price}
               </p>
-              <div className="absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-primary-black text-primary-white duration-1000 hover:bg-primary-pink hover:text-primary-black group-hover:right-4">
-                <Heart className="cursor-pointer" />
-              </div>
             </div>
           </Link>
+          <div className="absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-primary-black text-primary-white duration-1000 hover:bg-primary-pink hover:text-primary-black group-hover:right-4">
+            <Heart className="cursor-pointer" />
+          </div>
         </motion.div>
       ))}
     </motion.div>
