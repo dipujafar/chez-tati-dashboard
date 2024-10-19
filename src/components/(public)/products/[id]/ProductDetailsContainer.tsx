@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const ProductDetailsContainer = ({ productsId }: { productsId: string }) => {
   const { data: productData, isLoading: isProductDataLoading } =
-    useGetSingleProductQuery(productsId || undefined);
+    useGetSingleProductQuery(productsId);
 
   return isProductDataLoading ? (
     <div className="space-y-16">
@@ -21,7 +21,10 @@ const ProductDetailsContainer = ({ productsId }: { productsId: string }) => {
     <div className="space-y-24">
       <ProductDetails productData={productData?.data}></ProductDetails>
       <CustomerFeedbacks></CustomerFeedbacks>
-      <RelatedProducts></RelatedProducts>
+      <RelatedProducts
+        categoryId={productData?.data?.category?._id}
+        productsId={productsId}
+      ></RelatedProducts>
     </div>
   );
 };

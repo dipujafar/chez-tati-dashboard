@@ -23,15 +23,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { products } from "@/utils/products";
 import Image from "next/image";
 import { Rating } from "@/components/ui/rating";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+
 import Link from "next/link";
 import { useGetCategoriesQuery } from "@/redux/api/categoriesApi";
 import { TCategory, TProduct } from "@/types/types";
@@ -39,7 +31,8 @@ import Loading from "@/utils/Loading";
 import { useGetProductsQuery } from "@/redux/api/productsApi";
 import ProductCardSkeleton from "@/utils/ProductCardSkeleton";
 import Empty from "@/utils/Empty";
-
+import { Pagination } from "react-pagination-bar";
+import "react-pagination-bar/dist/index.css";
 const sortData = ["Latest"];
 
 const ProductsContainer = () => {
@@ -49,13 +42,34 @@ const ProductsContainer = () => {
     useGetCategoriesQuery(undefined);
   const visibleCategories = 7;
   const maxIndex = categoriesData?.data?.data?.length - visibleCategories;
-  const [priceValue, setPriceValue] = useState<number[]>([1, 200]);
+  const [search, setSearch] = useState("");
+  const [priceValue, setPriceValue] = useState<number[]>([0, 0]);
   const [selectedCategory, setSelectedCategory] = useState("");
+
+  // pagination related states
+  const [currentPage, setCurrentPage] = useState(1);
+  const pagePostsLimit = 10;
+
+  const query: Record<string, any> = {};
+  query["page"] = currentPage;
+  query["limit"] = pagePostsLimit;
+
+  if (priceValue[1] > 0) {
+    query["price"] = `${priceValue[0]}-${priceValue[1]}`;
+  }
+
+  if (selectedCategory) {
+    query["category"] = selectedCategory;
+  }
+
+  if (search) {
+    query["searchTerm"] = search;
+  }
 
   // products data
   const { data: productsData, isLoading: isProductDataLoading } =
-    useGetProductsQuery(undefined);
-  console.log(productsData?.data?.allProducts);
+    useGetProductsQuery(query || undefined);
+  const meta = productsData?.data?.meta;
 
   const handlePriceSliderChange = (value: number[]) => {
     setPriceValue(value);
@@ -84,6 +98,7 @@ const ProductsContainer = () => {
               type="text"
               placeholder="Search"
               className="w-full rounded-full pl-9"
+              onChange={(e) => setSearch(e.target.value)}
             />
             <Search className="absolute left-3 font-light" size={20} />
           </div>
@@ -104,7 +119,7 @@ const ProductsContainer = () => {
                         {/* Dot with custom color */}
                         <div className="h-3 w-3 rounded-full" />
                         <RadioGroupItem
-                          onClick={() => setSelectedCategory(category?.name)}
+                          onClick={() => setSelectedCategory(category?._id)}
                           value={category?.name}
                           id={`r${inx}`}
                           className=""
@@ -191,13 +206,13 @@ const ProductsContainer = () => {
                 <ProductCardSkeleton key={index}></ProductCardSkeleton>
               ))}
             </div>
-          ) : productsData?.data?.allProducts ? (
+          ) : productsData?.data?.allProducts?.length > 0 ? (
             <div className="mt-5 grid grid-cols-1 justify-between gap-x-5 gap-y-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
-              {productsData?.data?.allProducts.map(
+              {productsData?.data?.allProducts?.map(
                 (product: TProduct, inx: number) => (
-                  <Link href={`/products/${product?._id}`} key={inx}>
-                    <Card className="group">
-                      <CardContent className="relative">
+                  <Card className="group" key={inx}>
+                    <CardContent className="relative">
+                      <Link href={`/products/${product?._id}`}>
                         <Image
                           src={product?.images[0]?.url}
                           alt="product_image"
@@ -205,37 +220,51 @@ const ProductsContainer = () => {
                           height={1000}
                           className="h-[250px] w-full rounded-xl duration-1000 group-hover:scale-95"
                         ></Image>
-                        <div>
-                          <div className="group absolute right-2 top-0 flex size-10 items-center justify-center rounded-full bg-[#FDEEE9] duration-1000 hover:bg-primary-black hover:text-primary-white group-hover:right-4">
-                            <Heart className="cursor-pointer" />
+                      </Link>
+                      <div>
+                        <div className="group absolute right-2 top-0 flex size-10 items-center justify-center rounded-full bg-[#FDEEE9] duration-1000 hover:bg-primary-black hover:text-primary-white group-hover:right-4">
+                          <Heart className="cursor-pointer" />
+                        </div>
+                        {Number(product?.stock) === 0 && (
+                          <div className="group absolute left-2 top-0 flex items-center justify-center rounded-md bg-primary-black px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
+                            Out of Stock
                           </div>
+                        )}
 
-                          {product?.discount > 0 && (
+                        {Number(product?.stock) > 0 &&
+                          product?.discount > 0 && (
                             <div className="group absolute left-2 top-0 flex items-center justify-center rounded-md bg-primary-color px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
-                              Sale {product?.discount}% off
+                              Sale{" "}
+                              {(
+                                (Number(product?.discount) /
+                                  Number(product?.price)) *
+                                100
+                              ).toFixed(0)}
+                              % off
                             </div>
                           )}
-                        </div>
-                      </CardContent>
-                      <CardFooter className="flex justify-between duration-1000 group-hover:px-8">
+                      </div>
+                    </CardContent>
+                    <CardFooter className="flex justify-between duration-1000 group-hover:px-8">
+                      <Link href={`/products/${product?._id}`}>
                         <div>
                           <div>
                             <p className="font-bold text-primary-color">
                               {product?.name}
                             </p>
-                            <p>${product?.price}</p>
+                            <p className="font-medium">${product?.price}</p>
                             <Rating
                               rating={product?.averageRating || 0}
                               className="w-20"
                             ></Rating>
                           </div>
                         </div>
-                        <div className="rounded-full bg-light-gray p-3">
-                          <ShoppingCart size={20} />
-                        </div>
-                      </CardFooter>
-                    </Card>
-                  </Link>
+                      </Link>
+                      <div className="rounded-full bg-light-gray p-3">
+                        <ShoppingCart size={20} />
+                      </div>
+                    </CardFooter>
+                  </Card>
                 ),
               )}
             </div>
@@ -246,31 +275,14 @@ const ProductsContainer = () => {
       </div>
 
       {/* pagination */}
-      <div className="mt-10">
-        <Pagination className="flex justify-end">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive>
-                2
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+      <div className="mt-10 text-end">
+        <Pagination
+          currentPage={currentPage}
+          itemsPerPage={pagePostsLimit}
+          onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
+          totalItems={meta?.total}
+          pageNeighbours={2}
+        />
       </div>
     </>
   );

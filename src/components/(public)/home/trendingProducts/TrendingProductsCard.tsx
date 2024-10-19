@@ -1,7 +1,7 @@
 "use client";
 import { TProduct } from "@/types/types";
 import ProductCardSkeleton from "@/utils/ProductCardSkeleton";
-import { trendingProducts } from "@/utils/trendingProducts";
+
 import { motion } from "framer-motion";
 
 import { Heart } from "lucide-react";
@@ -49,34 +49,35 @@ const TrendingProductsCard = ({ productData, loading }: TProps) => {
       animate="visible"
       className="mt-7 grid grid-cols-1 gap-x-2 gap-y-5 md:grid-cols-2 lg:grid-cols-3"
     >
-      {productData?.map((product, inx) => (
-        <Link href="/products" key={inx}>
-          <motion.div
-            variants={itemVarient}
-            className="group relative space-y-1"
-            key={product?.name}
-          >
+      {productData?.slice(0, 9)?.map((product, inx) => (
+        <motion.div
+          variants={itemVarient}
+          className="group relative space-y-1"
+          key={product?.name}
+        >
+          <Link href={`/products/${product?._id}`}>
             <Image
               src={product?.images[0]?.url}
               alt="product_image"
               width={1950}
               height={1000}
-              className="max-h-[286px] w-full rounded-xl duration-1000 group-hover:scale-95"
+              className="h-[256px] w-full rounded-xl duration-1000 group-hover:scale-95"
             ></Image>
-            <h1 className="font-medium text-primary-black duration-1000 group-hover:pl-4">
-              {product?.name}
-            </h1>
-            <p className="font-medium text-primary-gray duration-1000 group-hover:pl-4">
-              ${product?.price}
-            </p>
-            <div
-              onClick={(e) => e.stopPropagation()}
-              className="absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-primary-black text-primary-white duration-1000 hover:bg-primary-pink hover:text-primary-black group-hover:right-4"
-            >
-              <Heart className="cursor-pointer" />
+          </Link>
+          <Link href={`/products/${product?._id}`}>
+            <div>
+              <h1 className="font-medium text-primary-black duration-1000 group-hover:pl-4">
+                {product?.name}
+              </h1>
+              <p className="font-medium text-primary-gray duration-1000 group-hover:pl-4">
+                ${product?.price}
+              </p>
+              <div className="absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-primary-black text-primary-white duration-1000 hover:bg-primary-pink hover:text-primary-black group-hover:right-4">
+                <Heart className="cursor-pointer" />
+              </div>
             </div>
-          </motion.div>
-        </Link>
+          </Link>
+        </motion.div>
       ))}
     </motion.div>
   );

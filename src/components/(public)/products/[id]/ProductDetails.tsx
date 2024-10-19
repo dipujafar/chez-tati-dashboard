@@ -1,13 +1,4 @@
 "use client";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import detailsImage from "@/assets/images/productDetails.png";
-import Slider from "react-slick";
 import Image from "next/image";
 import { MutableRefObject, useState } from "react";
 import { Rating } from "@/components/ui/rating";
@@ -23,21 +14,6 @@ import {
 import "keen-slider/keen-slider.min.css";
 import "./productDetails.css";
 import { TProduct } from "@/types/types";
-
-const productDetailsImages = [
-  {
-    image: "/freezer.png",
-  },
-  {
-    image: "/freezer1.jpg",
-  },
-  {
-    image: "/freezer3.jpg",
-  },
-  {
-    image: "/freezer.png",
-  },
-];
 
 function ThumbnailPlugin(
   mainRef: MutableRefObject<KeenSliderInstance | null>,
@@ -80,7 +56,6 @@ const ProductDetailsContainer = ({
   productData: TProduct;
 }) => {
   const [quantity, setQuantity] = useState(0);
-  console.log(productData);
 
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
@@ -142,10 +117,10 @@ const ProductDetailsContainer = ({
             ref={sliderRef}
             className="keen-slider mx-auto max-h-[600px] w-full max-w-[300px]"
           >
-            {productDetailsImages.map((image, idx) => (
+            {productData?.images.map((image, idx) => (
               <Image
                 key={idx}
-                src={image?.image}
+                src={image?.url}
                 alt="product_image"
                 width={900}
                 height={700}
@@ -159,16 +134,16 @@ const ProductDetailsContainer = ({
 
         <div
           ref={thumbnailRef}
-          className="thumbnail thumbnail-image mx-auto flex w-[250px] overflow-x-auto md:w-[500px] lg:w-full"
+          className="thumbnail thumbnail-image mx-auto mt-2 flex justify-center overflow-x-auto md:w-[500px] lg:w-full"
         >
-          {productDetailsImages.map((image, idx) => (
+          {productData?.images?.slice(0, 4)?.map((image, idx) => (
             <div key={idx} className="w-fit">
               <Image
-                src={image?.image}
+                src={image?.url}
                 alt="product_image"
                 width={950}
                 height={700}
-                className={`keen-slider__slide slider-image translate-0 ml-2 h-[80px] border`}
+                className={`keen-slider__slide slider-image translate-0 ml-2 h-[80px] rounded border border-black/50`}
               ></Image>
             </div>
           ))}
@@ -186,47 +161,66 @@ const ProductDetailsContainer = ({
               In Stock
             </p>
           ) : (
-            <p className="rounded bg-black px-2 py-1 text-primary-red">
+            <p className="rounded bg-black px-2 py-1 text-primary-white">
               Out of Stock
             </p>
           )}
         </div>
         {/* rating and review */}
         <div className="mt-5 flex gap-2">
-          <Rating rating={5} className="w-28"></Rating>
+          <Rating
+            rating={Number(productData?.averageRating || 0)}
+            className="w-28"
+          ></Rating>
           <p className="text-primary-gray">
-            <span>4</span> Review
+            <span>{productData?.reviews?.length}</span> Review
           </p>
         </div>
-        {/* price and discound*/}
-        <div className="mb-6 mt-2 flex items-center gap-x-3">
-          <p className="text-xl text-primary-color">
-            <s className="text-primary-gray">$48.00</s>
-            <span className="ml-2 font-medium">$17.28</span>
-          </p>
-          <p className="rou rounded-full bg-primary-pink px-2 py-1 text-primary-red">
-            64% Off
-          </p>
-        </div>
+        {/* price and discount*/}
+        {productData?.discount > 0 && (
+          <div className="mb-6 mt-2 flex items-center gap-x-3">
+            <p className="text-xl text-primary-color">
+              <s className="text-primary-gray">${productData?.price}</s>
+              <span className="ml-2 font-medium">
+                ${Number(productData?.price) - Number(productData?.discount)}
+              </span>
+            </p>
+            <p className="rou rounded-full bg-primary-pink px-2 py-1 text-primary-red">
+              {(
+                (Number(productData?.discount) / Number(productData?.price)) *
+                100
+              ).toFixed(0)}
+              % Off
+            </p>
+          </div>
+        )}
+
+        {productData?.discount == 0 && (
+          <div className="mb-6 mt-2 flex items-center gap-x-3">
+            <span className="ml-2 text-xl font-medium text-primary-color">
+              $17.28
+            </span>
+          </div>
+        )}
 
         <hr />
 
         {/* category and description */}
         <div className="mt-7">
           <p className="font-medium text-primary-black">
-            Cateroy:{" "}
-            <span className="font-normal text-primary-gray">Freeze</span>
+            Category:{" "}
+            <span className="font-normal text-primary-gray">
+              {productData?.category?.name}
+            </span>
           </p>
           <p className="mt-6 max-w-3xl text-primary-gray">
-            Class aptent taciti sociosqu ad litora torquent per conubia nostra,
-            per inceptos himenaeos. Nulla nibh diam, blandit vel consequat nec,
-            ultrices et ipsum. Nulla varius magna a consequat pulvinar.{" "}
+            {productData?.shortDescription}
           </p>
 
           {/* checkout */}
           <div className="mt-7 flex items-center gap-x-3">
             {/* quantity */}
-            <div className="flex items-center gap-x-3 rounded-full border-2 px-2 py-1">
+            <div className="flex items-center gap-x-3 rounded-full border-2">
               <button
                 onClick={() => setQuantity(quantity - 1)}
                 className={`bg-light-gray ${
@@ -258,7 +252,7 @@ const ProductDetailsContainer = ({
               </Link>
             )}
 
-            <div className="rounded-full bg-light-gray p-3">
+            <div className="cursor-pointer rounded-full bg-light-gray p-3">
               <ShoppingCart size={18} />
             </div>
           </div>

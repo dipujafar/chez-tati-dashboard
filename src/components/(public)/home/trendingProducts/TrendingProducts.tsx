@@ -23,9 +23,9 @@ const categories = [
 const TrendingProducts = () => {
   const [selected, setSelected] = useState("popular");
   const query =
-    (selected === "popular" && { sort: "-sales" }) ||
+    (selected === "popular" && { sort: "sales" }) ||
     (selected === "discount" && { discount: "!=0" }) ||
-    (selected === "newArrival" && { sort: "createdAt" });
+    (selected === "newArrival" && undefined);
   const { data: productsData, isLoading: isProductsDataLoading } =
     useGetProductsQuery(query || undefined);
   console.log(productsData?.data?.allProducts);

@@ -28,6 +28,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
+import { useGetCategoriesQuery } from "@/redux/api/categoriesApi";
 
 const categories = [
   {
@@ -73,6 +74,9 @@ const Navbar = () => {
     router.push(`/products`);
   };
 
+  const { data: categoriesData, isLoading: isCategoriesDataLoading } =
+    useGetCategoriesQuery(undefined);
+
   return (
     <Container>
       <nav className="flex items-center justify-between gap-x-5 py-4 md:py-7 2xl:gap-x-36">
@@ -97,6 +101,9 @@ const Navbar = () => {
               type="text"
               placeholder="Search"
               className="w-full rounded-full pl-10"
+              onChange={(e) => {
+                console.log(e.target.value);
+              }}
             />
             <Search
               className="absolute left-4 border-none font-light"

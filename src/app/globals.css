@@ -55,3 +55,12 @@
 .border-red {
   @apply border-2 border-red-500;
 }
+
+/* react pagination bar styles */
+.rpb-item {
+  border: 1px solid lightgray !important;
+  border-radius: 16px !important;
+}
+.rpb-item--active {
+  background-color: #ea5326 !important;
+}
