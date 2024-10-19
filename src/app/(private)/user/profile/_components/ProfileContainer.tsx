@@ -53,13 +53,13 @@ export default function ProfileContainer() {
             <Avatar className="size-36">
               <AvatarImage src={userData?.data?.image} />
               <AvatarFallback className="text-3xl uppercase">
-                {userData?.data?.name.split(" ").length > 1 ? (
+                {userData?.data?.name?.split(" ").length > 1 ? (
                   <p>
-                    {userData?.data?.name.split(" ")[0].slice(0, 1)}
-                    {userData?.data?.name.split(" ")[1].slice(0, 1)}
+                    {userData?.data?.name?.split(" ")[0].slice(0, 1)}
+                    {userData?.data?.name?.split(" ")[1].slice(0, 1)}
                   </p>
                 ) : (
-                  userData?.data?.name.split(" ")[0].slice(0, 2)
+                  userData?.data?.name?.split(" ")[0].slice(0, 2)
                 )}
               </AvatarFallback>
             </Avatar>
