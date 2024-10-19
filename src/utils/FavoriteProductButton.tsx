@@ -21,8 +21,6 @@ const FavoriteProductButton = ({
   const [addWishList, { isLoading }] = useAddWishListMutation();
   const { data: wishListProduct } = useGetWishListQuery(undefined);
 
-  console.log(wishListProduct);
-
   const handleAddWishList = async (id: string) => {
     if (!user) {
       Error_Modal({
