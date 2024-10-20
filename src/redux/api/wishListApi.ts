@@ -17,11 +17,25 @@ const wishListApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes?.wishList],
     }),
+    getSingleWishProductByProductId: build.query({
+      query: (id) => ({
+        url: `/favorite-items/get-by-product/${id}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes?.wishList],
+    }),
     addWishList: build.mutation({
       query: (data) => ({
         url: "/favorite-items",
         method: "POST",
         body: data,
+      }),
+      invalidatesTags: [tagTypes?.wishList],
+    }),
+    deleteWishList: build.mutation({
+      query: (id) => ({
+        url: `/favorite-items/${id}`,
+        method: "DELETE",
       }),
       invalidatesTags: [tagTypes?.wishList],
     }),
@@ -32,4 +46,6 @@ export const {
   useGetWishListQuery,
   useAddWishListMutation,
   useGetSingleWishListProductQuery,
+  useGetSingleWishProductByProductIdQuery,
+  useDeleteWishListMutation,
 } = wishListApi;

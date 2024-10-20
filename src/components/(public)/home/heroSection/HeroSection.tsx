@@ -67,7 +67,7 @@ const HeroSection = () => {
                           width={1950}
                           height={1700}
                           alt="banner_image"
-                          className="h-full min-h-[350px] rounded-3xl brightness-75 md:h-[450px] lg:h-[550px] xl:h-[550px] 2xl:h-[650px]"
+                          className="h-full min-h-[350px] rounded-3xl brightness-75 md:h-[450px] lg:h-[550px] xl:h-[550px]"
                         />
                         <div className="absolute left-8 top-8 z-20 text-primary-white md:left-12 md:top-16 lg:top-20">
                           <h1 className="max-w-md text-3xl font-bold md:text-5xl lg:text-6xl">

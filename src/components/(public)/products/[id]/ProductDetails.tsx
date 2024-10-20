@@ -14,6 +14,7 @@ import {
 import "keen-slider/keen-slider.min.css";
 import "./productDetails.css";
 import { TProduct } from "@/types/types";
+import AddToCartButton from "@/utils/AddToCartButton";
 
 function ThumbnailPlugin(
   mainRef: MutableRefObject<KeenSliderInstance | null>,
@@ -169,7 +170,7 @@ const ProductDetailsContainer = ({
         {/* rating and review */}
         <div className="mt-5 flex gap-2">
           <Rating
-            rating={Number(productData?.averageRating || 0)}
+            rating={Number(productData?.avgRating || 0)}
             className="w-28"
           ></Rating>
           <p className="text-primary-gray">
@@ -252,9 +253,7 @@ const ProductDetailsContainer = ({
               </Link>
             )}
 
-            <div className="cursor-pointer rounded-full bg-light-gray p-3">
-              <ShoppingCart size={18} />
-            </div>
+            <AddToCartButton cartData={productData}></AddToCartButton>
           </div>
         </div>
       </div>

@@ -34,7 +34,7 @@ const TABLE_HEADERS = [
 const OrderHistrory = () => {
   const { data: orderData, isLoading: isOrderDataLoading } =
     useGetOrdersQuery(undefined);
-  console.log(orderData);
+
   return (
     <div>
       {/* Recent Order History */}
@@ -47,7 +47,7 @@ const OrderHistrory = () => {
           </div>
 
           {orderData?.data.length === 0 ? (
-            <Empty></Empty>
+            <Empty message="No order found"></Empty>
           ) : (
             <>
               <Table>

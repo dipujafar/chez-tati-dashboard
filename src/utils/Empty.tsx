@@ -1,7 +1,13 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 
-const Empty = ({ className }: { className?: string }) => {
+const Empty = ({
+  className,
+  message,
+}: {
+  className?: string;
+  message?: string;
+}) => {
   return (
     <div
       className={cn("mx-auto flex max-w-max flex-col items-center", className)}
@@ -52,7 +58,7 @@ const Empty = ({ className }: { className?: string }) => {
         </g>
       </svg>
 
-      <p className="text-muted-foreground">No data</p>
+      <p className="text-muted-foreground">{message}</p>
     </div>
   );
 };

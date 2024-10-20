@@ -62,7 +62,7 @@ const TrendingProducts = () => {
 
       {/* trending products */}
       {productsData?.data?.allProducts?.length === 0 ? (
-        <Empty></Empty>
+        <Empty message="No products found"></Empty>
       ) : (
         <TrendingProductsCard
           productData={productsData?.data?.allProducts}

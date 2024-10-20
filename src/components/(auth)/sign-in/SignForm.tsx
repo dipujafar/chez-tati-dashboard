@@ -56,7 +56,6 @@ const SignForm = () => {
     } catch (error: TError | any) {
       Error_Modal({ title: error?.data?.message });
     }
-    console.log(data);
   };
 
   return (

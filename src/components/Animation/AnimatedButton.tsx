@@ -17,8 +17,6 @@ type TProsType = {
 function AnimatedButton({ children, className, disabled }: TProsType) {
   const [scope, animate] = useAnimate();
 
-  console.log(children);
-
   const onButtonClick = () => {
     const sparkles = Array.from({ length: 20 });
     const sparklesAnimation: AnimationSequence = sparkles.map((_, index) => [

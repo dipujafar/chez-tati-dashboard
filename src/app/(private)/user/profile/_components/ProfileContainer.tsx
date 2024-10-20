@@ -36,7 +36,6 @@ export default function ProfileContainer() {
 
   const { data: orderData, isLoading: isOrderDataLoading } =
     useGetOrdersQuery(undefined);
-  console.log(orderData);
 
   return (
     <div className="space-y-8 text-primary-black">
@@ -133,7 +132,7 @@ export default function ProfileContainer() {
           </div>
 
           {orderData?.data?.length == 0 ? (
-            <Empty></Empty>
+            <Empty message="No order found"></Empty>
           ) : (
             <Table>
               <TableCaption>

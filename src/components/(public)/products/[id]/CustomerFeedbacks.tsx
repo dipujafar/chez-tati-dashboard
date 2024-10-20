@@ -1,5 +1,11 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { Rating } from "@/components/ui/rating";
+import { TReview } from "@/types/types";
+import Empty from "@/utils/Empty";
+import moment from "moment";
 import Image from "next/image";
+import { useState } from "react";
 
 const feedbackData = [
   {
@@ -39,52 +45,80 @@ const feedbackData = [
     time: "1 week ago",
   },
 ];
-const CustomerFeedbacks = () => {
+const CustomerFeedbacks = ({ reviews }: { reviews: TReview[] }) => {
+  const [showFeedbacks, setShowFeedbacks] = useState(4);
   return (
     <div>
       <h1 className="text-2xl font-bold lg:text-4xl">Customer Feedback</h1>
-      <div className="lg:w-3/4">
-        {/* feedbacks */}
-        {feedbackData?.slice(0, 4)?.map((data, index) => (
-          <div className="mt-6" key={index}>
-            <div>
-              <div className="flex justify-between">
-                <div className="flex items-center gap-3">
-                  {data?.image ? (
-                    <Image
-                      src={data?.image}
-                      alt="userImage"
-                      width={950}
-                      height={700}
-                      className="size-14"
-                    ></Image>
-                  ) : (
-                    <Image
-                      src="/nonUser.png"
-                      alt="userImage"
-                      width={950}
-                      height={700}
-                      className="size-14"
-                    ></Image>
-                  )}
 
-                  <div>
-                    <h1 className="text-lg font-medium text-primary-black">
-                      {data?.name}
-                    </h1>
-                    <Rating rating={data?.rating} className="w-24"></Rating>
+      {reviews?.length ? (
+        <div className="lg:w-3/4">
+          {/*feedbacks */}
+          {reviews?.slice(0, showFeedbacks)?.map((review, index) => (
+            <div className="mt-6" key={index}>
+              <div>
+                <div className="flex justify-between gap-x-8">
+                  <div className="flex items-center gap-3">
+                    {review?.user?.image ? (
+                      <Image
+                        src={review?.user?.image}
+                        alt="userImage"
+                        width={950}
+                        height={700}
+                        className="size-14"
+                      ></Image>
+                    ) : (
+                      <Image
+                        src="/nonUser.png"
+                        alt="userImage"
+                        width={950}
+                        height={700}
+                        className="size-14"
+                      ></Image>
+                    )}
+
+                    <div>
+                      <h1 className="text-lg font-medium text-primary-black">
+                        {review?.user?.name ? review?.user?.name : "Anonymous"}
+                      </h1>
+                      <Rating rating={review?.rating} className="w-24"></Rating>
+                    </div>
                   </div>
+                  <p className="text-primary-gray">
+                    {moment(review?.createdAt).format(" Do MMMM YYYY , h:mm")}
+                  </p>
                 </div>
-                <p className="text-primary-gray">{data?.time}</p>
+                <p className="mt-4 max-w-5xl text-primary-gray">
+                  {review?.comment}
+                </p>
               </div>
-              <p className="mt-4 max-w-5xl text-primary-gray">
-                {data?.feedback}
-              </p>
+              {index === 3 ? "" : <hr className="mt-5" />}
             </div>
-            {index === 3 ? "" : <hr className="mt-5" />}
+          ))}
+          <div className="mt-5 flex justify-end">
+            {showFeedbacks > 4 ? (
+              <Button
+                variant="outline"
+                className="rounded-full"
+                onClick={() => setShowFeedbacks(4)}
+              >
+                Show Less
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                className="rounded-full"
+                disabled={showFeedbacks >= reviews?.length}
+                onClick={() => setShowFeedbacks(reviews?.length)}
+              >
+                Show More
+              </Button>
+            )}
           </div>
-        ))}
-      </div>
+        </div>
+      ) : (
+        <Empty message="No feedbacks yet"></Empty>
+      )}
     </div>
   );
 };

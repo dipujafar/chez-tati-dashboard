@@ -21,3 +21,21 @@ export const Error_Modal = (message: Record<string, string>) => {
     timer: 2000,
   });
 };
+
+export const ConfirmModal = (
+  title?: string,
+  message?: string,
+  confirmBtnText?: string,
+  cancelBtnText?: string,
+) => {
+  return Swal.fire({
+    title: title || "Are you sure?",
+    text: message || "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#CB4E01",
+    cancelButtonColor: "#f11a00",
+    confirmButtonText: confirmBtnText || "Yes, delete it!",
+    cancelButtonText: cancelBtnText || "Cancel",
+  });
+};

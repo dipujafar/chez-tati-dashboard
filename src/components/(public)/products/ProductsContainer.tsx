@@ -33,6 +33,8 @@ import Empty from "@/utils/Empty";
 import { Pagination } from "react-pagination-bar";
 import "react-pagination-bar/dist/index.css";
 import { useSearchParams } from "next/navigation";
+import FavoriteProductButton from "@/utils/FavoriteProductButton";
+import AddToCartButton from "@/utils/AddToCartButton";
 const sortData = ["Latest"];
 
 const ProductsContainer = () => {
@@ -213,9 +215,10 @@ const ProductsContainer = () => {
                         ></Image>
                       </Link>
                       <div>
-                        <div className="group absolute right-2 top-0 flex size-10 items-center justify-center rounded-full bg-[#FDEEE9] duration-1000 hover:bg-primary-black hover:text-primary-white group-hover:right-4">
-                          <Heart className="cursor-pointer" />
-                        </div>
+                        <FavoriteProductButton
+                          className="absolute right-2 top-0"
+                          productId={product?._id}
+                        ></FavoriteProductButton>
                         {Number(product?.stock) === 0 && (
                           <div className="group absolute left-2 top-0 flex items-center justify-center rounded-md bg-primary-black px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
                             Out of Stock
@@ -245,22 +248,20 @@ const ProductsContainer = () => {
                             </p>
                             <p className="font-medium">${product?.price}</p>
                             <Rating
-                              rating={product?.averageRating || 0}
+                              rating={product?.avgRating || 0}
                               className="w-20"
                             ></Rating>
                           </div>
                         </div>
                       </Link>
-                      <div className="rounded-full bg-light-gray p-3">
-                        <ShoppingCart size={20} />
-                      </div>
+                      <AddToCartButton cartData={product}></AddToCartButton>
                     </CardFooter>
                   </Card>
                 ),
               )}
             </div>
           ) : (
-            <Empty></Empty>
+            <Empty message="No products found"></Empty>
           )}
         </div>
       </div>

@@ -22,10 +22,26 @@ export type TError = {
 
 type TUser = {
   _id: string;
+  status: string;
+  companyName: string | null;
   name: string;
   email: string;
   phoneNumber: string;
+  password: string;
   image: string | null;
+  role: string;
+  address: string;
+  country: string;
+  states: string;
+  zipCode: string;
+  registerWithGoogle: boolean;
+  needsPasswordChange: boolean;
+  isDeleted: boolean;
+  verification: Verification;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  __v: number;
+  passwordChangedAt: string; //
 };
 
 type TBillingDetails = {
@@ -70,6 +86,25 @@ export type TProductsImage = {
   _id: string;
 };
 
+// Interface for Verification
+interface Verification {
+  otp: string;
+  expiresAt: string; // ISO date string
+  status: boolean;
+}
+
+// Interface for the Review
+export type TReview = {
+  _id: string;
+  user: TUser;
+  product: string; // This could also be a more complex type depending on the Product structure
+  rating: number;
+  comment: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  __v: number;
+};
+
 export type TProduct = {
   _id: string;
   id: string;
@@ -90,5 +125,41 @@ export type TProduct = {
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
   averageRating: number;
-  reviews: any[]; // Assuming reviews can be of any type; define more specifically if needed
+  reviews: TReview[]; // Assuming reviews can be of any type; define more specifically if needed
+};
+
+export type TWishlistProduct = {
+  _id: string;
+  product: TProduct;
+  createdAt: string;
+  updatedAt: string;
+  user: TUser;
+  __v: number;
+  upadatedAt: string;
+  reviews: TReview[];
+};
+
+export type TCartProduct = {
+  cartId: string;
+  _id: string;
+  id: string;
+  name: string;
+  description: string;
+  shortDescription: string;
+  price: number;
+  category: TCategory;
+  images: TProductsImage[];
+  stock: number;
+  sales: number;
+  size: string[]; // Assuming size is an array of strings
+  discount: number;
+  color: string[]; // Assuming color is an array of hex color strings
+  avgRating: number;
+  brand: string;
+  isDeleted: boolean;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  averageRating: number;
+  reviews: TReview[];
+  quantity: string; // Assuming reviews can be of any type; define more specifically if needed
 };

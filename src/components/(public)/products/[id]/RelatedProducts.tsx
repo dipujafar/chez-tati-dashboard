@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useGetProductsQuery } from "@/redux/api/productsApi";
 import ProductCardSkeleton from "@/utils/ProductCardSkeleton";
 import { TProduct } from "@/types/types";
+import FavoriteProductButton from "@/utils/FavoriteProductButton";
+import AddToCartButton from "@/utils/AddToCartButton";
 
 const RelatedProducts = ({
   categoryId,
@@ -51,9 +53,10 @@ const RelatedProducts = ({
                     ></Image>
                   </Link>
                   <div>
-                    <div className="group absolute right-2 top-2 flex size-10 items-center justify-center rounded-full bg-[#FDEEE9] duration-1000 hover:bg-primary-black hover:text-primary-white group-hover:right-4">
-                      <Heart className="cursor-pointer" />
-                    </div>
+                    <FavoriteProductButton
+                      className="absolute right-2 top-2"
+                      productId={product?._id}
+                    ></FavoriteProductButton>
 
                     {Number(product?.stock) === 0 && (
                       <div className="group absolute left-2 top-0 flex items-center justify-center rounded-md bg-primary-black px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
@@ -82,15 +85,13 @@ const RelatedProducts = ({
                         </p>
                         <p>${product?.price}</p>
                         <Rating
-                          rating={product?.averageRating || 0}
+                          rating={product?.avgRating || 0}
                           className="w-20"
                         ></Rating>
                       </div>
                     </div>
                   </Link>
-                  <div className="rounded-full bg-light-gray p-3">
-                    <ShoppingCart size={20} />
-                  </div>
+                  <AddToCartButton cartData={product}></AddToCartButton>
                 </CardFooter>
               </Card>
             ))}
