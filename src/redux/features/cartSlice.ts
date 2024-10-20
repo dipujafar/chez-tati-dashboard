@@ -5,6 +5,7 @@ import generateUniqueId from "@/utils/generateUniqueId";
 const initialState = {
   items: [], // Cart items
   totalAmount: 0,
+  subTotal: 0,
 };
 
 const cartSlice = createSlice({
@@ -28,6 +29,12 @@ const cartSlice = createSlice({
           total +
           // @ts-ignore
           discountedPrice(item.price, item.discount) * Number(item.quantity),
+        0,
+      );
+
+      state.subTotal = state.items.reduce(
+        (subTotal: any, item: any) =>
+          subTotal + Number(item.price) * Number(item.quantity),
         0,
       );
     },
@@ -67,6 +74,12 @@ const cartSlice = createSlice({
             total +
             //@ts-ignore
             discountedPrice(item.price, item.discount) * Number(item.quantity),
+          0,
+        );
+
+        state.subTotal = state.items.reduce(
+          (subTotal: any, item: any) =>
+            subTotal + Number(item.price) * Number(item.quantity),
           0,
         );
       }

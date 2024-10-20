@@ -30,7 +30,6 @@ import {
 } from "@/redux/features/cartSlice";
 import { useState } from "react";
 import discountedPrice from "@/utils/discountedPrice";
-import { title } from "process";
 
 const ShoppingCartContainer = () => {
   // Initialize state with quantities from productData
@@ -40,9 +39,11 @@ const ShoppingCartContainer = () => {
 
   const dispatch = useAppDispatch();
 
-  const { items: cart, totalAmount } = useAppSelector((state) => state.cart);
-
-  console.log(cart);
+  const {
+    items: cart,
+    totalAmount,
+    subTotal,
+  } = useAppSelector((state) => state.cart);
 
   const handleProductQuantity = (cartId: string, quantity: number) => {
     const findProduct = cart?.find(
@@ -68,6 +69,17 @@ const ShoppingCartContainer = () => {
         Success_model({ title: "Removed from cart" });
       }
     });
+  };
+
+  const handleClearCart = () => {
+    ConfirmModal("All products will be removed from your cart!", "Remove").then(
+      (result) => {
+        if (result.isConfirmed) {
+          dispatch(clearCart());
+          Success_model({ title: "Cart cleared" });
+        }
+      },
+    );
   };
 
   return (
@@ -142,6 +154,11 @@ const ShoppingCartContainer = () => {
                       $
                       {discountedPrice(data?.price, data?.discount) *
                         Number(data?.quantity)}
+                      {Number(data?.discount) > 0 && (
+                        <s className="ml-1 text-sm text-primary-gray">
+                          ${Number(data?.price) * Number(data?.quantity)}
+                        </s>
+                      )}
                     </TableCell>
                     <TableCell className="text-right">
                       <div
@@ -162,7 +179,10 @@ const ShoppingCartContainer = () => {
                   Return to shop
                 </Button>
               </Link>
-              <Button className="bg-light-gray text-primary-black hover:text-primary-white">
+              <Button
+                onClick={handleClearCart}
+                className="bg-light-gray text-primary-black hover:text-primary-white"
+              >
                 Clear Carte
               </Button>
             </div>
@@ -179,17 +199,19 @@ const ShoppingCartContainer = () => {
               <div>
                 <div className="flex justify-between py-5">
                   <p>Subtotal:</p>
-                  <p className="font-medium">$84.00</p>
+                  <p className="font-medium">${subTotal}</p>
                 </div>
                 <hr />
                 <div className="flex justify-between py-5">
-                  <p>Shipping:</p>
-                  <p className="font-medium">Free</p>
+                  <p>Discount:</p>
+                  <p className="font-medium">
+                    ${Number(subTotal) - Number(totalAmount)}
+                  </p>
                 </div>
                 <hr />
                 <div className="flex justify-between py-5">
                   <p>Total:</p>
-                  <p className="font-medium">$84.00</p>
+                  <p className="font-medium">${totalAmount}</p>
                 </div>
               </div>
             </CardContent>
