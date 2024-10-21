@@ -19,6 +19,7 @@ const profileApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes?.profile],
     }),
+    
   }),
 });
 

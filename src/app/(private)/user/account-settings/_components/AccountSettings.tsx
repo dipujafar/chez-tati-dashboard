@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Error_Modal, Success_model } from "@/utils/models";
 import { TError } from "@/types/types";
 import Image from "next/image";
+import Loading from "@/utils/Loading";
 
 // Define form input type
 interface FormInputs {
@@ -30,7 +31,8 @@ const AccountSettings = () => {
   const { data: userData, isLoading: isProfileDataLoading } =
     useGetProfileDataQuery(undefined);
 
-  const [updateProfile] = useUpdateProfileDataMutation();
+  const [updateProfile, { isLoading: isUpdateProfileLoading }] =
+    useUpdateProfileDataMutation();
 
   // React Hook Form setup
   const {
@@ -133,6 +135,7 @@ const AccountSettings = () => {
                     type="submit"
                     className="mt-5 rounded-full bg-primary-color px-10"
                   >
+                    {isUpdateProfileLoading && <Loading color="#fff"></Loading>}
                     Save Changes
                   </Button>
                 </div>
