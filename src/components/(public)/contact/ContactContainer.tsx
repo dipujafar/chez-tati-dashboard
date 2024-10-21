@@ -1,17 +1,20 @@
-"use client"
+"use client";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
+import { useSendSupportMessageMutation } from "@/redux/api/contentApi";
+import { TError } from "@/types/types";
+import { Error_Modal, Success_model } from "@/utils/models";
+import Loading from "@/utils/Loading";
 
 type TFormInput = {
   firstName: string;
   lastName: string;
   email: string;
-  message: string;
-}
+  description: string;
+};
 
 const ContactContainer: React.FC = () => {
   const {
@@ -20,15 +23,25 @@ const ContactContainer: React.FC = () => {
     formState: { errors },
   } = useForm<TFormInput>();
 
+  const [sendMessage, { isLoading }] = useSendSupportMessageMutation();
 
-  const onSubmit: SubmitHandler<TFormInput> = (data) => {
-    console.log(data); 
+  const onSubmit: SubmitHandler<TFormInput> = async (data) => {
+    try {
+      const res = await sendMessage(data).unwrap();
+
+      Success_model({
+        title: "Successfully received your message!!",
+        text: "We will contact with you shortly",
+      });
+    } catch (error: TError | any) {
+      Error_Modal({ title: error?.data?.message });
+    }
   };
 
   return (
     <div>
       {/* page title */}
-      <div className="text-center space-y-1 text-primary-black">
+      <div className="space-y-1 text-center text-primary-black">
         <h1 className="text-6xl font-bold">Contact</h1>
         <p className="text-xl">We are available 24/7, 7 days a week.</p>
         <p className="text-xl">Phone: +8801611112222</p>
@@ -36,34 +49,42 @@ const ContactContainer: React.FC = () => {
 
       {/* form */}
       <div className="mt-10">
-        <h1 className="text-5xl font-bold text-primary-black text-center">
+        <h1 className="text-center text-5xl font-bold text-primary-black">
           Send a Message
         </h1>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mt-6 w-full space-y-5">
             {/* input first name and last name */}
-            <div className="flex flex-col md:flex-row items-center gap-x-8 gap-y-5">
+            <div className="flex flex-col items-center gap-x-8 gap-y-5 md:flex-row">
               <div className="w-full">
                 <Input
-                  {...register("firstName", { required: "First name is required" })}
+                  {...register("firstName", {
+                    required: "First name is required",
+                  })}
                   id="firstName"
                   placeholder="First name"
                   className="rounded-full"
                 />
                 {errors.firstName && (
-                  <p className="text-red-500 text-sm">{errors.firstName.message}</p>
+                  <p className="text-sm text-red-500">
+                    {errors.firstName.message}
+                  </p>
                 )}
               </div>
               <div className="w-full">
                 <Input
-                  {...register("lastName", { required: "Last name is required" })}
+                  {...register("lastName", {
+                    required: "Last name is required",
+                  })}
                   id="lastName"
                   placeholder="Last name"
                   className="rounded-full"
                 />
                 {errors.lastName && (
-                  <p className="text-red-500 text-sm">{errors.lastName.message}</p>
+                  <p className="text-sm text-red-500">
+                    {errors.lastName.message}
+                  </p>
                 )}
               </div>
             </div>
@@ -83,23 +104,31 @@ const ContactContainer: React.FC = () => {
                 className="rounded-full"
               />
               {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email.message}</p>
+                <p className="text-sm text-red-500">{errors.email.message}</p>
               )}
             </div>
 
             {/* input description */}
             <div className="w-full">
               <Textarea
-                {...register("message", { required: "Message is required" })}
+                {...register("description", {
+                  required: "Message is required",
+                })}
                 placeholder="Type your message here."
               />
-              {errors.message && (
-                <p className="text-red-500 text-sm">{errors.message.message}</p>
+              {errors.description && (
+                <p className="text-sm text-red-500">
+                  {errors.description.message}
+                </p>
               )}
             </div>
 
             {/* submit button */}
-            <Button className="w-full rounded-full" type="submit">
+            <Button
+              className="w-full rounded-full bg-primary-color"
+              type="submit"
+            >
+              {isLoading && <Loading></Loading>}
               Submit
             </Button>
           </div>

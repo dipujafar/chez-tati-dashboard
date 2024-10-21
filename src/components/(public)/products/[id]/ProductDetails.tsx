@@ -3,7 +3,7 @@ import Image from "next/image";
 import { MutableRefObject, useState } from "react";
 import { Rating } from "@/components/ui/rating";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
+
 import Link from "next/link";
 
 import {
@@ -56,7 +56,7 @@ const ProductDetailsContainer = ({
 }: {
   productData: TProduct;
 }) => {
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
@@ -246,14 +246,15 @@ const ProductDetailsContainer = ({
                 Checkout
               </Button>
             ) : (
-              <Link href={"/checkout"} className="flex-1">
-                <Button className="w-full rounded-full bg-primary-color">
-                  Checkout
-                </Button>
-              </Link>
+              <AddToCartButton
+                variant="button"
+                cartData={{ ...productData, quantity: quantity || 1 }}
+              ></AddToCartButton>
             )}
 
-            <AddToCartButton cartData={productData}></AddToCartButton>
+            <AddToCartButton
+              cartData={{ ...productData, quantity: quantity || 1 }}
+            ></AddToCartButton>
           </div>
         </div>
       </div>

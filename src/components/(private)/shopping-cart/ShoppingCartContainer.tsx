@@ -17,7 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { TCartProduct, TProduct } from "@/types/types";
+import { TAuthUser, TCartProduct, TProduct } from "@/types/types";
 import Empty from "@/utils/Empty";
 import { ConfirmModal, Error_Modal, Success_model } from "@/utils/models";
 import { ChevronRight, X } from "lucide-react";
@@ -30,14 +30,16 @@ import {
 } from "@/redux/features/cartSlice";
 import { useState } from "react";
 import discountedPrice from "@/utils/discountedPrice";
+import ContinueToLoginModal from "@/utils/ContinueToLoginModal";
 
 const ShoppingCartContainer = () => {
   // Initialize state with quantities from productData
-  const [quantitiesCount, setQuantitiesCount] = useState(1);
   const [disabledToSetQuantity, setDisabledToSetQuantity] = useState(false);
-  console.log(quantitiesCount);
-
+  const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  console.log(user);
 
   const {
     items: cart,
@@ -72,11 +74,28 @@ const ShoppingCartContainer = () => {
   };
 
   const handleClearCart = () => {
-    ConfirmModal("All products will be removed from your cart!", "Remove").then(
+    ConfirmModal(
+      "All products will be removed from your cart!",
+      "Remove",
+      "Yes, Remove All",
+    ).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(clearCart());
+        Success_model({ title: "Cart cleared" });
+      }
+    });
+  };
+
+  const handleCreateOrder = () => {
+    if (!user) {
+      setShowLoginModal(true);
+      return;
+    }
+
+    ConfirmModal("Are you sure?", "you want to create an order", "Yes").then(
       (result) => {
         if (result.isConfirmed) {
-          dispatch(clearCart());
-          Success_model({ title: "Cart cleared" });
+          console.log("Order created");
         }
       },
     );
@@ -121,26 +140,24 @@ const ShoppingCartContainer = () => {
                       <div className="flex max-w-fit items-center gap-x-3 rounded-full border-2">
                         <button
                           onClick={() => {
-                            setQuantitiesCount(quantitiesCount - 1);
                             handleProductQuantity(
                               data?.cartId,
-                              quantitiesCount - 1,
+                              Number(data?.quantity) - 1,
                             );
                           }}
                           className={`bg-light-gray ${
-                            quantitiesCount === 1 && "text-primary-gray"
+                            Number(data?.quantity) === 1 && "text-primary-gray"
                           } flex size-10 items-center justify-center rounded-full shadow-md`}
-                          disabled={quantitiesCount === 1}
+                          disabled={Number(data?.quantity) === 1}
                         >
                           -
                         </button>
                         <p>{data?.quantity}</p>
                         <button
                           onClick={() => {
-                            setQuantitiesCount(quantitiesCount + 1);
                             handleProductQuantity(
                               data?.cartId,
-                              quantitiesCount + 1,
+                              Number(data?.quantity) + 1,
                             );
                           }}
                           disabled={disabledToSetQuantity}
@@ -216,11 +233,12 @@ const ShoppingCartContainer = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Link href={"/checkout"} className="w-full">
-                <Button className="w-full rounded-full bg-primary-color">
-                  Proceed to checkout
-                </Button>
-              </Link>
+              <Button
+                onClick={handleCreateOrder}
+                className="w-full rounded-full bg-primary-color"
+              >
+                Proceed to checkout
+              </Button>
             </CardFooter>
           </Card>
         </div>
@@ -242,6 +260,10 @@ const ShoppingCartContainer = () => {
           </Button>
         </div>
       )}
+      <ContinueToLoginModal
+        setOpen={setShowLoginModal}
+        open={showLoginModal}
+      ></ContinueToLoginModal>
     </div>
   );
 };

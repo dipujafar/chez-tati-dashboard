@@ -5,8 +5,6 @@ import logo from "@/assets/images/logo_white.png";
 import googlePlay from "@/assets/images/google_play_store.png";
 import appStore from "@/assets/images/app_store.png";
 import qrCode from "@/assets/images/qrcode.png";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
 import Link from "next/link";
 
 const Footer = () => {
@@ -27,16 +25,6 @@ const Footer = () => {
               Ecommerce is a free UI Kit from Paperpillar that you can use for
               your personal or commercial project.
             </p>
-            <div className="mt-4 flex items-center gap-3">
-              <Input
-                type="email"
-                placeholder="Type your email address"
-                className="rounded-full bg-transparent text-primary-white"
-              />
-              <Button className="rounded-full bg-white text-primary-black hover:bg-primary-gray">
-                Submit
-              </Button>
-            </div>
           </div>
 
           {/* Links and supports informations */}
@@ -46,7 +34,7 @@ const Footer = () => {
               <h3 className="mb-4 font-semibold text-primary-white">Account</h3>
               <ul className="space-y-2 text-primary-white">
                 <li>
-                  <Link href="/profile">My Account</Link>
+                  <Link href="/user/profile">My Account</Link>
                 </li>
                 <li>
                   <Link href="/sign-in">Login / Register</Link>

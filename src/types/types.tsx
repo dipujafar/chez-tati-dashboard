@@ -126,6 +126,7 @@ export type TProduct = {
   updatedAt: string; // ISO date string
   averageRating: number;
   reviews: TReview[]; // Assuming reviews can be of any type; define more specifically if needed
+  quantity?: number; // Assuming reviews can be of any type; define more specifically if needed
 };
 
 export type TWishlistProduct = {
@@ -162,4 +163,11 @@ export type TCartProduct = {
   averageRating: number;
   reviews: TReview[];
   quantity: string; // Assuming reviews can be of any type; define more specifically if needed
+};
+
+export type TAuthUser = {
+  exp: number;
+  iat: number;
+  role: string;
+  userId: string;
 };

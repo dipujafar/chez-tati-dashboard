@@ -33,7 +33,7 @@ export const ConfirmModal = (
     text: message || "You won't be able to revert this!",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#CB4E01",
+    confirmButtonColor: "#EA5326",
     cancelButtonColor: "#f11a00",
     confirmButtonText: confirmBtnText || "Yes, delete it!",
     cancelButtonText: cancelBtnText || "Cancel",
