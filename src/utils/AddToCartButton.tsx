@@ -1,12 +1,11 @@
-import { ShoppingCart } from "lucide-react";
-import { addToCart, removeProduct } from "@/redux/features/cartSlice";
+import { ShoppingBag, ShoppingBasket, ShoppingCart } from "lucide-react";
+import { addToCart } from "@/redux/features/cartSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { TProduct } from "@/types/types";
 import { Error_Modal, Success_model } from "./models";
 import AlreadyInCart from "./AlreadyInCart";
-import { error } from "console";
 import { Button } from "@/components/ui/button";
-import { text } from "stream/consumers";
+import { useRouter } from "next/navigation";
 
 const AddToCartButton = ({
   cartData,
@@ -17,9 +16,15 @@ const AddToCartButton = ({
 }) => {
   console.log(cartData);
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const { status: alreadyInCart } = AlreadyInCart(cartData._id);
 
   const handleAddToCart = () => {
+    if (alreadyInCart && variant === "button") {
+      router.push("/shopping-cart");
+      return;
+    }
+
     if (alreadyInCart) {
       Error_Modal({
         title: "Already in cart",
@@ -29,6 +34,9 @@ const AddToCartButton = ({
     }
 
     dispatch(addToCart(cartData as any));
+    if (variant === "button") {
+      router.push("/shopping-cart");
+    }
     Success_model({ title: "Added to cart" });
   };
   return variant === "button" ? (
@@ -36,7 +44,7 @@ const AddToCartButton = ({
       onClick={handleAddToCart}
       className="w-full rounded-full bg-primary-color"
     >
-      Buy Now
+      Buy Now <ShoppingBag className="ml-2" size={20} />
     </Button>
   ) : (
     <div onClick={handleAddToCart} className="rounded-full bg-light-gray p-3">

@@ -4,8 +4,6 @@ import { MutableRefObject, useState } from "react";
 import { Rating } from "@/components/ui/rating";
 import { Button } from "@/components/ui/button";
 
-import Link from "next/link";
-
 import {
   useKeenSlider,
   KeenSliderPlugin,

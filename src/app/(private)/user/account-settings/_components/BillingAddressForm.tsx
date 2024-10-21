@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import CountryStateCitySelector from "@/components/ui/CountryStateCitySelector";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -10,15 +11,47 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useGetProfileDataQuery } from "@/redux/api/profileApi";
 import { countries } from "@/utils/countries";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+interface FormInputs {}
 
 const BillingAddressForm = () => {
+  const { data: userData } = useGetProfileDataQuery(undefined);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    reset,
+    setValue,
+  } = useForm<FormInputs>();
+
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    console.log(data)
+  };
+
+  // // Set react hook form default values
+  // useEffect(() => {
+  //   setValue("fname", user?.name?.firstName);
+  //   setValue("lname", user?.name?.lastName);
+  //   setValue("phoneNumber", user?.phoneNumber);
+  //   setValue("email", user?.email);
+  //   setValue("gender", user?.gender);
+  //   setValue("area", user?.address?.area);
+  //   setValue("house", user?.address?.house);
+
+  //   // country, state and city default value are set inside <CountryStateCitySelector/>
+  // }, [user?.name]);
+
   return (
     <div className="dashboard-card" id="address">
       <h1 className="px-7 py-5 text-2xl font-medium">Billing Address</h1>
       <hr />
       <div className="px-7 py-5">
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-1 flex-col space-y-1.5">
               <Label>Name</Label>
@@ -30,54 +63,26 @@ const BillingAddressForm = () => {
               <Label>Street Address</Label>
               <Input id="address" placeholder="address" />
             </div>
-            {/* address */}
-            <div className="flex flex-col justify-between gap-4 lg:flex-row">
-              {/* countries   */}
-              <div className="flex flex-1 flex-col space-y-1.5">
-                <Label>Country / Region</Label>
-                <Select>
-                  <SelectTrigger className="min-w-[220px]">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup className="max-h-60 overflow-y-auto">
-                      {countries.map((country, idx) => (
-                        <SelectItem
-                          key={idx}
-                          value={country}
-                          className="capitalize"
-                        >
-                          {country}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-              {/* States */}
-              <div className="flex flex-1 flex-col space-y-1.5">
-                <Label>States</Label>
-                <Select>
-                  <SelectTrigger className="min-w-[150px]">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {/* <SelectItem value="bangladesh">Bangladesh</SelectItem>
-                        <SelectItem value="banana">Banana</SelectItem>
-                        <SelectItem value="blueberry">Blueberry</SelectItem>
-                        <SelectItem value="grapes">Grapes</SelectItem>
-                        <SelectItem value="pineapple">Pineapple</SelectItem> */}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
 
-              {/* Zip Code */}
-              <div className="flex flex-1 flex-col space-y-1.5">
-                <Label>Zip Code</Label>
-                <Input id="zipCode" placeholder="Zip Code" />
-              </div>
+            {/* address */}
+            <div className="relative grid w-full items-center gap-1.5">
+              <Label
+                htmlFor="address"
+                className="mb-1 block font-semibold text-primary-black"
+              >
+                Address :
+              </Label>
+
+              <CountryStateCitySelector
+                control={control}
+                userAddress={{
+                  country: userData?.data?.country,
+                  state: userData?.data?.state,
+                  city: userData?.data?.city,
+                }}
+                register={register}
+                setValue={setValue}
+              />
             </div>
 
             {/* input email and phone */}

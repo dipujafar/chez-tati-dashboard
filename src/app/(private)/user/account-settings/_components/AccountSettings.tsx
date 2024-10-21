@@ -16,10 +16,12 @@ import { PhoneInput } from "@/components/ui/PhoneInput";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Error_Modal, Success_model } from "@/utils/models";
 import { TError } from "@/types/types";
+import Image from "next/image";
 
 // Define form input type
 interface FormInputs {
   name: string;
+  phoneNumber: string;
 }
 
 const AccountSettings = () => {
@@ -141,14 +143,13 @@ const AccountSettings = () => {
                     <Avatar className="size-52">
                       <AvatarImage src={imageUrl || userData?.data?.image} />
                       <AvatarFallback className="text-5xl uppercase">
-                        {userData?.data?.name?.split(" ").length > 1 ? (
-                          <p>
-                            {userData?.data?.name?.split(" ")[0].slice(0, 1)}
-                            {userData?.data?.name?.split(" ")[1].slice(0, 1)}
-                          </p>
-                        ) : (
-                          userData?.data?.name?.split(" ")[0].slice(0, 2)
-                        )}
+                        <Image
+                          src={"/nonUser.png"}
+                          width={950}
+                          height={700}
+                          className="size-52"
+                          alt="user image"
+                        />
                       </AvatarFallback>
                     </Avatar>
 
@@ -191,7 +192,11 @@ const AccountSettings = () => {
       )}
 
       {/* _________ Billing Address ________*/}
-      <BillingAddressForm />
+      {isProfileDataLoading ? (
+        <Skeleton className="h-[300px]"></Skeleton>
+      ) : (
+        <BillingAddressForm />
+      )}
 
       {/* ____________ change password form _____________________ */}
       <ChangePasswordForm />
