@@ -2,259 +2,199 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Image from "next/image";
-import profile from "@/assets/images/profileImage.png";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { countries } from "@/utils/countries";
-import { Eye, EyeOff } from "lucide-react";
+import ChangePasswordForm from "./ChangePasswordForm";
+import BillingAddressForm from "./BillingAddressForm";
 import { useState } from "react";
+import { X } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  useGetProfileDataQuery,
+  useUpdateProfileDataMutation,
+} from "@/redux/api/profileApi";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { PhoneInput } from "@/components/ui/PhoneInput";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Error_Modal, Success_model } from "@/utils/models";
+import { TError } from "@/types/types";
+
+// Define form input type
+interface FormInputs {
+  name: string;
+}
 
 const AccountSettings = () => {
-  const [showOldPassword, setShowOldPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [fileName, setFileName] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const { data: userData, isLoading: isProfileDataLoading } =
+    useGetProfileDataQuery(undefined);
+
+  const [updateProfile] = useUpdateProfileDataMutation();
+
+  // React Hook Form setup
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    reset,
+  } = useForm<FormInputs>();
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target;
+    const file = input.files?.[0];
+
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setImageUrl(url);
+      setFileName(file);
+    } else {
+      setImageUrl(null);
+      setFileName(null);
+    }
+
+    input.value = "";
+  };
+
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(data));
+    console.log(fileName);
+
+    formData.append("image", fileName ? fileName : "");
+
+    try {
+      await updateProfile(formData).unwrap();
+      Success_model({ title: "Profile updated successfully" });
+      reset();
+    } catch (error: TError | any) {
+      Error_Modal({ title: error?.data?.message });
+    }
+  };
+
   return (
     <div className="space-y-7">
       {/* user personal information */}
-      <div className="dashboard-card">
-        <h1 className="px-7 py-5 text-2xl font-medium">Account Settings</h1>
-        <hr />
-        {/* user information  */}
-        <div className="px-7 py-5">
-          <form>
-            <div className="flex flex-col-reverse gap-5 lg:flex-row">
-              <div className="flex-1">
-                {/* first name */}
-                <div className="mb-2 space-y-1">
-                  <Label> First name</Label>
-                  <Input defaultValue={"Dianne"}></Input>
-                </div>
-                {/* last name */}
-                <div className="mb-2 space-y-1">
-                  <Label> Last Name</Label>
-                  <Input defaultValue={"Russell"}></Input>
-                </div>
-                {/* user email */}
-                <div className="mb-2 space-y-1">
-                  <Label> Email</Label>
-                  <Input defaultValue={"dianne.russell@gmail.com"}></Input>
-                </div>
-                {/* user phone number */}
-                <div className="mb-2 space-y-1">
-                  <Label> Phone Number</Label>
-                  <Input defaultValue={"(603) 555-0123"}></Input>
-                </div>
-                <Button
-                  type="submit"
-                  className="mt-5 rounded-full bg-primary-color px-10"
-                >
-                  Save Changes
-                </Button>
-              </div>
 
-              {/* profile image */}
-              <div className="flex flex-1 flex-col items-center justify-center gap-y-5">
-                <Image
-                  src={profile}
-                  alt="profile Image"
-                  width={950}
-                  height={700}
-                  className="max-h-64 max-w-64"
-                ></Image>
+      {isProfileDataLoading ? (
+        <Skeleton className="h-[300px]"></Skeleton>
+      ) : (
+        <div className="dashboard-card">
+          <h1 className="px-7 py-5 text-2xl font-medium">Account Settings</h1>
+          <hr />
+          {/* user information */}
+          <div className="px-7 py-5">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="flex flex-col-reverse gap-5 lg:flex-row">
+                <div className="flex-1">
+                  {/* first name (handled by react hook form) */}
+                  <div className="mb-2 space-y-1">
+                    <Label> Name</Label>
+                    <Input
+                      {...register("name")}
+                      defaultValue={userData?.data?.name}
+                      placeholder="Enter your name"
+                    />
+                    {errors.name && (
+                      <p className="text-sm text-red-500">
+                        {errors.name.message}
+                      </p>
+                    )}
+                  </div>
 
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="rounded-full border-2 border-primary-color text-primary-color"
-                >
-                  Chose Image
-                </Button>
+                  {/* user email */}
+                  <div className="mb-2 space-y-1">
+                    <Label> Email</Label>
+                    <Input defaultValue={userData?.data?.email} disabled />
+                  </div>
+
+                  {/* user phone number */}
+                  <div className="mb-2 space-y-1">
+                    <Label> Phone Number</Label>
+                    <Controller
+                      // @ts-ignore
+                      name="phoneNumber"
+                      // rules={{ required: "Phone number is required" }}
+                      control={control}
+                      render={({ field }) => (
+                        <PhoneInput
+                          // @ts-ignore
+                          value={userData?.data?.phoneNumber || field.value}
+                          onChange={field.onChange}
+                          international
+                          defaultCountry="US"
+                        />
+                      )}
+                    />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="mt-5 rounded-full bg-primary-color px-10"
+                  >
+                    Save Changes
+                  </Button>
+                </div>
+
+                {/* profile image */}
+                <div className="flex flex-1 flex-col items-center justify-center gap-y-5">
+                  <div className="group relative">
+                    <Avatar className="size-52">
+                      <AvatarImage src={imageUrl || userData?.data?.image} />
+                      <AvatarFallback className="text-5xl uppercase">
+                        {userData?.data?.name?.split(" ").length > 1 ? (
+                          <p>
+                            {userData?.data?.name?.split(" ")[0].slice(0, 1)}
+                            {userData?.data?.name?.split(" ")[1].slice(0, 1)}
+                          </p>
+                        ) : (
+                          userData?.data?.name?.split(" ")[0].slice(0, 2)
+                        )}
+                      </AvatarFallback>
+                    </Avatar>
+
+                    {/* cancel button */}
+                    {fileName && imageUrl && (
+                      <div
+                        className="absolute right-4 top-2 cursor-pointer rounded-md bg-primary-pink opacity-0 duration-1000 group-hover:opacity-100"
+                        onClick={() => {
+                          setFileName(null);
+                          setImageUrl(null);
+                        }}
+                      >
+                        <X color="red" />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* upload image */}
+                  <input
+                    type="file"
+                    id="fileInput"
+                    className="hidden"
+                    onChange={handleFileChange}
+                    accept="image/*"
+                  />
+                  {/* upload button */}
+                  <label
+                    htmlFor="fileInput"
+                    className="flex cursor-pointer flex-col items-center"
+                  >
+                    <div className="rounded-full border-2 border-primary-color px-5 py-2 font-semibold text-primary-color">
+                      Choose Image
+                    </div>
+                  </label>
+                </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Billing Address */}
-      <div className="dashboard-card" id="address">
-        <h1 className="px-7 py-5 text-2xl font-medium">Billing Address</h1>
-        <hr />
-        <div className="px-7 py-5">
-          <form>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col justify-between gap-4 lg:flex-row">
-                <div className="flex flex-1 flex-col space-y-1.5">
-                  <Label>First name</Label>
-                  <Input id="firstName" placeholder="Your first name" />
-                </div>
-                <div className="flex flex-1 flex-col space-y-1.5">
-                  <Label>Last name</Label>
-                  <Input id="lastName" placeholder="Your last name" />
-                </div>
-                <div className="flex flex-1 flex-col space-y-1.5">
-                  <Label>Company Name (optional)</Label>
-                  <Input id="companyName" placeholder="Company name" />
-                </div>
-              </div>
-              {/*input email */}
-              <div className="flex flex-col space-y-1.5">
-                <Label>Street Address</Label>
-                <Input id="address" placeholder="address" />
-              </div>
-              {/* address */}
-              <div className="flex flex-col justify-between gap-4 lg:flex-row">
-                {/* countries   */}
-                <div className="flex flex-1 flex-col space-y-1.5">
-                  <Label>Country / Region</Label>
-                  <Select>
-                    <SelectTrigger className="min-w-[220px]">
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup className="max-h-60 overflow-y-auto">
-                        {countries.map((country, idx) => (
-                          <SelectItem
-                            key={idx}
-                            value={country}
-                            className="capitalize"
-                          >
-                            {country}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-                {/* States */}
-                <div className="flex flex-1 flex-col space-y-1.5">
-                  <Label>States</Label>
-                  <Select>
-                    <SelectTrigger className="min-w-[150px]">
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        {/* <SelectItem value="bangladesh">Bangladesh</SelectItem>
-                        <SelectItem value="banana">Banana</SelectItem>
-                        <SelectItem value="blueberry">Blueberry</SelectItem>
-                        <SelectItem value="grapes">Grapes</SelectItem>
-                        <SelectItem value="pineapple">Pineapple</SelectItem> */}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Zip Code */}
-                <div className="flex flex-1 flex-col space-y-1.5">
-                  <Label>Zip Code</Label>
-                  <Input id="zipCode" placeholder="Zip Code" />
-                </div>
-              </div>
-
-              {/* input email and phone */}
-              <div className="flex flex-col justify-between gap-4 lg:flex-row">
-                <div className="flex flex-1 flex-col space-y-1.5">
-                  <Label>Email</Label>
-                  <Input id="email" placeholder="Email Address" />
-                </div>
-                <div className="flex flex-1 flex-col space-y-1.5">
-                  <Label>Phone</Label>
-                  <Input id="lastName" placeholder="Phone number" />
-                </div>
-              </div>
-            </div>
-            {/* submit button */}
-            <Button className="mt-7 rounded-full bg-primary-color px-10">
-              Save Change
-            </Button>
-          </form>
-        </div>
-      </div>
+      {/* _________ Billing Address ________*/}
+      <BillingAddressForm />
 
       {/* ____________ change password form _____________________ */}
-
-      <div className="dashboard-card">
-        <h1 className="px-7 py-5 text-2xl font-medium">Change Password</h1>
-        <hr />
-        <div className="px-7 py-5">
-          <form className="space-y-5">
-            {/* Current password */}
-            <div className="relative flex flex-1 flex-col space-y-1.5">
-              <Label>Current Password</Label>
-              <Input
-                type={showOldPassword ? "text" : "password"}
-                id="currentPassword"
-                placeholder="Current Password"
-              />
-              <div
-                className="absolute right-3 top-1/3 transform cursor-pointer"
-                onClick={() => setShowOldPassword(!showOldPassword)}
-              >
-                {showOldPassword ? (
-                  <EyeOff color="#1A1A1A" />
-                ) : (
-                  <Eye color="#1A1A1A" />
-                )}
-              </div>
-            </div>
-
-            {/* new and confirm password */}
-            <div className="flex flex-col gap-5 lg:flex-row">
-              {/* new password */}
-              <div className="relative flex flex-1 flex-col space-y-1.5">
-                <Label>New Password</Label>
-                <Input
-                  type={showNewPassword ? "text" : "password"}
-                  id="newPassword"
-                  placeholder="New Password"
-                />
-                <div
-                  className="absolute right-3 top-1/3 transform cursor-pointer"
-                  onClick={() => setShowNewPassword(!showNewPassword)}
-                >
-                  {showNewPassword ? (
-                    <EyeOff color="#1A1A1A" />
-                  ) : (
-                    <Eye color="#1A1A1A" />
-                  )}
-                </div>
-              </div>
-
-              {/* confirm Password  */}
-              <div className="relative flex flex-1 flex-col space-y-1.5">
-                <Label>Confirm Password</Label>
-                <Input
-                  type={showConfirmPassword ? "text" : "password"}
-                  id="confirmPassword"
-                  placeholder="confirm Password"
-                />
-                <div
-                  className="absolute right-3 top-1/3 transform cursor-pointer"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff color="#1A1A1A" />
-                  ) : (
-                    <Eye color="#1A1A1A" />
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* submit button */}
-            <Button className="mt-7 rounded-full bg-primary-color px-10">
-              Change Password
-            </Button>
-          </form>
-        </div>
-      </div>
+      <ChangePasswordForm />
     </div>
   );
 };
