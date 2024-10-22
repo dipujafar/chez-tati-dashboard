@@ -39,19 +39,14 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAppSelector } from "@/redux/hooks";
 
 const Navbar = () => {
   const [search, setSearch] = useState<string>("");
   const router = useRouter();
+  const { items: cart } = useAppSelector((state) => state.cart);
 
   const { data: categoriesData, isLoading: isCategoriesDataLoading } =
     useGetCategoriesQuery(undefined);
@@ -164,7 +159,12 @@ const Navbar = () => {
           <Link href={"/favorite-products"}>
             <Heart />
           </Link>
-          <Link href={"/shopping-cart"}>
+          <Link href={"/shopping-cart"} className="relative">
+            {cart.length ? (
+              <span className="absolute -right-1 -top-2 flex size-5 items-center justify-center rounded-full bg-primary-color p-1 text-white">
+                {cart.length}
+              </span>
+            ) : null}
             <ShoppingCart />
           </Link>
           <Link href={"/user/profile"}>
@@ -268,7 +268,12 @@ const Navbar = () => {
                   <Link href={"/favorite-products"}>
                     <Heart />
                   </Link>
-                  <Link href={"/shopping-cart"}>
+                  <Link href={"/shopping-cart"} className="relative">
+                    {cart.length ? (
+                      <span className="absolute -right-1 -top-2 flex size-5 items-center justify-center rounded-full bg-primary-color p-1 text-white">
+                        {cart.length}
+                      </span>
+                    ) : null}
                     <ShoppingCart />
                   </Link>
                   <Link href={"/user/profile"}>

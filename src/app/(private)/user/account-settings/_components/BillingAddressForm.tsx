@@ -1,30 +1,50 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import CountryStateCitySelector from "@/components/ui/CountryStateCitySelector";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useGetProfileDataQuery } from "@/redux/api/profileApi";
-import { countries } from "@/utils/countries";
+  useGetProfileDataQuery,
+  useUpdateProfileDataMutation,
+} from "@/redux/api/profileApi";
+import { TError } from "@/types/types";
+import Loading from "@/utils/Loading";
+import { Error_Modal, Success_model } from "@/utils/models";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-interface FormInputs {}
+interface FormInputs {
+  area: string;
+  house: string;
+  country: string;
+  state: string;
+  city: string;
+}
 
 const BillingAddressForm = () => {
   const { data: userData } = useGetProfileDataQuery(undefined);
+  console.log(userData);
+  const [updateProfile, { isLoading: isUpdateProfileLoading }] =
+    useUpdateProfileDataMutation();
 
   const { register, handleSubmit, control, reset, setValue } =
     useForm<FormInputs>();
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    console.log(data);
+    const billingAddressData = {
+      country: data?.country,
+      states: data?.state,
+      city: data?.city,
+      address: `${data?.area}, ${data?.house} No. house`,
+    };
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(billingAddressData));
+    try {
+      await updateProfile(formData).unwrap();
+      Success_model({ title: "Profile updated successfully" });
+      reset();
+    } catch (error: TError | any) {
+      Error_Modal({ title: error?.data?.message });
+    }
   };
 
   return (
@@ -47,8 +67,10 @@ const BillingAddressForm = () => {
                 control={control}
                 userAddress={{
                   country: userData?.data?.country,
-                  state: userData?.data?.state,
+                  state: userData?.data?.states,
                   city: userData?.data?.city,
+                  area: userData?.data?.address?.split(",")[0],
+                  house: userData?.data?.address?.split(",")[1],
                 }}
                 register={register}
                 setValue={setValue}
@@ -56,7 +78,11 @@ const BillingAddressForm = () => {
             </div>
           </div>
           {/* submit button */}
-          <Button className="mt-7 rounded-full bg-primary-color px-10">
+          <Button
+            type="submit"
+            className="mt-7 rounded-full bg-primary-color px-10"
+          >
+            {isUpdateProfileLoading && <Loading color="#fff"></Loading>}
             Save Change
           </Button>
         </form>

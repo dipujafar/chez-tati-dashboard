@@ -55,7 +55,7 @@ const CustomerFeedbacks = ({ reviews }: { reviews: TReview[] }) => {
         <div className="lg:w-3/4">
           {/*feedbacks */}
           {reviews?.slice(0, showFeedbacks)?.map((review, index) => (
-            <div className="mt-6" key={index}>
+            <div className="mt-6" key={index} id="#reviews">
               <div>
                 <div className="flex justify-between gap-x-8">
                   <div className="flex items-center gap-3">
@@ -96,20 +96,21 @@ const CustomerFeedbacks = ({ reviews }: { reviews: TReview[] }) => {
             </div>
           ))}
           <div className="mt-5 flex justify-end">
-            {showFeedbacks > 4 ? (
+            {showFeedbacks > reviews?.length ? (
               <Button
                 variant="outline"
                 className="rounded-full"
                 onClick={() => setShowFeedbacks(4)}
+                disabled={showFeedbacks <= 4}
               >
-                Show Less
+                Show {showFeedbacks <= 4 ? "more" : "Less"}
               </Button>
             ) : (
               <Button
                 variant="outline"
                 className="rounded-full"
                 disabled={showFeedbacks >= reviews?.length}
-                onClick={() => setShowFeedbacks(reviews?.length)}
+                onClick={() => setShowFeedbacks(showFeedbacks + 4)}
               >
                 Show More
               </Button>

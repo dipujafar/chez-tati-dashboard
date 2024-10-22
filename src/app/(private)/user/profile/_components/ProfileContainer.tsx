@@ -37,6 +37,8 @@ export default function ProfileContainer() {
   const { data: orderData, isLoading: isOrderDataLoading } =
     useGetOrdersQuery(undefined);
 
+  console.log(userData);
+
   return (
     <div className="space-y-8 text-primary-black">
       {/* Profile Details */}
@@ -96,7 +98,9 @@ export default function ProfileContainer() {
               </p>
               <p className="flex items-center gap-x-3 font-medium text-primary-black/75">
                 <Home size={22} />{" "}
-                {userData?.data?.address ? userData?.data?.address : "N/A"}
+                {userData?.data?.states && userData?.data?.states},
+                {userData?.data?.city && userData?.data?.city},
+                {userData?.data?.address && userData?.data?.address}
               </p>
               <p className="flex items-center gap-x-3 font-medium text-primary-black/75">
                 <Phone size={22} />{" "}

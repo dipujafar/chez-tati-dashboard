@@ -31,13 +31,15 @@ import {
 import { useState } from "react";
 import discountedPrice from "@/utils/discountedPrice";
 import ContinueToLoginModal from "@/utils/ContinueToLoginModal";
+import { useRouter } from "next/navigation";
 
 const ShoppingCartContainer = () => {
   // Initialize state with quantities from productData
-  const [disabledToSetQuantity, setDisabledToSetQuantity] = useState(false);
+
   const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const router = useRouter();
 
   console.log(user);
 
@@ -52,11 +54,10 @@ const ShoppingCartContainer = () => {
       (product: TCartProduct) => product?.cartId === cartId,
     );
 
-    setDisabledToSetQuantity(false);
     // @ts-ignore
     if (findProduct?.stock < quantity) {
       Error_Modal({ title: "Product quantity can't be more than stock!" });
-      setDisabledToSetQuantity(true);
+
       return;
     }
 
@@ -92,13 +93,15 @@ const ShoppingCartContainer = () => {
       return;
     }
 
-    ConfirmModal("Are you sure?", "you want to create an order", "Yes").then(
-      (result) => {
-        if (result.isConfirmed) {
-          console.log("Order created");
-        }
-      },
-    );
+    ConfirmModal(
+      "Are you sure?",
+      "you want to create an order",
+      "Continue",
+    ).then((result) => {
+      if (result.isConfirmed) {
+        router.push("/checkout");
+      }
+    });
   };
 
   return (
@@ -134,7 +137,14 @@ const ShoppingCartContainer = () => {
                         <p>{data?.name}</p>
                       </div>
                     </TableCell>
-                    <TableCell>${data?.price}</TableCell>
+                    <TableCell>
+                      ${discountedPrice(data?.price, data?.discount)}
+                      {Number(data?.discount) > 0 && (
+                        <s className="ml-1 text-sm text-primary-gray">
+                          ${data?.price}
+                        </s>
+                      )}
+                    </TableCell>
                     <TableCell>
                       {/* quantity */}
                       <div className="flex max-w-fit items-center gap-x-3 rounded-full border-2">
@@ -160,7 +170,6 @@ const ShoppingCartContainer = () => {
                               Number(data?.quantity) + 1,
                             );
                           }}
-                          disabled={disabledToSetQuantity}
                           className="flex size-10 items-center justify-center rounded-full bg-light-gray shadow-md"
                         >
                           +
@@ -169,8 +178,10 @@ const ShoppingCartContainer = () => {
                     </TableCell>
                     <TableCell>
                       $
-                      {discountedPrice(data?.price, data?.discount) *
-                        Number(data?.quantity)}
+                      {(
+                        Number(discountedPrice(data?.price, data?.discount)) *
+                        Number(data?.quantity)
+                      ).toFixed(2)}
                       {Number(data?.discount) > 0 && (
                         <s className="ml-1 text-sm text-primary-gray">
                           ${Number(data?.price) * Number(data?.quantity)}
@@ -216,19 +227,19 @@ const ShoppingCartContainer = () => {
               <div>
                 <div className="flex justify-between py-5">
                   <p>Subtotal:</p>
-                  <p className="font-medium">${subTotal}</p>
+                  <p className="font-medium">${subTotal.toFixed(2)}</p>
                 </div>
                 <hr />
                 <div className="flex justify-between py-5">
                   <p>Discount:</p>
                   <p className="font-medium">
-                    ${Number(subTotal) - Number(totalAmount)}
+                    ${(Number(subTotal) - Number(totalAmount)).toFixed(2)}
                   </p>
                 </div>
                 <hr />
                 <div className="flex justify-between py-5">
                   <p>Total:</p>
-                  <p className="font-medium">${totalAmount}</p>
+                  <p className="font-medium">${totalAmount.toFixed(2)}</p>
                 </div>
               </div>
             </CardContent>

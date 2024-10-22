@@ -17,16 +17,17 @@ export default function CountryStateCitySelector({
 }: any) {
   const [allData, setAllData] = useState([]);
 
+  const [selectedCountry, setSelectedCountry] = useState<any>(
+    userAddress?.country,
+  );
+  const [selectedState, setSelectedState] = useState<any>(userAddress?.state);
+  const [selectedCity, setSelectedCity] = useState<any>(userAddress?.city);
 
-  const [selectedCountry, setSelectedCountry] = useState(userAddress?.country);
-  const [selectedState, setSelectedState] = useState(userAddress?.state);
-  const [selectedCity, setSelectedCity] = useState(userAddress?.city);
-
-  const [statesOfCountry, setStatesOfCountry] = useState([]);
-  const [citiesOfState, setCitiesOfState] = useState([]);
+  const [statesOfCountry, setStatesOfCountry] = useState<any>([]);
+  const [citiesOfState, setCitiesOfState] = useState<any>([]);
 
   // -------- Get all data ------------- //
-  useEffect(() => { 
+  useEffect(() => {
     fetch("/data/countries-states-cities.json")
       .then((res) => res.json())
       .then((data) => {
@@ -35,12 +36,12 @@ export default function CountryStateCitySelector({
   }, []);
 
   // -------- Keep data memoized to load once ------------ //
-  const memoizedAllCountries = useMemo(() => allData, [allData]);
+  const memoizedAllCountries = useMemo<any>(() => allData, [allData]);
 
   // -------- Load states of selected country -------- //
   useEffect(() => {
     if (selectedCountry) {
-      const countryData = memoizedAllCountries?.find((country) => {
+      const countryData = memoizedAllCountries?.find((country: any) => {
         if (selectedCountry === country.name) {
           return country;
         }
@@ -54,7 +55,7 @@ export default function CountryStateCitySelector({
   useEffect(() => {
     if (selectedState) {
       const stateData = statesOfCountry?.find(
-        (state) => state.name === selectedState,
+        (state: any) => state.name === selectedState,
       );
       setCitiesOfState(stateData?.cities);
     }
@@ -71,8 +72,6 @@ export default function CountryStateCitySelector({
       setValue("city", userAddress.city);
     }
   }, [userAddress?.country]);
-
-
 
   return (
     <div className="grid w-full grid-cols-2 gap-x-3 gap-y-3 lg:grid-cols-5">
@@ -93,7 +92,7 @@ export default function CountryStateCitySelector({
                 <SelectValue placeholder="Select country" />
               </SelectTrigger>
               <SelectContent>
-                {memoizedAllCountries?.map((country) => (
+                {memoizedAllCountries?.map((country: any) => (
                   <SelectItem key={country.name} value={country.name}>
                     {country.name}
                   </SelectItem>
@@ -124,7 +123,7 @@ export default function CountryStateCitySelector({
                       <SelectValue placeholder="Select state" />
                     </SelectTrigger>
                     <SelectContent>
-                      {statesOfCountry?.map((state) => (
+                      {statesOfCountry?.map((state: any) => (
                         <SelectItem key={state.name} value={state.name}>
                           {state.name}
                         </SelectItem>
@@ -177,7 +176,7 @@ export default function CountryStateCitySelector({
                         <SelectValue placeholder="Select city" />
                       </SelectTrigger>
                       <SelectContent>
-                        {citiesOfState?.map((city) => (
+                        {citiesOfState?.map((city: any) => (
                           <SelectItem key={city.name} value={city.name}>
                             {city.name}
                           </SelectItem>
@@ -212,6 +211,7 @@ export default function CountryStateCitySelector({
 
       <div>
         <Input
+          value={userAddress?.area || ""}
           type="text"
           id="area"
           placeholder="Type Area"
@@ -222,6 +222,7 @@ export default function CountryStateCitySelector({
 
       <div>
         <Input
+          value={userAddress?.house || ""}
           type="text"
           id="house"
           placeholder="Type House No"

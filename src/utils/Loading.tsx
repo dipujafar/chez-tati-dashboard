@@ -9,7 +9,7 @@ const Loading = ({
 }: {
   size?: number;
   className?: string;
-  color: string;
+  color?: string;
 }) => {
   return (
     <Loader

@@ -19,22 +19,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAppSelector } from "@/redux/hooks";
 import { countries } from "@/utils/countries";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-const ChekcoutContainer = () => {
+const CheckoutContainer = () => {
   const router = useRouter();
+
+  const {
+    items: cart,
+    totalAmount,
+    subTotal,
+  } = useAppSelector((state) => state.cart);
+
+  console.log(cart);
 
   return (
     <div>
       <h1 className="text-3xl font-bold text-primary-black lg:text-4xl">
         Billing Information
       </h1>
-      <div className="mt-10 grid grid-cols-1 items-center justify-center gap-7 xl:grid-cols-3">
+      <form className="mt-10 grid grid-cols-1 items-center justify-center gap-7 xl:grid-cols-3">
         {/* form */}
-        <div className="col-span-2 py-5">
-          <form>
+        <div className="col-span-2 justify-start py-5">
+          <div>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col justify-between gap-4 lg:flex-row">
                 <div className="flex flex-1 flex-col space-y-1.5">
@@ -111,7 +120,7 @@ const ChekcoutContainer = () => {
                 </div>
               </div>
             </div>
-          </form>
+          </div>
         </div>
 
         {/* cart statistics */}
@@ -172,9 +181,9 @@ const ChekcoutContainer = () => {
             </Button>
           </CardFooter>
         </Card>
-      </div>
+      </form>
     </div>
   );
 };
 
-export default ChekcoutContainer;
+export default CheckoutContainer;

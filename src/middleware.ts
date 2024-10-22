@@ -20,5 +20,5 @@ export default function middleware(req: any) {
 }
 
 export const config = {
-  matcher: ["/favorites", "/user/:path*"],
+  matcher: ["/favorites", "/user/:path*", "/checkout"],
 };

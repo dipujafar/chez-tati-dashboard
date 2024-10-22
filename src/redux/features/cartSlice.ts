@@ -93,6 +93,20 @@ const cartSlice = createSlice({
       );
 
       state.items = rest;
+
+      state.totalAmount = state.items.reduce(
+        (total: any, item: any) =>
+          total +
+          //@ts-ignore
+          discountedPrice(item.price, item.discount) * Number(item.quantity),
+        0,
+      );
+
+      state.subTotal = state.items.reduce(
+        (subTotal: any, item: any) =>
+          subTotal + Number(item.price) * Number(item.quantity),
+        0,
+      );
     },
 
     clearCart: (state) => {

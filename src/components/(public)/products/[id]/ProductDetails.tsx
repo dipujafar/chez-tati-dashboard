@@ -13,6 +13,8 @@ import "keen-slider/keen-slider.min.css";
 import "./productDetails.css";
 import { TProduct } from "@/types/types";
 import AddToCartButton from "@/utils/AddToCartButton";
+import Link from "next/link";
+import discountedPrice from "@/utils/discountedPrice";
 
 function ThumbnailPlugin(
   mainRef: MutableRefObject<KeenSliderInstance | null>,
@@ -166,7 +168,7 @@ const ProductDetailsContainer = ({
           )}
         </div>
         {/* rating and review */}
-        <div className="mt-5 flex gap-2">
+        <Link href={"#reviews"} className="mt-5 flex gap-2">
           <Rating
             rating={Number(productData?.avgRating || 0)}
             className="w-28"
@@ -174,22 +176,20 @@ const ProductDetailsContainer = ({
           <p className="text-primary-gray">
             <span>{productData?.reviews?.length}</span> Review
           </p>
-        </div>
+        </Link>
         {/* price and discount*/}
         {productData?.discount > 0 && (
           <div className="mb-6 mt-2 flex items-center gap-x-3">
             <p className="text-xl text-primary-color">
-              <s className="text-primary-gray">${productData?.price}</s>
-              <span className="ml-2 font-medium">
-                ${Number(productData?.price) - Number(productData?.discount)}
+              <span className="mr-1 font-medium">
+                ${discountedPrice(productData?.price, productData?.discount)}
               </span>
+              <s className="font-light text-primary-gray">
+                ${productData?.price}
+              </s>
             </p>
             <p className="rou rounded-full bg-primary-pink px-2 py-1 text-primary-red">
-              {(
-                (Number(productData?.discount) / Number(productData?.price)) *
-                100
-              ).toFixed(0)}
-              % Off
+              {productData?.discount}% Off
             </p>
           </div>
         )}

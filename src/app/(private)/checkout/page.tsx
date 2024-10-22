@@ -1,4 +1,4 @@
-import ChekcoutContainer from "@/components/(private)/checkout/ChekcoutContainer";
+import CheckoutContainer from "@/components/(private)/checkout/CheckoutContainer";
 import Container from "@/components/shared/Container";
 import TopbarBanner from "@/components/shared/TopbarBanner";
 import { Metadata } from "next";
@@ -14,7 +14,7 @@ const CheckoutPage = () => {
     <div>
       <TopbarBanner></TopbarBanner>
       <Container className="mt-10">
-        <ChekcoutContainer></ChekcoutContainer>
+        <CheckoutContainer></CheckoutContainer>
       </Container>
     </div>
   );

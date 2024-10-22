@@ -67,13 +67,7 @@ const RelatedProducts = ({
 
                       {Number(product?.stock) > 0 && product?.discount > 0 && (
                         <div className="group absolute left-2 top-0 flex items-center justify-center rounded-md bg-primary-color px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
-                          Sale{" "}
-                          {(
-                            (Number(product?.discount) /
-                              Number(product?.price)) *
-                            100
-                          ).toFixed(0)}
-                          % off
+                          Sale {product?.discount}% off
                         </div>
                       )}
                     </div>

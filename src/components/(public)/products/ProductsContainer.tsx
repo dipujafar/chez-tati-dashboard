@@ -55,7 +55,7 @@ const ProductsContainer = () => {
 
   // pagination related states
   const [currentPage, setCurrentPage] = useState(1);
-  const pagePostsLimit = 10;
+  const pagePostsLimit = 12;
 
   const query: Record<string, any> = {};
   query["page"] = currentPage;
@@ -123,17 +123,31 @@ const ProductsContainer = () => {
                 <Loading className="mx-auto h-[50px] w-full" />
               ) : (
                 /* Category radio list */
+
                 <RadioGroup className="mx-2 space-y-3">
+                  <div className="ml-5 flex items-center space-x-2" key={0}>
+                    <RadioGroupItem
+                      onClick={() => setSelectedCategory("")}
+                      value={"all-categories"}
+                      id={`r${0}`}
+                      className=""
+                    />
+                    <Label>All Categories</Label>
+                  </div>
+
                   {categoriesData?.data?.data
                     ?.slice(startIndex, startIndex + visibleCategories)
                     .map((category: TCategory, inx: number) => (
-                      <div className="flex items-center space-x-2" key={inx}>
+                      <div
+                        className="flex items-center space-x-2"
+                        key={inx + 1}
+                      >
                         {/* Dot with custom color */}
                         <div className="h-3 w-3 rounded-full" />
                         <RadioGroupItem
                           onClick={() => setSelectedCategory(category?._id)}
                           value={category?.name}
-                          id={`r${inx}`}
+                          id={`r${inx + 1}`}
                           className=""
                         />
 
@@ -228,13 +242,7 @@ const ProductsContainer = () => {
                         {Number(product?.stock) > 0 &&
                           product?.discount > 0 && (
                             <div className="group absolute left-2 top-0 flex items-center justify-center rounded-md bg-primary-color px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
-                              Sale{" "}
-                              {(
-                                (Number(product?.discount) /
-                                  Number(product?.price)) *
-                                100
-                              ).toFixed(0)}
-                              % off
+                              Sale {product?.discount}% off
                             </div>
                           )}
                       </div>
