@@ -2,7 +2,7 @@
 import "../../User.css";
 // import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Home, Mail, Phone } from "lucide-react";
+import { Mail, MapPinHouse, Phone } from "lucide-react";
 import Link from "next/link";
 import {
   Table,
@@ -14,7 +14,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useGetProfileDataQuery } from "@/redux/api/profileApi";
-import Loading from "@/utils/Loading";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetOrdersQuery } from "@/redux/api/orderApi";
 import { TOrderData } from "@/types/types";
@@ -74,7 +73,7 @@ export default function ProfileContainer() {
               </p>
 
               <Link
-                href="/user/account-settings"
+                href="/user/account-settings#profile"
                 className="dashboard-primary-link"
               >
                 Edit Profile
@@ -97,7 +96,7 @@ export default function ProfileContainer() {
                 {userData?.data?.email ? userData?.data?.email : "N/A"}
               </p>
               <p className="flex items-center gap-x-3 font-medium text-primary-black/75">
-                <Home size={22} />{" "}
+                <MapPinHouse size={22} />{" "}
                 {userData?.data?.states && userData?.data?.states},
                 {userData?.data?.city && userData?.data?.city},
                 {userData?.data?.address && userData?.data?.address}

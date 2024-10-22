@@ -86,13 +86,13 @@ const AccountSettings = () => {
           <h1 className="px-7 py-5 text-2xl font-medium">Account Settings</h1>
           <hr />
           {/* user information */}
-          <div className="px-7 py-5">
+          <div id="profile" className="px-7 py-5">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="flex flex-col-reverse gap-5 lg:flex-row">
                 <div className="flex-1">
                   {/* first name (handled by react hook form) */}
                   <div className="mb-2 space-y-1">
-                    <Label> Name</Label>
+                    <Label>Name</Label>
                     <Input
                       {...register("name")}
                       defaultValue={userData?.data?.name}
