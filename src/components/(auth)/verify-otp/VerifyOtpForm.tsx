@@ -5,13 +5,21 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useVerifyOtpMutation } from "@/redux/api/authApi";
+import {
+  useForgetPassMutation,
+  useVerifyOtpMutation,
+} from "@/redux/api/authApi";
 import { Error_Modal, Success_model } from "@/utils/models";
 import { TError } from "@/types/types";
 import { LoadingButton } from "@/components/ui/loading-button";
+import { Dot, RotateCcw } from "lucide-react";
+import { text } from "stream/consumers";
+import Loading from "@/utils/Loading";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 interface FormData {
   otp: string;
@@ -20,6 +28,8 @@ interface FormData {
 const VerifyOtpForm = () => {
   const [otp, setValue] = useState<string>("");
   const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
+  const [forgetPass, { isLoading: isOtpSending }] = useForgetPassMutation();
+  const email = useSearchParams()?.get("email");
   const router = useRouter();
 
   const {
@@ -44,6 +54,17 @@ const VerifyOtpForm = () => {
         Success_model({ title: "Otp verified successfully." });
         return;
       }
+    } catch (error: TError | any) {
+      Error_Modal({ title: error?.data?.message });
+    }
+  };
+
+  const handleResendOtp = async () => {
+    try {
+      await forgetPass({ email: email }).unwrap();
+      toast.success(" Resend OTP successfully, Check your email", {
+        position: "top-center",
+      });
     } catch (error: TError | any) {
       Error_Modal({ title: error?.data?.message });
     }
@@ -75,15 +96,26 @@ const VerifyOtpForm = () => {
                 </InputOTP>
               </div>
             </div>
+            <p className="px-4" onClick={handleResendOtp}>
+              {isOtpSending ? (
+                <span className="flex justify-end">
+                  <Loading size={20} />
+                </span>
+              ) : (
+                <span className="flex cursor-pointer items-center justify-end gap-x-1">
+                  <RotateCcw size={16} /> Resend OTP
+                </span>
+              )}
+            </p>
             {/* Submit button */}
-            <LoadingButton
-              disabled={!otp}
+            <Button
+              disabled={!otp || isLoading}
               type="submit"
-              className="mt-5 w-full rounded-full bg-primary-color"
-              loading={isLoading}
+              className="mt-1 w-full rounded-full bg-primary-color"
             >
+              {isLoading && <Loading size={20} color="#fff" />}
               Submit
-            </LoadingButton>
+            </Button>
           </form>
         </CardContent>
       </Card>

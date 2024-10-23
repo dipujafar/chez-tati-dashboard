@@ -1,3 +1,5 @@
+"use client";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ProgressBar } from "@/components/ui/stepsprogress";
 import {
   Table,
@@ -7,9 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useGetSingleOrderQuery } from "@/redux/api/orderApi";
+import { useGetProfileDataQuery } from "@/redux/api/profileApi";
 import { Dot } from "lucide-react";
+import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
+import { use } from "react";
 
 const productData = [
   {
@@ -31,16 +37,29 @@ const productData = [
     quantity: 15,
   },
 ];
-const SingleOrderDetails = () => {
-  return (
+const SingleOrderDetails = ({ orderId }: { orderId: string }) => {
+  const { data: orderData, isLoading: isOrderDataLoading } =
+    useGetSingleOrderQuery(orderId);
+
+  const { data: profileData, isLoading: isProfileDataLoading } =
+    useGetProfileDataQuery(undefined);
+
+  console.log(orderData);
+  return isOrderDataLoading || isProfileDataLoading ? (
+    <div className="space-y-5">
+      <Skeleton className="h-[60px]"></Skeleton>
+      <Skeleton className="h-[60px]"></Skeleton>
+      <Skeleton className="h-[500px]"></Skeleton>
+    </div>
+  ) : (
     <div className="dashboard-card py-6">
       <div className="mb-5 flex items-center justify-between px-4">
         <div className="flex items-center justify-center">
           <h3 className="text-2xl font-medium">Order Details</h3>
           <Dot />
-          <p className="">April 24, 2021</p>
+          <p className="">{moment(orderData?.data?.createdAt).format("LL")}</p>
           <Dot />
-          <p>3 Products</p>
+          <p>{orderData?.data?.items?.length} products</p>
         </div>
         <div className="flex gap-x-4">
           <Link href="/user/order-history">
@@ -64,14 +83,12 @@ const SingleOrderDetails = () => {
               Billing Address
             </h1>
             <div className="px-7 py-5">
-              <h2>Dainne Russell</h2>
-              <p className="text-primary-gray">
-                4140 Parker Rd. Allentown, New Mexico 31134
-              </p>
+              <h2>{profileData?.data?.name}</h2>
+              <p className="text-primary-gray">{` ${profileData?.data?.address} ${profileData?.data?.address?.split(",")[1] ? "No. house" : ""}, ${profileData?.data?.city}, ${profileData?.data?.states}, ${profileData?.data?.country}`}</p>
               <p className="mt-10 text-primary-gray">Email</p>
-              <p>dainne.ressell@gmail.com</p>
+              <p>{profileData?.data?.email}</p>
               <p className="mt-3 text-primary-gray">Phone</p>
-              <p>(671) 555-0110</p>
+              <p>{profileData?.data?.phoneNumber}</p>
             </div>
           </div>
           <div>
@@ -79,49 +96,43 @@ const SingleOrderDetails = () => {
               Shipping Address
             </h1>
             <div className="px-7 py-5">
-              <h2>Dainne Russell</h2>
+              <h2>{orderData?.data?.billingDetails?.name}</h2>
               <p className="text-primary-gray">
-                4140 Parker Rd. Allentown, New Mexico 31134
+                {`${orderData?.data?.billingDetails?.address},
+                ${orderData?.data?.billingDetails?.city}, 
+                ${orderData?.data?.billingDetails?.states}, 
+                ${orderData?.data?.billingDetails?.country}`}
               </p>
               <p className="mt-10 text-primary-gray">Email</p>
-              <p>dainne.ressell@gmail.com</p>
+              <p>{orderData?.data?.billingDetails?.email}</p>
               <p className="mt-3 text-primary-gray">Phone</p>
-              <p>(671) 555-0110</p>
+              <p>{orderData?.data?.billingDetails?.phoneNumber}</p>
             </div>
           </div>
         </div>
         {/* order payment related details */}
         <div className="rounded border">
-          <div className="flex">
-            <div className="flex-1 border-b border-r px-6 py-5">
-              <h3 className="text-primary-gray">Order ID:</h3>
-              <p>#4152</p>
+          <div className="">
+            <div className="gap-x-2 border-b border-r px-2 py-5">
+              <h3 className="text-center text-primary-gray">Order ID:</h3>
+              <p className="text-center">{orderData?.data?.id}</p>
             </div>
-            <div className="flex-1 border-b px-6 py-5">
-              <h3 className="text-primary-gray">Payment Method:</h3>
-              <p>Paypal</p>
+            <div className="items-center border-b px-2 py-5">
+              <h3 className="text-center text-primary-gray">Payment Method:</h3>
+              <p className="text-center">
+                {orderData?.data?.paymentStatus == "cashOnDelivery"
+                  ? "Cash On Delivery"
+                  : "Stripe"}
+              </p>
             </div>
           </div>
 
           <div className="px-6 py-5">
-            <div className="flex justify-between py-3">
-              <h3>Subtotal:</h3>
-              <p className="font-medium">$365.00</p>
-            </div>
-            <hr />
-            <div className="flex justify-between py-3">
-              <h3>Discount:</h3>
-              <p className="font-medium">20%</p>
-            </div>
-            <hr />
-            <div className="flex justify-between py-3">
-              <h3>Shipping</h3>
-              <p className="font-medium">Free</p>
-            </div>
-            <hr />
-            <div className="flex justify-between py-3">
-              <h3 className="text-xl">Total</h3>
-              <p className="text-xl font-semibold text-primary-red">$84.00</p>
+            <div className="flex justify-between gap-x-2 py-3">
+              <h3 className="text-xl">Total </h3>
+              <p className="text-xl font-semibold text-primary-red">
+                ${orderData?.data?.totalAmount?.toFixed(2)}
+              </p>
             </div>
           </div>
         </div>
@@ -130,7 +141,7 @@ const SingleOrderDetails = () => {
       <div className="mx-auto mt-10 px-2 pl-14 lg:w-3/4 lg:pl-10">
         <ProgressBar
           stages={["Order Received", "Processing", "On the way", "Delivered"]}
-          percent={20}
+          percent={1}
           currentStage={2}
         />
       </div>

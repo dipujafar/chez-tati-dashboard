@@ -8,12 +8,12 @@ export const metadata: Metadata = {
     "View your past orders with Chez Tati. Track order statuses, review purchase details, and easily reorder your favorite items from your order history.",
 };
 
-const SingelOrderDetailsPage = () => {
+const SingleOrderDetailsPage = ({ params }: { params: { id: string } }) => {
   return (
     <div>
-      <SingleOrderDetails></SingleOrderDetails>
+      <SingleOrderDetails orderId={params?.id}></SingleOrderDetails>
     </div>
   );
 };
 
-export default SingelOrderDetailsPage;
+export default SingleOrderDetailsPage;

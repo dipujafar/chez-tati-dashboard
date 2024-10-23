@@ -15,11 +15,12 @@ import { Eye, EyeOff } from "lucide-react";
 import { useLoginMutation } from "@/redux/api/authApi";
 import { Error_Modal, Success_model } from "@/utils/models";
 import { TError } from "@/types/types";
-import { LoadingButton } from "@/components/ui/loading-button";
 import { useAppDispatch } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { setUser } from "@/redux/features/authSlice";
 import { jwtDecode } from "jwt-decode";
+import { Button } from "@/components/ui/button";
+import Loading from "@/utils/Loading";
 
 // Define form data types
 interface FormData {
@@ -131,13 +132,14 @@ const SignForm = () => {
               </div>
 
               {/* Login button */}
-              <LoadingButton
-                loading={isLoading}
+              <Button
+                disabled={isLoading}
                 type="submit"
                 className="rounded-full bg-primary-color"
               >
+                {isLoading && <Loading color="#fff"></Loading>}
                 Login
-              </LoadingButton>
+              </Button>
             </div>
           </form>
         </CardContent>

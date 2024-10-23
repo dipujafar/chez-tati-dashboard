@@ -127,8 +127,9 @@ const ContactContainer: React.FC = () => {
             <Button
               className="w-full rounded-full bg-primary-color"
               type="submit"
+              disabled={isLoading}
             >
-              {isLoading && <Loading></Loading>}
+              {isLoading && <Loading color="#fff"></Loading>}
               Submit
             </Button>
           </div>

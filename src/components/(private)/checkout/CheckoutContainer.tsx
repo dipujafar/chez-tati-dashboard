@@ -70,6 +70,8 @@ const CheckoutContainer = () => {
     subTotal,
   } = useAppSelector((state) => state.cart);
 
+  console.log(totalAmount);
+
   // Convert cart items to order items
   const orderItems = cart?.map((item: TProduct) => {
     return {
@@ -124,6 +126,8 @@ const CheckoutContainer = () => {
           duration: 1500,
         },
       );
+
+      return;
     }
 
     if (!data?.city && !userData?.data?.city) {
@@ -198,6 +202,10 @@ const CheckoutContainer = () => {
 
           // clear cart after creating payment intent
           dispatch(clearCart());
+
+          // redirect to payment page
+          router.push(`/payments?order=${res?.data?._id}`);
+
           return;
         }
 

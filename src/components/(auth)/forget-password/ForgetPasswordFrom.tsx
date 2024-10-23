@@ -1,9 +1,10 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { LoadingButton } from "@/components/ui/loading-button";
 import { useForgetPassMutation } from "@/redux/api/authApi";
 import { TError } from "@/types/types";
+import Loading from "@/utils/Loading";
 import { Error_Modal } from "@/utils/models";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -27,7 +28,7 @@ const ForgetPasswordFrom = () => {
       const res = await forgetPass(data).unwrap();
       if (res?.data?.token) {
         sessionStorage.setItem("token", res?.data?.token);
-        router.push("/verify-otp");
+        router.push(`/verify-otp?email=${data?.email}`);
       }
     } catch (error: TError | any) {
       Error_Modal({ title: error?.data?.message });
@@ -66,13 +67,14 @@ const ForgetPasswordFrom = () => {
               </div>
 
               {/* Login button */}
-              <LoadingButton
-                loading={isLoading}
+              <Button
+                disabled={isLoading}
                 type="submit"
                 className="rounded-full bg-primary-color"
               >
+                {isLoading && <Loading color="#fff"></Loading>}
                 Submit
-              </LoadingButton>
+              </Button>
             </div>
           </form>
         </CardContent>

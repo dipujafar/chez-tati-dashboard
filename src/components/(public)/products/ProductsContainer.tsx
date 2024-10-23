@@ -186,7 +186,7 @@ const ProductsContainer = () => {
             <RangeSlider
               value={priceValue}
               onValueChange={handlePriceSliderChange}
-              max={1000}
+              max={priceValue[1] >= 950 ? priceValue[1] + 100 : 1000}
               step={1}
               className="w-[60%]"
             />

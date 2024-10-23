@@ -158,7 +158,7 @@ export default function ProfileContainer() {
                       {moment(data?.createdAt).format("MMMM Do YYYY")}
                     </TableCell>
                     {/* <TableCell>{data.quantity}</TableCell> */}
-                    <TableCell>${data.totalAmount}</TableCell>
+                    <TableCell>${data.totalAmount?.toFixed(2)}</TableCell>
                     <TableCell>{data.status}</TableCell>
                     <TableCell>
                       <Link

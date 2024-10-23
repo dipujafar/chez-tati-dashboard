@@ -1,3 +1,4 @@
+import { get } from "http";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
@@ -6,6 +7,13 @@ const orderApi = baseApi.injectEndpoints({
     getOrders: build.query({
       query: () => ({
         url: "/orders/my-orders",
+        method: "GET",
+      }),
+      providesTags: [tagTypes?.order],
+    }),
+    getSingleOrder: build.query({
+      query: (id) => ({
+        url: `/orders/${id}`,
         method: "GET",
       }),
       providesTags: [tagTypes?.order],
@@ -21,4 +29,8 @@ const orderApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetOrdersQuery, useCreateOrderMutation } = orderApi;
+export const {
+  useGetOrdersQuery,
+  useCreateOrderMutation,
+  useGetSingleOrderQuery,
+} = orderApi;
