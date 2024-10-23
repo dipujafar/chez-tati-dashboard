@@ -157,7 +157,7 @@ const ShoppingCartContainer = () => {
                           }}
                           className={`bg-light-gray ${
                             Number(data?.quantity) === 1 && "text-primary-gray"
-                          } flex size-10 items-center justify-center rounded-full shadow-md`}
+                          } flex size-10 items-center justify-center rounded-full shadow-md hover:bg-primary-color hover:text-primary-white`}
                           disabled={Number(data?.quantity) === 1}
                         >
                           -
@@ -170,7 +170,7 @@ const ShoppingCartContainer = () => {
                               Number(data?.quantity) + 1,
                             );
                           }}
-                          className="flex size-10 items-center justify-center rounded-full bg-light-gray shadow-md"
+                          className="flex size-10 items-center justify-center rounded-full bg-light-gray shadow-md hover:bg-primary-color hover:text-primary-white"
                         >
                           +
                         </button>
@@ -191,7 +191,7 @@ const ShoppingCartContainer = () => {
                     <TableCell className="text-right">
                       <div
                         onClick={() => handleDeleteCartProduct(data?.cartId)}
-                        className="flex size-8 cursor-pointer items-center justify-center rounded-full border text-primary-gray"
+                        className="flex size-8 cursor-pointer items-center justify-center rounded-full border text-primary-gray hover:bg-primary-gray hover:text-red-500"
                       >
                         <X size={20} />
                       </div>

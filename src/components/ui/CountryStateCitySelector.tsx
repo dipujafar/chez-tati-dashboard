@@ -211,8 +211,8 @@ export default function CountryStateCitySelector({
 
       <div>
         <Input
-          value={userAddress?.area || ""}
           type="text"
+          defaultValue={userAddress?.area}
           id="area"
           placeholder="Type Area"
           className="border border-primary-black bg-transparent py-5 text-primary-black outline-none focus:outline-none"
@@ -222,7 +222,7 @@ export default function CountryStateCitySelector({
 
       <div>
         <Input
-          value={userAddress?.house || ""}
+          defaultValue={userAddress?.house}
           type="text"
           id="house"
           placeholder="Type House No"

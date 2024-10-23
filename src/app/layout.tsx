@@ -5,6 +5,7 @@ import { Figtree } from "next/font/google";
 import Footer from "@/components/shared/Footer";
 import NextTopLoader from "nextjs-toploader";
 import Providers from "@/lib/providers/Providers";
+import { Toaster } from "sonner";
 
 const figtree = Figtree({
   subsets: ["latin"],
@@ -31,8 +32,12 @@ export default function RootLayout({
       <body className={`${figtree.className} antialiased`}>
         <Providers>
           <Navbar></Navbar>
+
           <div className="min-h-[calc(100vh-121px)] pb-24">{children}</div>
           <Footer></Footer>
+
+          {/* sonner toaster */}
+          <Toaster />
 
           <NextTopLoader
             color="#232323"
