@@ -15,6 +15,7 @@ import { TProduct } from "@/types/types";
 import AddToCartButton from "@/utils/AddToCartButton";
 import Link from "next/link";
 import discountedPrice from "@/utils/discountedPrice";
+import { Error_Modal } from "@/utils/models";
 
 function ThumbnailPlugin(
   mainRef: MutableRefObject<KeenSliderInstance | null>,
@@ -71,8 +72,22 @@ const ProductDetailsContainer = ({
     },
     [ThumbnailPlugin(instanceRef)],
   );
-  ` 
-`;
+
+  console.log(productData?.stock);
+  console.log(quantity);
+
+  const handleIncrementQuantity = () => {
+    if (quantity >= Number(productData?.stock)) {
+      Error_Modal({ title: "Product quantity can't be more than stock!" });
+      return;
+    }
+
+    setQuantity(quantity + 1);
+  };
+
+  const handleDecrementQuantity = () => {
+    setQuantity(quantity - 1);
+  };
 
   return (
     <div className="flex flex-col items-center gap-7 lg:flex-row">
@@ -193,7 +208,7 @@ const ProductDetailsContainer = ({
             </p>
           </div>
         )}
-
+        3
         {productData?.discount == 0 && (
           <div className="mb-6 mt-2 flex items-center gap-x-3">
             <span className="ml-2 text-xl font-medium text-primary-color">
@@ -201,9 +216,7 @@ const ProductDetailsContainer = ({
             </span>
           </div>
         )}
-
         <hr />
-
         {/* category and description */}
         <div className="mt-7">
           <p className="font-medium text-primary-black">
@@ -221,7 +234,7 @@ const ProductDetailsContainer = ({
             {/* quantity */}
             <div className="flex items-center gap-x-3 rounded-full border-2">
               <Button
-                onClick={() => setQuantity(quantity - 1)}
+                onClick={handleDecrementQuantity}
                 className={`flex size-10 items-center justify-center rounded-full bg-light-gray text-xl text-black shadow-lg duration-500 hover:bg-primary-color hover:text-primary-white`}
                 disabled={quantity === 0}
               >
@@ -229,7 +242,7 @@ const ProductDetailsContainer = ({
               </Button>
               <p>{quantity}</p>
               <Button
-                onClick={() => setQuantity(quantity + 1)}
+                onClick={handleIncrementQuantity}
                 className={`flex size-10 items-center justify-center rounded-full bg-light-gray text-lg text-black shadow-lg duration-500 hover:bg-primary-color hover:text-primary-white`}
               >
                 +
@@ -244,6 +257,7 @@ const ProductDetailsContainer = ({
             ) : (
               <AddToCartButton
                 variant="button"
+                quantity={quantity || 1}
                 cartData={{ ...productData, quantity: quantity || 1 }}
               ></AddToCartButton>
             )}

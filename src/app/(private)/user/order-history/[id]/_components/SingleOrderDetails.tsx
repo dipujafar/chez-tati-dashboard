@@ -65,9 +65,9 @@ const SingleOrderDetails = ({ orderId }: { orderId: string }) => {
         </div>
       </div>
       <hr />
-      <div className="flex flex-col gap-7 px-7 py-6 lg:flex-row">
+      <div className="flex flex-col justify-between gap-7 px-7 py-6 lg:flex-row">
         {/* order Address */}
-        <div className="flex w-fit flex-col rounded border md:flex-row">
+        <div className="flex flex-1 flex-col rounded border md:flex-row">
           {/* billing address */}
           <div className="flex-1 border-r">
             <h1 className="border-b px-7 py-5 text-primary-gray">
@@ -137,11 +137,12 @@ const SingleOrderDetails = ({ orderId }: { orderId: string }) => {
               <h3 className="text-center text-primary-gray">Payment Status:</h3>
               <p className="text-center">
                 {orderData?.data?.paymentStatus === "cashOnDelivery" &&
-                  "cashOnDelivery"}
-                {orderData?.data?.paymentStatus !== "cashOnDelivery" &&
-                orderData?.data?.paymentStatus === "paid"
-                  ? "Paid"
-                  : "Unpaid"}
+                  "Cash On Delivery"}
+                {orderData?.data?.paymentStatus !== "cashOnDelivery"
+                  ? orderData?.data?.paymentStatus === "paid"
+                    ? "Paid"
+                    : "Unpaid"
+                  : ""}
               </p>
             </div>
           </div>
@@ -229,7 +230,7 @@ const SingleOrderDetails = ({ orderId }: { orderId: string }) => {
               </TableCell>
               <TableCell
                 className={cn(
-                  orderData?.data?.status !== "delivered" ? "" : "hidden",
+                  orderData?.data?.status === "delivered" ? "" : "hidden",
                 )}
               >
                 <Link href={`/review?product=${data?.product?._id}`}>

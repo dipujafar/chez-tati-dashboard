@@ -6,6 +6,7 @@ import ProductCardSkeleton from "@/utils/ProductCardSkeleton";
 import { motion } from "framer-motion";
 
 import { Heart } from "lucide-react";
+import { duration } from "moment";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,7 +16,7 @@ type TProps = {
 };
 
 const TrendingProductsCard = ({ productData, loading }: TProps) => {
-  const containerVarient = {
+  const containerVariant = {
     hidden: {
       opacity: 0,
     },
@@ -25,7 +26,7 @@ const TrendingProductsCard = ({ productData, loading }: TProps) => {
     },
   };
 
-  const itemVarient = {
+  const itemVariant = {
     hidden: {
       opacity: 0,
       y: 20,
@@ -33,7 +34,7 @@ const TrendingProductsCard = ({ productData, loading }: TProps) => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duratioin: 0.5, easeIn: [0.17, 0.67, 0.83, 0.67] },
+      transition: { duration: 0.5, easeIn: [0.17, 0.67, 0.83, 0.67] },
     },
   };
 
@@ -45,14 +46,14 @@ const TrendingProductsCard = ({ productData, loading }: TProps) => {
     </div>
   ) : (
     <motion.div
-      variants={containerVarient}
+      variants={containerVariant}
       initial="hidden"
       animate="visible"
       className="mt-7 grid grid-cols-1 gap-x-2 gap-y-5 md:grid-cols-2 lg:grid-cols-3"
     >
       {productData?.slice(0, 9)?.map((product, inx) => (
         <motion.div
-          variants={itemVarient}
+          variants={itemVariant}
           className="group relative space-y-1"
           key={product?.name}
         >

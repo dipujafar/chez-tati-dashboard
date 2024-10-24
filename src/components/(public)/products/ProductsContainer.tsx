@@ -8,7 +8,7 @@ import { RangeSlider } from "@/components/ui/slider";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { Rating } from "@/components/ui/rating";
-
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useGetCategoriesQuery } from "@/redux/api/categoriesApi";
 import { TCategory, TProduct } from "@/types/types";
@@ -21,7 +21,7 @@ import "react-pagination-bar/dist/index.css";
 import { useSearchParams } from "next/navigation";
 import FavoriteProductButton from "@/utils/FavoriteProductButton";
 import AddToCartButton from "@/utils/AddToCartButton";
-const sortData = ["Latest"];
+import { childrenVariants, parentVariants } from "@/utils/framerMotion";
 
 const ProductsContainer = () => {
   const [startIndex, setStartIndex] = useState(0);
@@ -188,7 +188,7 @@ const ProductsContainer = () => {
             Results Found
           </h1>
 
-          {/* display produts */}
+          {/* display products */}
           {isProductDataLoading ? (
             <div className="mt-7 grid grid-cols-1 gap-x-2 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 9 }).map((_, index) => (
@@ -196,61 +196,81 @@ const ProductsContainer = () => {
               ))}
             </div>
           ) : productsData?.data?.allProducts?.length > 0 ? (
-            <div className="mt-5 grid grid-cols-1 justify-between gap-x-5 gap-y-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
-              {productsData?.data?.allProducts?.map(
-                (product: TProduct, inx: number) => (
-                  <Card className="group" key={inx}>
-                    <CardContent className="relative">
-                      <Link href={`/products/${product?._id}`}>
-                        <Image
-                          src={product?.images[0]?.url}
-                          alt="product_image"
-                          width={1950}
-                          height={1000}
-                          className="h-[250px] w-full rounded-xl duration-1000 group-hover:scale-95"
-                        ></Image>
-                      </Link>
-                      <div>
-                        <FavoriteProductButton
-                          className="absolute right-2 top-0"
-                          productId={product?._id}
-                        ></FavoriteProductButton>
-                        {Number(product?.stock) <= 0 && (
-                          <div className="group absolute left-2 top-0 flex items-center justify-center rounded-md bg-primary-black px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
-                            Out of Stock
-                          </div>
-                        )}
+            <AnimatePresence>
+              <motion.div
+                initial={{ y: "10%", opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: "10%", opacity: 0 }}
+              >
+                <motion.div
+                  variants={parentVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  className="mt-5 grid grid-cols-1 justify-between gap-x-5 gap-y-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
+                >
+                  {productsData?.data?.allProducts?.map(
+                    (product: TProduct, inx: number) => (
+                      <motion.div variants={childrenVariants} key={inx}>
+                        <Card className="group">
+                          <CardContent className="relative">
+                            <Link href={`/products/${product?._id}`}>
+                              <Image
+                                src={product?.images[0]?.url}
+                                alt="product_image"
+                                width={1950}
+                                height={1000}
+                                className="h-[250px] w-full rounded-xl duration-1000 group-hover:scale-95"
+                              ></Image>
+                            </Link>
+                            <div>
+                              <FavoriteProductButton
+                                className="absolute right-2 top-0"
+                                productId={product?._id}
+                              ></FavoriteProductButton>
+                              {Number(product?.stock) <= 0 && (
+                                <div className="group absolute left-2 top-0 flex items-center justify-center rounded-md bg-primary-black px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
+                                  Out of Stock
+                                </div>
+                              )}
 
-                        {Number(product?.stock) > 0 &&
-                          product?.discount > 0 && (
-                            <div className="group absolute left-2 top-0 flex items-center justify-center rounded-md bg-primary-color px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
-                              Sale {product?.discount}% off
+                              {Number(product?.stock) > 0 &&
+                                product?.discount > 0 && (
+                                  <div className="group absolute left-2 top-0 flex items-center justify-center rounded-md bg-primary-color px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
+                                    Sale {product?.discount}% off
+                                  </div>
+                                )}
                             </div>
-                          )}
-                      </div>
-                    </CardContent>
-                    <CardFooter className="flex justify-between duration-1000 group-hover:px-8">
-                      <Link href={`/products/${product?._id}`}>
-                        <div>
-                          <div>
-                            <p className="font-bold text-primary-color">
-                              {product?.name}
-                            </p>
-                            <p className="font-medium">${product?.price}</p>
+                          </CardContent>
+                          <CardFooter className="flex justify-between duration-1000 group-hover:px-8">
+                            <Link href={`/products/${product?._id}`}>
+                              <div>
+                                <div>
+                                  <p className="font-bold text-primary-color">
+                                    {product?.name}
+                                  </p>
+                                  <p className="font-medium">
+                                    ${product?.price}
+                                  </p>
 
-                            <Rating
-                              rating={product?.avgRating || 0}
-                              className="w-20"
-                            ></Rating>
-                          </div>
-                        </div>
-                      </Link>
-                      <AddToCartButton cartData={product}></AddToCartButton>
-                    </CardFooter>
-                  </Card>
-                ),
-              )}
-            </div>
+                                  <Rating
+                                    rating={product?.avgRating || 0}
+                                    className="w-20"
+                                  ></Rating>
+                                </div>
+                              </div>
+                            </Link>
+                            <AddToCartButton
+                              cartData={product}
+                            ></AddToCartButton>
+                          </CardFooter>
+                        </Card>
+                      </motion.div>
+                    ),
+                  )}
+                </motion.div>
+              </motion.div>
+            </AnimatePresence>
           ) : (
             <Empty message="No products found"></Empty>
           )}

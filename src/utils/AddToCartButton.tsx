@@ -1,5 +1,5 @@
 import { ShoppingBag, ShoppingBasket, ShoppingCart } from "lucide-react";
-import { addToCart } from "@/redux/features/cartSlice";
+import { addToCart, updateQuantity } from "@/redux/features/cartSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { TProduct } from "@/types/types";
 import { Error_Modal, Success_model } from "./models";
@@ -10,15 +10,19 @@ import { useRouter } from "next/navigation";
 const AddToCartButton = ({
   cartData,
   variant,
+  quantity,
 }: {
   cartData: TProduct;
   variant?: string;
+  quantity?: number;
 }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { status: alreadyInCart } = AlreadyInCart(cartData?._id);
+  const { status: alreadyInCart, cartId } = AlreadyInCart(cartData?._id);
 
   const handleAddToCart = () => {
+    console.log(cartId);
+
     if (Number(cartData?.stock) <= 0) {
       Error_Modal({
         title: "Out of stock yet",
@@ -27,7 +31,9 @@ const AddToCartButton = ({
       return;
     }
 
-    if (alreadyInCart && variant === "button") {
+    if (alreadyInCart && variant === "button" && cartId) {
+      // @ts-ignore
+      dispatch(updateQuantity({ cartId, quantity: quantity || 1 }));
       router.push("/shopping-cart");
       return;
     }
@@ -35,7 +41,7 @@ const AddToCartButton = ({
     if (alreadyInCart) {
       Error_Modal({
         title: "Already in cart",
-        text: "Please checkout from your cart",
+        text: "Please checkout from your shopping cart",
       });
       return;
     }
@@ -44,7 +50,7 @@ const AddToCartButton = ({
     if (variant === "button") {
       router.push("/shopping-cart");
     }
-    Success_model({ title: "Added to cart" });
+    Success_model({ title: "Added to shopping cart" });
   };
   return variant === "button" ? (
     <Button

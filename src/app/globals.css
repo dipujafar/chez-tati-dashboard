@@ -61,6 +61,13 @@
   border: 1px solid lightgray !important;
   border-radius: 16px !important;
 }
+
+.rpb-item:hover {
+  border: 1px solid #ea5326 !important;
+  border-radius: 16px !important;
+  transition: all 0.2s ease-in-out;
+}
+
 .rpb-item--active {
   background-color: #ea5326 !important;
 }

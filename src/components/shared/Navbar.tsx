@@ -110,7 +110,7 @@ const Navbar = () => {
                   <li>
                     <Menubar className="w-fit border-none bg-transparent shadow-none">
                       <MenubarMenu>
-                        <MenubarTrigger className="truncate text-light-black">
+                        <MenubarTrigger className="truncate text-light-black duration-500 hover:bg-primary-color hover:text-white">
                           All Categories{" "}
                           <ChevronDown className="ml-3" size={20} />
                         </MenubarTrigger>
@@ -141,12 +141,12 @@ const Navbar = () => {
                   </li>
                 )}
 
-                <li>
+                <li className="duration-100 hover:text-primary-color">
                   <Link href="/about-us" className="truncate">
                     About Us
                   </Link>
                 </li>
-                <li>
+                <li className="duration-100 hover:text-primary-color">
                   <Link href="/contact" className="truncate">
                     Contact Us
                   </Link>
@@ -222,7 +222,10 @@ const Navbar = () => {
                     <ul className="mx-auto mt-5 flex flex-col items-center gap-y-4 text-light-black">
                       <li>
                         <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
+                          <DropdownMenuTrigger
+                            asChild
+                            className="rounded px-2 hover:bg-primary-color hover:text-white"
+                          >
                             <div className="flex cursor-pointer items-center">
                               All Categories{" "}
                               <ChevronDown className="ml-2" size={20} />{" "}
@@ -255,10 +258,10 @@ const Navbar = () => {
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </li>
-                      <li>
+                      <li className="duration-100 hover:text-primary-color">
                         <Link href="/about-us">About Us</Link>
                       </li>
-                      <li>
+                      <li className="duration-100 hover:text-primary-color">
                         <Link href="/contact">Contact Us</Link>
                       </li>
                     </ul>

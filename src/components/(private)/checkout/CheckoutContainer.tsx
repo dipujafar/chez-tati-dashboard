@@ -126,11 +126,11 @@ const CheckoutContainer = () => {
       return;
     }
 
-    if (!data?.city && !userData?.data?.city) {
-      toast.error("Please provide a city or add a city in your profile", {
-        duration: 1500,
-      });
-    }
+    // if (!data?.city && !userData?.data?.city) {
+    //   toast.error("Please provide a city or add a city in your profile", {
+    //     duration: 1500,
+    //   });
+    // }
 
     const billingAddressData = {
       name: data?.name,

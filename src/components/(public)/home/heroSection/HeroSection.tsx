@@ -119,7 +119,7 @@ const HeroSection = () => {
               {/* <CarouselNext className="absolute right-1 bg-primary-color text-primary-white" /> */}
             </Carousel>
           </div>
-          <div>
+          <div className="hidden xl:block">
             <Link href="/products">
               <div className="group relative">
                 <Image
@@ -180,7 +180,7 @@ const HeroSection = () => {
           </Animatetext>
           <Animatetext duration={1} y={20}>
             <Link href={"/products"}>
-              <button className="animatebtn mt-3 xl:mt-10">
+              <button className="animatebtn mt-3 truncate xl:mt-10">
                 BROWSE INSPIRATIONS
               </button>
             </Link>

@@ -74,8 +74,6 @@ const AccountSettings = () => {
     }
   };
 
-  //
-
   return (
     <div className="space-y-7">
       {/* user personal information */}

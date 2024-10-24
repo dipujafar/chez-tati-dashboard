@@ -8,6 +8,12 @@ export default function AlreadyInCart(productId: string) {
   const alreadyInCart = cart?.find((product: any) => product._id === productId);
 
   // @ts-ignore
-  if (alreadyInCart?._id) return { status: true, product: alreadyInCart };
+  if (alreadyInCart?._id)
+    return {
+      status: true,
+      product: alreadyInCart,
+      // @ts-ignore
+      cartId: alreadyInCart?.cartId,
+    };
   return { status: false };
 }
