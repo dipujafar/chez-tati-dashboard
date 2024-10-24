@@ -18,7 +18,19 @@ const productsApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes?.products],
     }),
+    shareProductReview: builder.mutation({
+      query: (data) => ({
+        url: "/review",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [tagTypes?.products],
+    }),
   }),
 });
 
-export const { useGetProductsQuery, useGetSingleProductQuery } = productsApi;
+export const {
+  useGetProductsQuery,
+  useGetSingleProductQuery,
+  useShareProductReviewMutation,
+} = productsApi;

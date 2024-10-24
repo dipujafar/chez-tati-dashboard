@@ -5,7 +5,7 @@ import Loading from "@/utils/Loading";
 const PrivacyPolicyContainer = () => {
   const { data: contentData, isLoading } = useGetContentQuery(undefined);
   const data = contentData?.data?.data[0]?.privacyPolicy;
-  console.log(data);
+
   return isLoading ? (
     <div className="flex h-[60vh] items-center justify-center">
       <Loading size={36}></Loading>

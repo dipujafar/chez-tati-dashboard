@@ -17,7 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { TAuthUser, TCartProduct, TProduct } from "@/types/types";
+import { TCartProduct } from "@/types/types";
 import Empty from "@/utils/Empty";
 import { ConfirmModal, Error_Modal, Success_model } from "@/utils/models";
 import { ChevronRight, X } from "lucide-react";
@@ -40,8 +40,6 @@ const ShoppingCartContainer = () => {
   const dispatch = useAppDispatch();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
-
-  console.log(user);
 
   const {
     items: cart,
@@ -132,7 +130,7 @@ const ShoppingCartContainer = () => {
                           alt="product_image"
                           width={950}
                           height={700}
-                          className="size-28 rounded-2xl"
+                          className="size-28 truncate rounded-2xl"
                         />
                         <p>{data?.name}</p>
                       </div>
@@ -148,7 +146,7 @@ const ShoppingCartContainer = () => {
                     <TableCell>
                       {/* quantity */}
                       <div className="flex max-w-fit items-center gap-x-3 rounded-full border-2">
-                        <button
+                        <Button
                           onClick={() => {
                             handleProductQuantity(
                               data?.cartId,
@@ -157,23 +155,23 @@ const ShoppingCartContainer = () => {
                           }}
                           className={`bg-light-gray ${
                             Number(data?.quantity) === 1 && "text-primary-gray"
-                          } flex size-10 items-center justify-center rounded-full shadow-md hover:bg-primary-color hover:text-primary-white`}
+                          } text flex size-10 items-center justify-center rounded-full text-xl text-black shadow-md duration-500 hover:bg-primary-color hover:text-primary-white`}
                           disabled={Number(data?.quantity) === 1}
                         >
                           -
-                        </button>
+                        </Button>
                         <p>{data?.quantity}</p>
-                        <button
+                        <Button
                           onClick={() => {
                             handleProductQuantity(
                               data?.cartId,
                               Number(data?.quantity) + 1,
                             );
                           }}
-                          className="flex size-10 items-center justify-center rounded-full bg-light-gray shadow-md hover:bg-primary-color hover:text-primary-white"
+                          className="flex size-10 items-center justify-center rounded-full bg-light-gray text-lg text-black shadow-md duration-500 hover:bg-primary-color hover:text-primary-white"
                         >
                           +
-                        </button>
+                        </Button>
                       </div>
                     </TableCell>
                     <TableCell>

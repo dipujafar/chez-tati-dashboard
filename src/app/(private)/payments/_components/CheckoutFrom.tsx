@@ -34,11 +34,9 @@ export const CheckoutForm = () => {
 
     try {
       const result = await stripe.confirmPayment({
-        
         elements,
         confirmParams: {
-          
-          return_url: `${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/user/order-history/${orderId}`,
+          return_url: `${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/payments/payments-confirm/${orderId}`,
         },
       });
 

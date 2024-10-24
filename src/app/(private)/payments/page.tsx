@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import PaymentsContainer from "./_components/PaymentsContainer";
 import TopbarBanner from "@/components/shared/TopbarBanner";
-import { Contact } from "lucide-react";
 import Container from "@/components/shared/Container";
 
 export const metadata: Metadata = {

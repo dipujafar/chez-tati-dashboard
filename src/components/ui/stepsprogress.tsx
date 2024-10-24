@@ -18,7 +18,8 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   className,
 }) => {
   // Automatically check "Delivered" when "On the way" reaches 100%
-  const isDeliveredChecked = percent === 100 && currentStage === stages.length - 2;
+  const isDeliveredChecked =
+    percent === 100 && currentStage === stages.length - 2;
 
   return (
     <div className={cn("flex w-full items-center", className)}>
@@ -44,11 +45,11 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
             className={cn(
               "absolute top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border-2",
               index < currentStage ||
-              (index === currentStage && percent > 0) || // Make sure the current stage is checked if in progress
-              (index === stages.length - 1 && isDeliveredChecked) // Automatically check "Delivered" when "On the way" reaches 100%
+                (index === currentStage && percent > 0) || // Make sure the current stage is checked if in progress
+                (index === stages.length - 1 && isDeliveredChecked) // Automatically check "Delivered" when "On the way" reaches 100%
                 ? "border-red-500 bg-[#EA5326] text-white"
                 : "border-gray-300 bg-white text-gray-400",
-              className
+              className,
             )}
           >
             {index < currentStage ||
@@ -62,7 +63,10 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
 
           {/* Stage label */}
           <div
-            className={cn("mt-2 text-center text-sm text-[#EA5326]", className)}
+            className={cn(
+              "mt-2 truncate text-center text-sm text-[#EA5326]",
+              className,
+            )}
             style={{
               whiteSpace: "nowrap",
               width: "100%",

@@ -3,22 +3,8 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  ChevronDown,
-  ChevronUp,
-  Heart,
-  Search,
-  ShoppingCart,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, Search } from "lucide-react";
 import { RangeSlider } from "@/components/ui/slider";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { Rating } from "@/components/ui/rating";
@@ -85,10 +71,6 @@ const ProductsContainer = () => {
 
   const handlePriceSliderChange = (value: number[]) => {
     setPriceValue(value);
-  };
-
-  const handleSortChange = (value: string) => {
-    console.log(value);
   };
 
   const handlePrevClick = () => {
@@ -233,7 +215,7 @@ const ProductsContainer = () => {
                           className="absolute right-2 top-0"
                           productId={product?._id}
                         ></FavoriteProductButton>
-                        {Number(product?.stock) === 0 && (
+                        {Number(product?.stock) <= 0 && (
                           <div className="group absolute left-2 top-0 flex items-center justify-center rounded-md bg-primary-black px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
                             Out of Stock
                           </div>
@@ -255,6 +237,7 @@ const ProductsContainer = () => {
                               {product?.name}
                             </p>
                             <p className="font-medium">${product?.price}</p>
+
                             <Rating
                               rating={product?.avgRating || 0}
                               className="w-20"

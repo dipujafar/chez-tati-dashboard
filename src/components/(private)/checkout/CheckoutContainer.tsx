@@ -22,10 +22,8 @@ import { TError, TProduct } from "@/types/types";
 import discountedPrice from "@/utils/discountedPrice";
 import Loading from "@/utils/Loading";
 import { Error_Modal, Success_model } from "@/utils/models";
-import { ShoppingBag } from "lucide-react";
 
 import { useRouter } from "next/navigation";
-import { use, useEffect, useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -69,8 +67,6 @@ const CheckoutContainer = () => {
     totalAmount,
     subTotal,
   } = useAppSelector((state) => state.cart);
-
-  console.log(totalAmount);
 
   // Convert cart items to order items
   const orderItems = cart?.map((item: TProduct) => {
@@ -214,8 +210,6 @@ const CheckoutContainer = () => {
         Error_Modal(error?.data?.message);
       }
     }
-
-    console.log("hello");
   };
 
   return (
@@ -321,7 +315,6 @@ const CheckoutContainer = () => {
                             value={userData?.data?.phoneNumber || field.value}
                             onChange={field.onChange}
                             international
-                            defaultCountry="US"
                           />
                         )}
                       />
@@ -389,24 +382,14 @@ const CheckoutContainer = () => {
               )}
             </CardContent>
             <CardFooter>
-              {cart?.length === 0 ? (
-                <Button
-                  onClick={() => router.push("/products")}
-                  className="w-full rounded-full bg-primary-color"
-                >
-                  {isOrderLoading && <Loading color="#fff"></Loading>}
-                  More Shop{" "}
-                  <ShoppingBag className="ml-2" size={20}></ShoppingBag>
-                </Button>
-              ) : (
-                <Button
-                  type="submit"
-                  className="w-full rounded-full bg-primary-color"
-                >
-                  {isOrderLoading && <Loading color="#fff"></Loading>}
-                  Place Order
-                </Button>
-              )}
+              <Button
+                type="submit"
+                className="w-full rounded-full bg-primary-color"
+                disabled={isOrderLoading || cart?.length === 0}
+              >
+                {isOrderLoading && <Loading color="#fff"></Loading>}
+                Place Order
+              </Button>
             </CardFooter>
           </Card>
         </form>

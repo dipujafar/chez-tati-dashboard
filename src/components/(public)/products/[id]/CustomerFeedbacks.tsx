@@ -65,7 +65,7 @@ const CustomerFeedbacks = ({ reviews }: { reviews: TReview[] }) => {
                         alt="userImage"
                         width={950}
                         height={700}
-                        className="size-14"
+                        className="size-14 rounded-full"
                       ></Image>
                     ) : (
                       <Image
@@ -73,7 +73,7 @@ const CustomerFeedbacks = ({ reviews }: { reviews: TReview[] }) => {
                         alt="userImage"
                         width={950}
                         height={700}
-                        className="size-14"
+                        className="size-14 rounded-full"
                       ></Image>
                     )}
 

@@ -14,12 +14,19 @@ const AddToCartButton = ({
   cartData: TProduct;
   variant?: string;
 }) => {
-  console.log(cartData);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { status: alreadyInCart } = AlreadyInCart(cartData._id);
+  const { status: alreadyInCart } = AlreadyInCart(cartData?._id);
 
   const handleAddToCart = () => {
+    if (Number(cartData?.stock) <= 0) {
+      Error_Modal({
+        title: "Out of stock yet",
+        text: "Please choose another product",
+      });
+      return;
+    }
+
     if (alreadyInCart && variant === "button") {
       router.push("/shopping-cart");
       return;
@@ -47,7 +54,10 @@ const AddToCartButton = ({
       Buy Now <ShoppingBag className="ml-2" size={20} />
     </Button>
   ) : (
-    <div onClick={handleAddToCart} className="rounded-full bg-light-gray p-3">
+    <div
+      onClick={handleAddToCart}
+      className="rounded-full bg-light-gray p-3 duration-200 hover:bg-primary-color hover:text-primary-white"
+    >
       <ShoppingCart size={20} />
     </div>
   );

@@ -171,3 +171,18 @@ export type TAuthUser = {
   role: string;
   userId: string;
 };
+
+export type TOrderItems = {
+  color: string | null;
+  createdAt: string; // Consider using Date object if you want to work with date types
+  discount: string; // Adjust if discount should be a number
+  order: string; // Assuming this is an identifier for the order
+  price: number;
+  product: TProduct;
+  quantity: number;
+  size: string | null;
+  totalPrice: number;
+  updatedAt: string; // Consider using Date object
+  __v: number; // Version key, usually a number
+  _id: string; // Identifier for the order item
+};

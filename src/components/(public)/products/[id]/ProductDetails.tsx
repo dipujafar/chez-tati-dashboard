@@ -157,7 +157,7 @@ const ProductDetailsContainer = ({
           <h1 className="text-3xl font-semibold text-primary-black lg:text-5xl">
             {productData?.name}
           </h1>
-          {productData?.stock > 0 ? (
+          {productData?.stock >= 0 ? (
             <p className="rounded bg-primary-pink px-2 py-1 text-primary-red">
               In Stock
             </p>
@@ -220,22 +220,20 @@ const ProductDetailsContainer = ({
           <div className="mt-7 flex items-center gap-x-3">
             {/* quantity */}
             <div className="flex items-center gap-x-3 rounded-full border-2">
-              <button
+              <Button
                 onClick={() => setQuantity(quantity - 1)}
-                className={`bg-light-gray ${
-                  quantity === 0 && "text-primary-gray"
-                } flex size-10 items-center justify-center rounded-full shadow-lg`}
+                className={`flex size-10 items-center justify-center rounded-full bg-light-gray text-xl text-black shadow-lg duration-500 hover:bg-primary-color hover:text-primary-white`}
                 disabled={quantity === 0}
               >
                 -
-              </button>
+              </Button>
               <p>{quantity}</p>
-              <button
+              <Button
                 onClick={() => setQuantity(quantity + 1)}
-                className={`flex size-10 items-center justify-center rounded-full bg-light-gray shadow-lg`}
+                className={`flex size-10 items-center justify-center rounded-full bg-light-gray text-lg text-black shadow-lg duration-500 hover:bg-primary-color hover:text-primary-white`}
               >
                 +
-              </button>
+              </Button>
             </div>
 
             {/* checkout btn */}

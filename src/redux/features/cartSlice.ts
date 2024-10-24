@@ -63,8 +63,6 @@ const cartSlice = createSlice({
         (product: any) => product.cartId === cartId,
       );
 
-      console.log("change quantity", quantity);
-
       if (product) {
         product.quantity = Number(quantity);
 

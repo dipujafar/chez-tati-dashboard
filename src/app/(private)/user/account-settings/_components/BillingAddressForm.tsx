@@ -9,7 +9,6 @@ import {
 import { TError } from "@/types/types";
 import Loading from "@/utils/Loading";
 import { Error_Modal, Success_model } from "@/utils/models";
-import { use } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 interface FormInputs {
@@ -22,7 +21,6 @@ interface FormInputs {
 
 const BillingAddressForm = () => {
   const { data: userData } = useGetProfileDataQuery(undefined);
-  console.log(userData);
   const [updateProfile, { isLoading: isUpdateProfileLoading }] =
     useUpdateProfileDataMutation();
 
@@ -36,8 +34,6 @@ const BillingAddressForm = () => {
       city: data?.city || userData?.data?.city,
       address: `${data?.area},${data?.house}`,
     };
-
-    console.log(billingAddressData);
 
     const formData = new FormData();
     formData.append("data", JSON.stringify(billingAddressData));

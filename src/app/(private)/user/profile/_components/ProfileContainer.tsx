@@ -36,8 +36,6 @@ export default function ProfileContainer() {
   const { data: orderData, isLoading: isOrderDataLoading } =
     useGetOrdersQuery(undefined);
 
-  console.log(userData);
-
   return (
     <div className="space-y-8 text-primary-black">
       {/* Profile Details */}

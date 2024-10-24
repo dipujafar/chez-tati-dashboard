@@ -60,10 +60,8 @@ const AccountSettings = () => {
   };
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    console.log(data);
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
-    console.log(fileName);
 
     formData.append("image", fileName ? fileName : "");
 

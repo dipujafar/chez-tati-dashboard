@@ -1,8 +1,6 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
-import { Heart, ShoppingCart } from "lucide-react";
 import { Rating } from "@/components/ui/rating";
-import { products } from "@/utils/products";
 import Link from "next/link";
 import { useGetProductsQuery } from "@/redux/api/productsApi";
 import ProductCardSkeleton from "@/utils/ProductCardSkeleton";
@@ -19,8 +17,6 @@ const RelatedProducts = ({
 }) => {
   const { data: productsData, isLoading: isProductsDataLoading } =
     useGetProductsQuery({ category: categoryId });
-
-  console.log(productsId);
 
   const relatedProductsData = productsData?.data?.allProducts?.filter(
     (products: TProduct) => products._id !== productsId,
@@ -59,7 +55,7 @@ const RelatedProducts = ({
                         productId={product?._id}
                       ></FavoriteProductButton>
 
-                      {Number(product?.stock) === 0 && (
+                      {Number(product?.stock) <= 0 && (
                         <div className="group absolute left-2 top-0 flex items-center justify-center rounded-md bg-primary-black px-2 py-1 text-primary-white duration-1000 group-hover:left-4">
                           Out of Stock
                         </div>

@@ -84,7 +84,7 @@ const FavoriteProductButton = ({
     <div
       onClick={() => handleAddWishList(productId)}
       className={cn(
-        "flex size-10 items-center justify-center rounded-full bg-gray-200 text-primary-black duration-1000 hover:bg-primary-pink group-hover:right-4",
+        "flex size-10 items-center justify-center rounded-full bg-gray-200 text-primary-black duration-1000 hover:bg-primary-color hover:text-primary-white group-hover:right-4",
         isAlreadyInWishList && "bg-primary-pink text-primary-white",
         className,
       )}

@@ -9,8 +9,6 @@ const ProductDetailsContainer = ({ productsId }: { productsId: string }) => {
   const { data: productData, isLoading: isProductDataLoading } =
     useGetSingleProductQuery(productsId);
 
-  console.log(productData?.data?.reviews);
-
   return isProductDataLoading ? (
     <div className="space-y-16">
       <div className="flex flex-col gap-10 lg:flex-row">
