@@ -152,10 +152,10 @@ const CheckoutContainer = () => {
       };
 
       try {
-        await createOrder(orderData).unwrap();
+        const res = await createOrder(orderData).unwrap();
         Success_model({ title: "Order created successfully" });
         dispatch(clearCart());
-        router.push("/user/order-history");
+        router.push(`/user/order-history/${res?.data?._id}`);
         return;
       } catch (error: TError | any) {
         Error_Modal(error?.data?.message);

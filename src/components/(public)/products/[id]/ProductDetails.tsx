@@ -208,7 +208,7 @@ const ProductDetailsContainer = ({
             </p>
           </div>
         )}
-        3
+        
         {productData?.discount == 0 && (
           <div className="mb-6 mt-2 flex items-center gap-x-3">
             <span className="ml-2 text-xl font-medium text-primary-color">
